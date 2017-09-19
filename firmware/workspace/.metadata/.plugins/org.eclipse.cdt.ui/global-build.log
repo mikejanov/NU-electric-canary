@@ -1,0 +1,185 @@
+14:47:39 **** Build of configuration Debug for project monti ****
+make all 
+Building file: ../startup/startup_stm32.s
+Invoking: MCU GCC Assembler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-as -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -g -o "startup/startup_stm32.o" "../startup/startup_stm32.s"
+Finished building: ../startup/startup_stm32.s
+ 
+Building file: ../src/main.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/main.d" -MT"src/main.o" -o "src/main.o" "../src/main.c"
+Finished building: ../src/main.c
+ 
+Building file: ../src/syscalls.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/syscalls.d" -MT"src/syscalls.o" -o "src/syscalls.o" "../src/syscalls.c"
+Finished building: ../src/syscalls.c
+ 
+Building file: ../src/system_stm32f30x.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"src/system_stm32f30x.d" -MT"src/system_stm32f30x.o" -o "src/system_stm32f30x.o" "../src/system_stm32f30x.c"
+Finished building: ../src/system_stm32f30x.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_adc.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_adc.d" -MT"StdPeriph_Driver/src/stm32f30x_adc.o" -o "StdPeriph_Driver/src/stm32f30x_adc.o" "../StdPeriph_Driver/src/stm32f30x_adc.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_adc.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_can.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_can.d" -MT"StdPeriph_Driver/src/stm32f30x_can.o" -o "StdPeriph_Driver/src/stm32f30x_can.o" "../StdPeriph_Driver/src/stm32f30x_can.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_can.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_comp.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_comp.d" -MT"StdPeriph_Driver/src/stm32f30x_comp.o" -o "StdPeriph_Driver/src/stm32f30x_comp.o" "../StdPeriph_Driver/src/stm32f30x_comp.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_comp.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_crc.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_crc.d" -MT"StdPeriph_Driver/src/stm32f30x_crc.o" -o "StdPeriph_Driver/src/stm32f30x_crc.o" "../StdPeriph_Driver/src/stm32f30x_crc.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_crc.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_dac.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_dac.d" -MT"StdPeriph_Driver/src/stm32f30x_dac.o" -o "StdPeriph_Driver/src/stm32f30x_dac.o" "../StdPeriph_Driver/src/stm32f30x_dac.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_dac.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_dbgmcu.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_dbgmcu.d" -MT"StdPeriph_Driver/src/stm32f30x_dbgmcu.o" -o "StdPeriph_Driver/src/stm32f30x_dbgmcu.o" "../StdPeriph_Driver/src/stm32f30x_dbgmcu.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_dbgmcu.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_dma.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_dma.d" -MT"StdPeriph_Driver/src/stm32f30x_dma.o" -o "StdPeriph_Driver/src/stm32f30x_dma.o" "../StdPeriph_Driver/src/stm32f30x_dma.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_dma.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_exti.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_exti.d" -MT"StdPeriph_Driver/src/stm32f30x_exti.o" -o "StdPeriph_Driver/src/stm32f30x_exti.o" "../StdPeriph_Driver/src/stm32f30x_exti.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_exti.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_flash.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_flash.d" -MT"StdPeriph_Driver/src/stm32f30x_flash.o" -o "StdPeriph_Driver/src/stm32f30x_flash.o" "../StdPeriph_Driver/src/stm32f30x_flash.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_flash.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_fmc.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_fmc.d" -MT"StdPeriph_Driver/src/stm32f30x_fmc.o" -o "StdPeriph_Driver/src/stm32f30x_fmc.o" "../StdPeriph_Driver/src/stm32f30x_fmc.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_fmc.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_gpio.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_gpio.d" -MT"StdPeriph_Driver/src/stm32f30x_gpio.o" -o "StdPeriph_Driver/src/stm32f30x_gpio.o" "../StdPeriph_Driver/src/stm32f30x_gpio.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_gpio.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_hrtim.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_hrtim.d" -MT"StdPeriph_Driver/src/stm32f30x_hrtim.o" -o "StdPeriph_Driver/src/stm32f30x_hrtim.o" "../StdPeriph_Driver/src/stm32f30x_hrtim.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_hrtim.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_i2c.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_i2c.d" -MT"StdPeriph_Driver/src/stm32f30x_i2c.o" -o "StdPeriph_Driver/src/stm32f30x_i2c.o" "../StdPeriph_Driver/src/stm32f30x_i2c.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_i2c.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_iwdg.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_iwdg.d" -MT"StdPeriph_Driver/src/stm32f30x_iwdg.o" -o "StdPeriph_Driver/src/stm32f30x_iwdg.o" "../StdPeriph_Driver/src/stm32f30x_iwdg.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_iwdg.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_misc.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_misc.d" -MT"StdPeriph_Driver/src/stm32f30x_misc.o" -o "StdPeriph_Driver/src/stm32f30x_misc.o" "../StdPeriph_Driver/src/stm32f30x_misc.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_misc.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_opamp.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_opamp.d" -MT"StdPeriph_Driver/src/stm32f30x_opamp.o" -o "StdPeriph_Driver/src/stm32f30x_opamp.o" "../StdPeriph_Driver/src/stm32f30x_opamp.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_opamp.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_pwr.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_pwr.d" -MT"StdPeriph_Driver/src/stm32f30x_pwr.o" -o "StdPeriph_Driver/src/stm32f30x_pwr.o" "../StdPeriph_Driver/src/stm32f30x_pwr.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_pwr.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_rcc.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_rcc.d" -MT"StdPeriph_Driver/src/stm32f30x_rcc.o" -o "StdPeriph_Driver/src/stm32f30x_rcc.o" "../StdPeriph_Driver/src/stm32f30x_rcc.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_rcc.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_rtc.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_rtc.d" -MT"StdPeriph_Driver/src/stm32f30x_rtc.o" -o "StdPeriph_Driver/src/stm32f30x_rtc.o" "../StdPeriph_Driver/src/stm32f30x_rtc.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_rtc.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_spi.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_spi.d" -MT"StdPeriph_Driver/src/stm32f30x_spi.o" -o "StdPeriph_Driver/src/stm32f30x_spi.o" "../StdPeriph_Driver/src/stm32f30x_spi.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_spi.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_syscfg.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_syscfg.d" -MT"StdPeriph_Driver/src/stm32f30x_syscfg.o" -o "StdPeriph_Driver/src/stm32f30x_syscfg.o" "../StdPeriph_Driver/src/stm32f30x_syscfg.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_syscfg.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_tim.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_tim.d" -MT"StdPeriph_Driver/src/stm32f30x_tim.o" -o "StdPeriph_Driver/src/stm32f30x_tim.o" "../StdPeriph_Driver/src/stm32f30x_tim.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_tim.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_usart.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_usart.d" -MT"StdPeriph_Driver/src/stm32f30x_usart.o" -o "StdPeriph_Driver/src/stm32f30x_usart.o" "../StdPeriph_Driver/src/stm32f30x_usart.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_usart.c
+ 
+Building file: ../StdPeriph_Driver/src/stm32f30x_wwdg.c
+Invoking: MCU GCC Compiler
+/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/Debug
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -DSTM32 -DSTM32F3 -DSTM32F30 -DSTM32F303RETx -DNUCLEO_F303RE -DDEBUG -DSTM32F303xE -DUSE_STDPERIPH_DRIVER -I/opt/ros/indigo/include -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/StdPeriph_Driver/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/inc" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/device" -I"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/CMSIS/core" -O0 -g3 -Wall -fmessage-length=0 -ffunction-sections -c -MMD -MP -MF"StdPeriph_Driver/src/stm32f30x_wwdg.d" -MT"StdPeriph_Driver/src/stm32f30x_wwdg.o" -o "StdPeriph_Driver/src/stm32f30x_wwdg.o" "../StdPeriph_Driver/src/stm32f30x_wwdg.c"
+Finished building: ../StdPeriph_Driver/src/stm32f30x_wwdg.c
+ 
+Building target: monti.elf
+Invoking: MCU GCC Linker
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -T"/home/michaeljanov/NU-electric-canary/firmware/workspace/monti/LinkerScript.ld" -Wl,-Map=output.map -Wl,--gc-sections -o "monti.elf" @"objects.list"   -lm
+Finished building target: monti.elf
+ 
+make --no-print-directory post-build
+Generating binary and Printing size information:
+arm-none-eabi-objcopy -O binary "monti.elf" "monti.bin"
+arm-none-eabi-size "monti.elf"
+   text	   data	    bss	    dec	    hex	filename
+   3720	   1128	   1092	   5940	   1734	monti.elf
+ 
+14:47:47 **** Incremental Build of configuration Debug for project monti ****
+make all 
+make: Nothing to be done for `all'.
