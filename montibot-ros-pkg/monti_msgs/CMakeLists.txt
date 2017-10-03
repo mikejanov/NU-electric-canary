@@ -8,8 +8,9 @@ project(monti_msgs)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  roscpp
+  rospy
   message_generation
-  message_runtime
   std_msgs
 )
 
@@ -106,7 +107,7 @@ find_package(catkin REQUIRED COMPONENTS
 catkin_package(
 #  INCLUDE_DIRS include
   LIBRARIES monti_msgs
-  CATKIN_DEPENDS message_generation message_runtime std_msgs
+  CATKIN_DEPENDS message_runtime std_msgs
   DEPENDS system_lib
 )
 
