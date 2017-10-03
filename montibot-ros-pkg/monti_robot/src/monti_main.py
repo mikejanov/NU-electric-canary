@@ -10,9 +10,8 @@ class montiRobot():
 
 		# Create the robot state publisher
 		self.state_pub = rospy.Publisher(name + 'state', msgs.Monti_Robot_State, queue_size = 10)
-		for x in range(4000000):
-			for p in range(200):
-				self.pub_monti_state(p)
+		while not rospy.is_shutdown():
+			self.pub_monti_state(5)
 
 	def pub_monti_state(self,n):
 		# Function called when data is reveived from robot
@@ -35,8 +34,10 @@ class montiRobot():
 
 		state.temperature = 17
 
-		for i in range(10):
-			state.misc_sensors[i] = i
+		for i in range(5):
+			state.misc_sensors[i].part_number = "BNO055"
+			state.misc_sensors[i].type_of_data = "IMU"
+			state.misc_sensors[i].data = i
 
 		self.state_pub.publish(state)
 		self.rate.sleep()

@@ -53,6 +53,7 @@ find_package(catkin REQUIRED COMPONENTS
    Monti_Robot_State.msg
    Accelerometer.msg
    Temp_Press_Hum.msg
+   Misc_Sensor.msg
  )
 
 ## Generate services in the 'srv' folder

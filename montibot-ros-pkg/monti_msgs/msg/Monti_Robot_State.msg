@@ -5,4 +5,4 @@ int8[6] encoders
 Accelerometer accelerometer
 Temp_Press_Hum environment
 uint16 temperature
-uint16[10] misc_sensors
+Misc_Sensor[10] misc_sensors
