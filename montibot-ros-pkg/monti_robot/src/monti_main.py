@@ -6,6 +6,7 @@ class montiRobot():
 	def __init__(self, name = 'monti_main/'):
 		rospy.init_node('monti_main')
 		rospy.loginfo("Starting the monti_robot ROS node")
+		self.rate = rospy.Rate(15)
 
 		# Create the robot state publisher
 		self.state_pub = rospy.Publisher(name + 'state', msgs.Monti_Robot_State, queue_size = 10)
@@ -21,7 +22,7 @@ class montiRobot():
 		state.header = 0xFF
 		state.error = 17
 		for i in range(6):
-			state.encoders[i] = 7
+			state.encoders[i] = i
 
 		state.accelerometer.triple_axis_accel = 12
 		state.accelerometer.x_accel = 4
@@ -38,7 +39,7 @@ class montiRobot():
 			state.misc_sensors[i] = i
 
 		self.state_pub.publish(state)
-
+		self.rate.sleep()
 
 def main():
 	montiRobot()
