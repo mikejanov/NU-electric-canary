@@ -5,7 +5,6 @@ class montiRobot():
 		rospy.init_node('monti_robot')
 		rospy.loginfo("Starting the monti_robot ROS node")
 
-
 def main():
 	montiRobot()
 
