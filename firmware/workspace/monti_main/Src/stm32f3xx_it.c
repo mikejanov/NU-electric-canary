@@ -171,17 +171,7 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   HAL_SYSTICK_IRQHandler();
-
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
-  uint32_t led_period_ms = 500;
-  if(!(HAL_GetTick() % led_period_ms)){
-    if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_5)){
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET); // LED OFF
-    }else{
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET); // LED ON
-    }
-  }
 
   /* USER CODE END SysTick_IRQn 1 */
 }
