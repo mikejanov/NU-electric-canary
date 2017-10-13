@@ -46,6 +46,69 @@
 
 /* Private define ------------------------------------------------------------*/
 
+#define MOTOR_A_PWM_Pin GPIO_PIN_0
+#define MOTOR_A_PWM_GPIO_Port GPIOC
+#define MOTOR_B_PWM_Pin GPIO_PIN_1
+#define MOTOR_B_PWM_GPIO_Port GPIOC
+#define MOTOR_C_PWM_Pin GPIO_PIN_2
+#define MOTOR_C_PWM_GPIO_Port GPIOC
+#define AIN_0_Pin GPIO_PIN_4
+#define AIN_0_GPIO_Port GPIOA
+#define AIN_1_Pin GPIO_PIN_5
+#define AIN_1_GPIO_Port GPIOA
+#define AIN_2_Pin GPIO_PIN_6
+#define AIN_2_GPIO_Port GPIOA
+#define AIN_3_Pin GPIO_PIN_7
+#define AIN_3_GPIO_Port GPIOA
+#define DIN_0_Pin GPIO_PIN_4
+#define DIN_0_GPIO_Port GPIOC
+#define DIN_1_Pin GPIO_PIN_5
+#define DIN_1_GPIO_Port GPIOC
+#define DIN_2_Pin GPIO_PIN_0
+#define DIN_2_GPIO_Port GPIOB
+#define DIN_3_Pin GPIO_PIN_1
+#define DIN_3_GPIO_Port GPIOB
+#define DIN_4_Pin GPIO_PIN_2
+#define DIN_4_GPIO_Port GPIOB
+#define DIN_5_Pin GPIO_PIN_10
+#define DIN_5_GPIO_Port GPIOB
+#define MOTOR_C_ENC_A_Pin GPIO_PIN_11
+#define MOTOR_C_ENC_A_GPIO_Port GPIOB
+#define MOTOR_C_ENC_B_Pin GPIO_PIN_12
+#define MOTOR_C_ENC_B_GPIO_Port GPIOB
+#define MOTOR_A_ENC_A_Pin GPIO_PIN_13
+#define MOTOR_A_ENC_A_GPIO_Port GPIOB
+#define MOTOR_A_POS_Pin GPIO_PIN_14
+#define MOTOR_A_POS_GPIO_Port GPIOB
+#define MOTOR_A_NEG_Pin GPIO_PIN_15
+#define MOTOR_A_NEG_GPIO_Port GPIOB
+#define DIN_6_Pin GPIO_PIN_7
+#define DIN_6_GPIO_Port GPIOC
+#define MOTOR_B_POS_Pin GPIO_PIN_8
+#define MOTOR_B_POS_GPIO_Port GPIOC
+#define MOTOR_B_NEG_Pin GPIO_PIN_9
+#define MOTOR_B_NEG_GPIO_Port GPIOC
+#define DIN_7_Pin GPIO_PIN_8
+#define DIN_7_GPIO_Port GPIOA
+#define DIN_8_Pin GPIO_PIN_9
+#define DIN_8_GPIO_Port GPIOA
+#define DIN_9_Pin GPIO_PIN_10
+#define DIN_9_GPIO_Port GPIOA
+#define MOTOR_C_POS_Pin GPIO_PIN_11
+#define MOTOR_C_POS_GPIO_Port GPIOA
+#define MOTOR_C_NEG_Pin GPIO_PIN_12
+#define MOTOR_C_NEG_GPIO_Port GPIOA
+#define MOTOR_B_ENC_A_Pin GPIO_PIN_12
+#define MOTOR_B_ENC_A_GPIO_Port GPIOC
+#define MOTOR_B_ENC_B_Pin GPIO_PIN_2
+#define MOTOR_B_ENC_B_GPIO_Port GPIOD
+#define MOTOR_A_ENC_B_Pin GPIO_PIN_5
+#define MOTOR_A_ENC_B_GPIO_Port GPIOB
+#define LIMIT_SWITCH_1_Pin GPIO_PIN_8
+#define LIMIT_SWITCH_1_GPIO_Port GPIOB
+#define LIMIT_SWITCH_2_Pin GPIO_PIN_9
+#define LIMIT_SWITCH_2_GPIO_Port GPIOB
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
