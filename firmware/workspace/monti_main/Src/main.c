@@ -44,6 +44,9 @@
 #include "usart.h"
 #include "gpio.h"
 
+#include "drivetrain.h"
+#include "holonomic3.h"
+
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -99,7 +102,10 @@ int main(void)
   MX_TIM1_Init();
 
   /* USER CODE BEGIN 2 */
+  struct motor motors[3];
+  configure_motors(motors);
 
+  drive_motor_overload(&motors[0], 10, 1, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
