@@ -1,0 +1,25 @@
+!SESSION 2017-09-19 14:46:20.842 -----------------------------------------------
+eclipse.buildId=4.6.3.M20170301-0400
+java.version=1.8.0_131
+java.vendor=Oracle Corporation
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Framework arguments:  -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -pluginCustomization configuration/st_pref.ini -product org.eclipse.epp.package.cpp.product
+
+!ENTRY org.eclipse.equinox.registry 4 1 2017-09-19 14:46:31.689
+!MESSAGE Executable extension definition for "resolver" not found.
+
+!ENTRY org.eclipse.equinox.registry 4 1 2017-09-19 14:46:31.705
+!MESSAGE Executable extension definition for "resolver" not found.
+
+!ENTRY fr.ac6.mcu.ide 1 1 2017-09-19 14:46:34.825
+!MESSAGE Started RMI Server, listening on port 21112
+
+!ENTRY org.eclipse.cdt.core 1 0 2017-09-19 14:47:16.572
+!MESSAGE Indexed 'monti' (27 sources, 83 headers) in 1.99 sec: 7,852 declarations; 29,628 references; 0 unresolved inclusions; 1 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.launchbar.core 2 0 2017-09-19 14:47:47.562
+!MESSAGE Enablement expression is missing for descriptor type org.eclipse.cdt.debug.core.coreBuildDescriptorType
+
+!ENTRY org.eclipse.launchbar.core 2 0 2017-09-19 14:47:47.562
+!MESSAGE Enablement expression is missing for config provider for org.eclipse.cdt.debug.core.coreBuildDescriptorType
