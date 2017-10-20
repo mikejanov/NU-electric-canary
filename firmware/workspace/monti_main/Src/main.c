@@ -102,10 +102,14 @@ int main(void)
   MX_TIM1_Init();
 
   /* USER CODE BEGIN 2 */
-  struct motor motors[3];
-  configure_motors(motors);
+  struct motor motors[4];	// Max number of motors is 4
+  uint16_t wheel_size = 22;
 
-  drive_motor_overload(&motors[0], 10, 1, 0);
+  configure_motors(motors);
+  initialize_drivetrain(holonomic3, wheel_size);
+
+  drive_motor(&motors[0]);
+  //drive_motor_overload(&motors[0], 50, 1, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */

@@ -72,7 +72,7 @@ enum drivetrain_options
 
 void initialize_drivetrain(uint8_t _drivetrain_type, uint16_t _wheel_diameter);
 
-void configure_motors(struct motor *_motors[]);
+void configure_motors(struct motor _motors[]);
 
 void start_motor(struct motor *_motor);
 
