@@ -29,11 +29,7 @@ void drive_motors_holonomic3(void *_drivetrain,
 {
 	struct holonomic3 *this_drivetrain = (struct holonomic3*)_drivetrain;
 
-	this_drivetrain->motor_front->pwm_duty = pwm1;
-	this_drivetrain->motor_right->pwm_duty = pwm2;
-	this_drivetrain->motor_left->pwm_duty = pwm3;
-
-	drive_motor(this_drivetrain->motor_front, this_drivetrain->motor_front->pwm_duty, 1, 0);
-	drive_motor(this_drivetrain->motor_right, this_drivetrain->motor_right->pwm_duty, 1, 0);
-	drive_motor(this_drivetrain->motor_left, this_drivetrain->motor_left->pwm_duty, 1, 0);
+	drive_motor(this_drivetrain->motor_front, pwm1, 1, 0);
+	drive_motor(this_drivetrain->motor_right, pwm2, 1, 0);
+	drive_motor(this_drivetrain->motor_left, pwm3, 1, 0);
 }
