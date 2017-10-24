@@ -9,10 +9,6 @@
 
 void initialize_drivetrain(uint8_t _drivetrain_type, uint16_t _wheel_diameter)
 {
-	  //HAL_TIM_Base_Start(&htim1);
-	  //HAL_TIM_PWM_Start(&htim1,TIM_CHANNEL_1);
-	  //HAL_TIMEx_PWMN_Start(&htim1,TIM_CHANNEL_1);
-
 	  /**
 	   * Call correct motor initialization
 	   */
@@ -62,16 +58,13 @@ void configure_motors(struct motor _motors[])
 
 	  // Configure _motors[3]
 	  // { Empty }
-	  // No known configuraton with 4 motors yet
-
-	  HAL_TIM_Base_Start(&htim1);
-	  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+	  // No known configuration with 4 motors yet
 
 	  // Start motors
-//	  for (int i = 0; i < 4; i++)
-//	  {
-//		  start_motor(&_motors[i]);
-//	  }
+	  for (int i = 0; i < NUM_MOTORS_ENABLED; i++)
+	  {
+		  start_motor(&_motors[i]);
+	  }
 }
 
 void start_motor(struct motor *_motor)
@@ -80,20 +73,29 @@ void start_motor(struct motor *_motor)
 	  HAL_TIM_PWM_Start(_motor->pwm_duty_base, _motor->pwm_duty_channel);
 }
 
-void drive_motor(struct motor *_motor)
+void drive_motor(struct motor *_motor,
+				 uint16_t _pwm_duty,
+				 uint8_t _in_pos,
+				 uint8_t _in_neg)
 {
 	/**
-	 * Set new PWM duty cycling using the provided HAL macros
+	 * Update struct values
 	 */
-	//__HAL_TIM_GET_AUTORELOAD(_motor->pwm_duty_base); //gets the Period set for PWm
-	__HAL_TIM_GET_AUTORELOAD(&htim1); //gets the Period set for PWm
-	// Sets the new PWM duty cycle (Capture Compare Value)
-	//__HAL_TIM_SET_COMPARE(_motor->pwm_duty_base,
-	//					  _motor->pwm_duty_channel,
-	//					  _motor->pwm_duty);
-	__HAL_TIM_SET_COMPARE(&htim1,
-						  TIM_CHANNEL_1,
-						  (uint16_t) 50);
+	_motor->pwm_duty = _pwm_duty;
+	_motor->in_pos = _in_pos;
+	_motor->in_neg = _in_neg;
+
+	/**
+	 * Set new PWM duty cycling using the provided HAL macros
+	 * 	CompareValue = Period * DutyCycle / 100
+	 */
+	uint16_t timer_compare = _motor->pwm_duty_base->Init.Period *
+							 _motor->pwm_duty /
+							 100;
+	__HAL_TIM_GET_AUTORELOAD(_motor->pwm_duty_base);
+	__HAL_TIM_SET_COMPARE(_motor->pwm_duty_base,
+			  	  	  	  _motor->pwm_duty_channel,
+						  timer_compare);
 
 	if(_motor->in_pos)
 	{
@@ -112,15 +114,6 @@ void drive_motor(struct motor *_motor)
 	{
 		HAL_GPIO_WritePin(_motor->in_neg_bus, _motor->in_neg_pin, GPIO_PIN_RESET);
 	}
-}
-
-void drive_motor_overload(struct motor *_motor, uint8_t _pwm_duty, uint8_t _in_pos, uint8_t _in_neg)
-{
-	_motor->pwm_duty = _pwm_duty;
-	_motor->in_pos = _in_pos;
-	_motor->in_neg = _in_neg;
-
-	drive_motor(_motor);
 }
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)

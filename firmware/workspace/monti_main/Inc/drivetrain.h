@@ -15,6 +15,8 @@
 #include "gpio.h"
 #include "tim.h"
 
+#define NUM_MOTORS_ENABLED	3
+
 struct motor
 {
 	// Control Values
@@ -76,8 +78,10 @@ void configure_motors(struct motor _motors[]);
 
 void start_motor(struct motor *_motor);
 
-void drive_motor(struct motor *_motor);
-void drive_motor_overload(struct motor *_motor, uint8_t _pwm_duty, uint8_t _in_pos, uint8_t _in_neg);
+void drive_motor(struct motor *_motor,
+				 uint16_t _pwm_duty,
+				 uint8_t _in_pos,
+				 uint8_t _in_neg);
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty);
 

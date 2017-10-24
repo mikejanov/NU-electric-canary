@@ -99,22 +99,15 @@ int main(void)
   MX_TIM1_Init();
 
   /* USER CODE BEGIN 2 */
-  struct motor motors[4];	// Max number of motors is 4
+  struct motor motors[NUM_MOTORS_ENABLED];
+
   uint16_t wheel_size = 22;
 
+  configure_motors(motors);
+  initialize_drivetrain(holonomic3, wheel_size);
 
-  HAL_TIM_Base_Start(&htim1);
-  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-  __HAL_TIM_GET_AUTORELOAD(&htim1);
-  __HAL_TIM_SET_COMPARE(&htim1,
-						TIM_CHANNEL_1,
-						(uint16_t) 50);
-
-  //configure_motors(motors);
-  //initialize_drivetrain(holonomic3, wheel_size);
-
-  //drive_motor(&motors[0]);
-  //drive_motor_overload(&motors[0], 50, 1, 0);
+  uint16_t inc_duty_cycle = 0;
+  //drive_motor(&motors[0], 0, 1, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -125,6 +118,17 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 
+	  /*
+	   * Example speed dynamic control
+	   * NOTE: Bug where it is incrementing by the (1, in this case)
+	   * 	during debug just fine, but during continuous runtime,
+	   * 	the PWM output is "jittery" and not smooth updates.
+	  if(HAL_GetTick() % 100 == 0)
+	  {
+		  drive_motor(&motors[0], inc_duty_cycle, 1, 0);
+		  inc_duty_cycle = (inc_duty_cycle + 1) % 100;
+	  }
+	  */
   }
   /* USER CODE END 3 */
 
