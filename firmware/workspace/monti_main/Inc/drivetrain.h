@@ -15,6 +15,8 @@
 #include "gpio.h"
 #include "tim.h"
 
+#include "holonomic3.h"
+
 #define NUM_MOTORS_ENABLED	3
 
 struct motor
@@ -69,10 +71,13 @@ enum direction
 
 enum drivetrain_options
 {
-	holonomic3
+	drivetrains_holonomic3
 };
 
-void initialize_drivetrain(uint8_t _drivetrain_type, uint16_t _wheel_diameter);
+void initialize_drivetrain(struct motor _motors[],
+						   void *_drivetrain,
+						   uint8_t _drivetrain_type,
+		   	   	   	   	   uint16_t _wheel_diameter);
 
 void configure_motors(struct motor _motors[]);
 

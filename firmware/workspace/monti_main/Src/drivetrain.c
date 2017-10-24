@@ -7,14 +7,19 @@
 
 #include "drivetrain.h"
 
-void initialize_drivetrain(uint8_t _drivetrain_type, uint16_t _wheel_diameter)
+void initialize_drivetrain(struct motor _motors[],
+							void *_drivetrain,
+						   	uint8_t _drivetrain_type,
+		   	   	   	   	    uint16_t _wheel_diameter)
 {
 	  /**
 	   * Call correct motor initialization
 	   */
 	  switch (_drivetrain_type){
-	  case holonomic3:
-		  initialize_holonomic3(_wheel_diameter);
+	  case drivetrains_holonomic3:
+		  initialize_holonomic3(_wheel_diameter,
+				  	  	  	  	_drivetrain,
+								&_motors[0], &_motors[1], &_motors[2]);
 	  }
 }
 
