@@ -54,29 +54,29 @@ struct motor
  * The Degree number (0 Degrees, etc) does not actually matter in this
  * 	implementation.
  */
-enum direction
+typedef enum direction
 {
-	Deg0,
-	Deg45,
-	Deg90,
-	Deg135,
-	Deg180,
-	Deg225,
-	Deg270,
-	Deg315,
-	Deg360,
-	DegCW,
-	DegCCW
-};
+	DEG_0,
+	DEG_45,
+	DEG_90,
+	DEG_135,
+	DEG_180,
+	DEG_225,
+	DEG_270,
+	DEG_315,
+	DEG_360,
+	DEG_CW,
+	DEG_CCW
+}direction_t;
 
-enum drivetrain_options
+typedef enum drivetrain_options
 {
 	drivetrains_holonomic3
-};
+}drivetrain_options_t;
 
 void initialize_drivetrain(struct motor _motors[],
 						   void *_drivetrain,
-						   uint8_t _drivetrain_type,
+						   drivetrain_options_t _drivetrain_type,
 		   	   	   	   	   uint16_t _wheel_diameter);
 
 void configure_motors(struct motor _motors[]);
@@ -87,6 +87,10 @@ void drive_motor(struct motor *_motor,
 				 uint16_t _pwm_duty,
 				 uint8_t _in_pos,
 				 uint8_t _in_neg);
+
+void set_motor_stopped(struct motor *_motor);
+void set_motor_negative(struct motor *_motor);
+void set_motor_positive(struct motor *_motor);
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty);
 

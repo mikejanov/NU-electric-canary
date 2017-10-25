@@ -9,7 +9,7 @@
 
 void initialize_drivetrain(struct motor _motors[],
 							void *_drivetrain,
-						   	uint8_t _drivetrain_type,
+						   	drivetrain_options_t _drivetrain_type,
 		   	   	   	   	    uint16_t _wheel_diameter)
 {
 	  /**
@@ -86,7 +86,7 @@ void drive_motor(struct motor *_motor,
 	/**
 	 * Update struct values
 	 */
-	_motor->pwm_duty = _pwm_duty;
+	_motor->pwm_duty = _pwm_duty % 100;
 	_motor->in_pos = _in_pos;
 	_motor->in_neg = _in_neg;
 
@@ -119,6 +119,24 @@ void drive_motor(struct motor *_motor,
 	{
 		HAL_GPIO_WritePin(_motor->in_neg_bus, _motor->in_neg_pin, GPIO_PIN_RESET);
 	}
+}
+
+void set_motor_stopped(struct motor *_motor)
+{
+	_motor->in_pos = 0;
+	_motor->in_neg = 0;
+}
+
+void set_motor_negative(struct motor *_motor)
+{
+	_motor->in_pos = 0;
+	_motor->in_neg = 1;
+}
+
+void set_motor_positive(struct motor *_motor)
+{
+	_motor->in_pos = 1;
+	_motor->in_neg = 0;
 }
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)
