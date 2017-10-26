@@ -12,15 +12,27 @@
 
 struct holonomic3
 {
-	struct motor motor[3];		// 3 motor structs used in drive configuration
-
 	uint16_t wheel_diameter;	// Wheel diameter in millimeters
+
+	struct motor *motors[3];	// Array of motor pointers: [0] == front; [1] == right; [2] == left
 };
 
-uint8_t initialize_holonomic3(uint16_t _wheel_diameter, struct holonomic3 *_holonomic3);
+void initialize_holonomic3(uint16_t _wheel_diameter,
+						   void *_drivetrain,
+						   struct motor *_motor_front,
+						   struct motor *_motor_right,
+						   struct motor *_motor_left);
 
-void drive_system_holonomic3(struct holonomic3 *_holonomic3,
+/*
+ * TODO: I have no idea why this is getting angry at direction_t when the implementation side has no issues
+void drive_system_holonomic3(void *_drivetrain,
 							 uint8_t system_speed,
-							 uint8_t direction);
+							 direction_t _direction);
+*/
+
+void drive_motors_holonomic3(void *_drivetrain,
+							 uint16_t pwm1,
+							 uint16_t pwm2,
+							 uint16_t pwm3);
 
 #endif /* HOLONOMIC3_H_ */

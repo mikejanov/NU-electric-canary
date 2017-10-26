@@ -44,11 +44,8 @@
 #include "usart.h"
 #include "gpio.h"
 
-#include "drivetrain.h"
-#include "holonomic3.h"
-
 /* USER CODE BEGIN Includes */
-
+#include "drivetrain.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -102,10 +99,21 @@ int main(void)
   MX_TIM1_Init();
 
   /* USER CODE BEGIN 2 */
-  struct motor motors[3];
-  configure_motors(motors);
+  struct motor motors[NUM_MOTORS_ENABLED];
+  struct holonomic3 holonomic3_system;
 
-  drive_motor_overload(&motors[0], 10, 1, 0);
+  uint16_t wheel_size = 22;
+
+  configure_motors(motors);
+  initialize_drivetrain(motors,
+		  	  	  	  	&holonomic3_system,
+						drivetrains_holonomic3,
+						wheel_size);
+
+  //uint16_t inc_duty_cycle = 0;
+  //drive_motor(&motors[0], 0, 1, 0);
+
+  drive_motors_holonomic3(&holonomic3_system, 25, 50, 75);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -116,6 +124,19 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
 
+	  /*
+	   * Example speed dynamic control
+	   * NOTE: Bug where it is incrementing by the (1, in this case)
+	   * 	during debug just fine, but during continuous runtime,
+	   * 	the PWM output is "jittery" and not smooth updates.
+	   */
+	  /*
+	  if(HAL_GetTick() % 1000 == 0)
+	  {
+		  drive_motor(&motors[0], inc_duty_cycle, 1, 0);
+		  inc_duty_cycle = (inc_duty_cycle + 1) % 100;
+	  }
+		*/
   }
   /* USER CODE END 3 */
 
