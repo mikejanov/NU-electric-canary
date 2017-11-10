@@ -46,6 +46,7 @@
 
 /* USER CODE BEGIN Includes */
 #include "drivetrain.h"
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -114,6 +115,7 @@ int main(void)
   //drive_motor(&motors[0], 0, 1, 0);
 
   drive_motors_holonomic3(&holonomic3_system, 25, 50, 75);
+  char *msg = "G";
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -130,13 +132,12 @@ int main(void)
 	   * 	during debug just fine, but during continuous runtime,
 	   * 	the PWM output is "jittery" and not smooth updates.
 	   */
-	  /*
 	  if(HAL_GetTick() % 1000 == 0)
 	  {
-		  drive_motor(&motors[0], inc_duty_cycle, 1, 0);
-		  inc_duty_cycle = (inc_duty_cycle + 1) % 100;
+		  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+		  //drive_motor(&motors[0], inc_duty_cycle, 1, 0);
+		  //inc_duty_cycle = (inc_duty_cycle + 1) % 100;
 	  }
-		*/
   }
   /* USER CODE END 3 */
 
