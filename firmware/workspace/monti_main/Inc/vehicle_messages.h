@@ -91,4 +91,32 @@ struct message_to_vehicle
  */
 void vehicle_message_initialize(void);
 
+/*
+ * @header
+ * 	Contains configuration options according to the following
+ * 		MSB scheme:
+ * 		(0) -
+ * 		(1) -
+ * 		(2) -
+ * 		(3) -
+ * 		(4) -
+ * 		(5) -
+ * 		(6) -
+ * 		(7) -
+ *  @num_modules
+ *   The number of modules being actively sensed from.
+ *  @drive_type
+ *   Drivetrain type to be used.
+ *  @pod_ids[8]
+ *   Array of pods being used and what is being specifically
+ *   referenced from base station side.
+ */
+struct message_vehicle_config
+{
+	uint8_t header;
+	uint8_t num_modules;
+	uint8_t drive_type;
+	uint8_t pod_ids[8];
+}msg_vehicle_config;
+
 #endif /* VEHICLE_MESSAGES_H_ */
