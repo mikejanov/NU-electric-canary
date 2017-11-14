@@ -115,7 +115,7 @@ int main(void)
   //drive_motor(&motors[0], 0, 1, 0);
 
   drive_motors_holonomic3(&holonomic3_system, 25, 50, 75);
-  char *msg = "G";
+  char *msg = "H"; //\r\n
   /* USER CODE END 2 */
 
   /* Infinite loop */
