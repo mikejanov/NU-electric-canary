@@ -46,6 +46,7 @@
 
 /* USER CODE BEGIN Includes */
 #include "drivetrain.h"
+#include "vehicle_messages.h"
 #include "string.h"
 /* USER CODE END Includes */
 
