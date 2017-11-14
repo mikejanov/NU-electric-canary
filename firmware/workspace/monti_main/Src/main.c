@@ -116,7 +116,7 @@ int main(void)
   //drive_motor(&motors[0], 0, 1, 0);
 
   drive_motors_holonomic3(&holonomic3_system, 25, 50, 75);
-  char *msg = "H"; //\r\n
+  char *msg = "123456\r\n"; //\r\n
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -133,7 +133,7 @@ int main(void)
 	   * 	during debug just fine, but during continuous runtime,
 	   * 	the PWM output is "jittery" and not smooth updates.
 	   */
-	  if(HAL_GetTick() % 1000 == 0)
+	  if(HAL_GetTick() % 200 == 0)
 	  {
 		  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
 		  //drive_motor(&motors[0], inc_duty_cycle, 1, 0);
