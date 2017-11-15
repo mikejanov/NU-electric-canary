@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import monti_msgs.msg as msgs
+import serial
 
 class montiRobot():
 	def __init__(self, name = 'monti/'):
@@ -17,13 +18,19 @@ class montiRobot():
 		rospy.Subscriber(name + 'control_command', msgs.Monti_Control, self.send_monti_control_cb)
 		rospy.Subscriber(name + 'config', msgs.Monti_Config, self.send_monti_config_cb)
 
-		self.set_robot_config()
-		while not rospy.is_shutdown():
-			self.pub_monti_state(5)
+		self.init_comms()
+
+		# self.set_robot_config()
+		# while not rospy.is_shutdown():
+		# 	self.pub_monti_state(5)
 
 	def init_comms(self):
 		#Initialize communication with the Monti ROV
+		ser = serial.Serial('/dev/ttyUSB1', baudrate=9600, parity='E', bytesize=7)
+		ser.write('MontiPython')
 		rospy.loginfo("Successfully connected to the Monti ROV on port A")
+		words = ser.read(11)
+
 
 	def set_robot_config(self):
 		self.present_sensors = input("Please enter the ID numbers of present modules: ")

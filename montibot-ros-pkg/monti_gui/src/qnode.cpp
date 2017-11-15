@@ -41,6 +41,7 @@ QNode::~QNode() {
 }
 
 bool QNode::init() {
+	printf("Hello!\n");
 	ros::init(init_argc,init_argv,"monti_gui");
 	if ( ! ros::master::check() ) {
 		return false;
@@ -86,6 +87,10 @@ void QNode::run() {
 	}
 	std::cout << "Ros shutdown, proceeding to close the gui." << std::endl;
 	Q_EMIT rosShutdown(); // used to signal the gui for a shutdown (useful to roslaunch)
+}
+
+void QNode::log_hello(){
+	ROS_INFO_STREAM("Hello I'm Working!");
 }
 
 
