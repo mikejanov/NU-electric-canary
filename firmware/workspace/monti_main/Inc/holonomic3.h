@@ -24,7 +24,6 @@ void initialize_holonomic3(uint16_t _wheel_diameter,
 						   struct motor *_motor_left);
 
 /*
- * TODO: I have no idea why this is getting angry at direction_t when the implementation side has no issues
 void drive_system_holonomic3(void *_drivetrain,
 							 uint8_t system_speed,
 							 direction_t _direction);

@@ -58,8 +58,8 @@
 #define MSG_TX_BUFFER_SIZE sizeof(msg_from_vehicle)
 #define MSG_RX_BUFFER_SIZE sizeof(msg_vehicle_config)
 
-char msg_rx[MSG_RX_BUFFER_SIZE];
-char msg_tx[MSG_TX_BUFFER_SIZE];
+char msg_rx[MSG_RX_BUFFER_SIZE+1];
+char msg_tx[MSG_TX_BUFFER_SIZE+1];
 uint16_t msg_tx_count = 0;
 uint16_t msg_rx_count = 0;
 /* USER CODE END PV */
@@ -126,11 +126,19 @@ int main(void)
   //uint16_t inc_duty_cycle = 0;
   //drive_motor(&motors[0], 0, 1, 0);
 
+  //drive_system_holonomic3(&holonomic3_system, 50, DEG_CW);
   drive_motors_holonomic3(&holonomic3_system, 25, 50, 75);
+
   HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
 
   //char* msg_fail = "Transmission Failed\r\n";
   //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+
+  msg_from_vehicle.sensors[0] = 1;
+  msg_from_vehicle.sensors[1] = 5;
+  msg_from_vehicle.sensors[2] = 7;
+
+  char *msg_loop = "Hello World";
 
   /* USER CODE END 2 */
 
@@ -160,6 +168,7 @@ int main(void)
 
 		  //strcpy(msg_tx, msg_tx);
 		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_loop, strlen(msg_loop), 0xFFFF);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
 		  //HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_loop, strlen(msg_loop));
 		  //HAL_UART_Transmit(&huart2, huart2.pRxBuffPtr, MSG_BUFFER_SIZE, 0xFFFF);
 		  /*
@@ -261,13 +270,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
 
-		assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
-		HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE);
+		//assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
+		//HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE);
+
+
 		//HAL_UART_Receive_IT(&huart2, (uint8_t*)msg_tx, strlen(msg_rx));
 
 		//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
 
-		//HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
+		HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
 	}
 }
 /* USER CODE END 4 */

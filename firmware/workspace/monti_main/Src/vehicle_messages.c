@@ -44,6 +44,4 @@ void assemble_message_from_vehicle(char* message, uint16_t buf_size)
 		tempChar = (char)(msg_from_vehicle.sensors[ii] >> 8);
 		strcat(message, &tempChar);
 	}
-
-	strcat(message, "\r\n");
 }
