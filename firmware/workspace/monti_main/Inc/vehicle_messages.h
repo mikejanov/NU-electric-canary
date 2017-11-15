@@ -10,6 +10,10 @@
 
 #include "drivetrain.h"
 
+#define NUM_TOTAL_ENCODER_VALUES	6
+#define NUM_TOTAL_ACCEL_AXIS		4
+#define NUM_TOTAL_DIGITAL_SENSORS	16
+
 /*
  * @header
  * 	Contains configuration options according to the following
@@ -48,10 +52,12 @@ struct message_from_vehicle
 {
 	uint8_t header;
 	uint8_t error;
-	uint8_t encoders[6];
-	uint16_t accelerometer[4];
-	uint8_t sensors[16];
+	uint8_t encoders[NUM_TOTAL_ENCODER_VALUES];
+	uint16_t accelerometer[NUM_TOTAL_ACCEL_AXIS];
+	uint8_t sensors[NUM_TOTAL_DIGITAL_SENSORS];
 }msg_from_vehicle;
+
+void assemble_message_from_vehicle(char* message, uint16_t buf_size);
 
 /*
  * @header

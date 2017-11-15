@@ -39,6 +39,7 @@
 #include "main.h"
 #include "stm32f3xx_hal.h"
 #include "adc.h"
+#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -54,7 +55,13 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+#define MSG_TX_BUFFER_SIZE sizeof(msg_from_vehicle)
+#define MSG_RX_BUFFER_SIZE sizeof(msg_vehicle_config)
 
+char msg_rx[MSG_RX_BUFFER_SIZE];
+char msg_tx[MSG_TX_BUFFER_SIZE];
+uint16_t msg_tx_count = 0;
+uint16_t msg_rx_count = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,6 +101,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
   MX_USART2_UART_Init();
@@ -101,6 +109,9 @@ int main(void)
   MX_TIM1_Init();
 
   /* USER CODE BEGIN 2 */
+  __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
+  HAL_NVIC_EnableIRQ(USART2_IRQn);
+
   struct motor motors[NUM_MOTORS_ENABLED];
   struct holonomic3 holonomic3_system;
 
@@ -116,7 +127,11 @@ int main(void)
   //drive_motor(&motors[0], 0, 1, 0);
 
   drive_motors_holonomic3(&holonomic3_system, 25, 50, 75);
-  char *msg = "123456\r\n"; //\r\n
+  HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
+
+  //char* msg_fail = "Transmission Failed\r\n";
+  //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -126,6 +141,8 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+	  // Constantly polls for new information to fill the rx buffer
+	  HAL_UART_Receive_IT(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE); //MSG_BUFFER_SIZE
 
 	  /*
 	   * Example speed dynamic control
@@ -133,9 +150,32 @@ int main(void)
 	   * 	during debug just fine, but during continuous runtime,
 	   * 	the PWM output is "jittery" and not smooth updates.
 	   */
-	  if(HAL_GetTick() % 200 == 0)
+	  if(HAL_GetTick() % 1000 == 0)
 	  {
-		  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+		  //assemble_message_from_vehicle(msg_tx, MSG_BUFFER_SIZE);
+		  //HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_tx, MSG_BUFFER_SIZE);
+		  //HAL_UART_Receive_IT(&huart2, (uint8_t*)msg_tx, strlen(msg_rx));
+
+
+
+		  //strcpy(msg_tx, msg_tx);
+		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_loop, strlen(msg_loop), 0xFFFF);
+		  //HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_loop, strlen(msg_loop));
+		  //HAL_UART_Transmit(&huart2, huart2.pRxBuffPtr, MSG_BUFFER_SIZE, 0xFFFF);
+		  /*
+		  if(HAL_UART_Transmit(&huart2, fs, huart2.RxXferSize, 0xFFFF) != HAL_OK)
+		  {
+			  HAL_UART_Transmit(&huart2, (uint8_t*)msg_fail, strlen(msg_fail), 0xFFFF);
+		  }
+		  */
+		  //huart2.RxXferSize
+		  /*
+		  if(HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, strlen(msg_rx), 10)!= HAL_OK)
+		  {
+		    Error_Handler();
+		  }
+		  */
+		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, strlen(msg_tx), 0xFFFF);
 		  //drive_motor(&motors[0], inc_duty_cycle, 1, 0);
 		  //inc_duty_cycle = (inc_duty_cycle + 1) % 100;
 	  }
@@ -207,7 +247,29 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == huart2.Instance)
+	{
 
+	}
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == huart2.Instance)
+	{
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+
+		assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
+		HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE);
+		//HAL_UART_Receive_IT(&huart2, (uint8_t*)msg_tx, strlen(msg_rx));
+
+		//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+
+		//HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
+	}
+}
 /* USER CODE END 4 */
 
 /**
@@ -219,9 +281,10 @@ void _Error_Handler(char * file, int line)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
-  while(1) 
+  while (1)
   {
-  }
+
+  };
   /* USER CODE END Error_Handler_Debug */ 
 }
 
