@@ -131,10 +131,6 @@ int main(void)
   //char* msg_fail = "Transmission Failed\r\n";
   //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
 
-  msg_from_vehicle.sensors[0] = 1;
-  msg_from_vehicle.sensors[1] = 5;
-  msg_from_vehicle.sensors[2] = 7;
-
   char *msg_loop = "Hello World";
 
   /* USER CODE END 2 */

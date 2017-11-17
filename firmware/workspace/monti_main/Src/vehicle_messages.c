@@ -17,9 +17,52 @@ void message_error_handler(char message[], char error_id)
 	}
 }
 
-uint8_t vehicle_message_initialize(void)
+uint8_t vehicle_message_receive(char message[])
 {
-	// Header initialization (# modules, drivetrain type, ids of modules)
+	// Read header and perform operation
+	switch (message[0])
+	{
+	case(MSG_HEADER_CONFIG):
+		vehicle_message_parse_config(message);
+		break;
+	case(MSG_HEADER_COMMAND):
+		vehicle_message_parse_command(message);
+		break;
+	default:
+		message_error_handler(message, ERROR_MSG_HEADER);
+		return 1;
+	}
+
+	return 0;
+}
+
+uint8_t vehicle_message_parse_config(char message[])
+{
+	uint16_t ii_message = 0;
+
+	// Store the message into the struct
+	msg_vehicle_config.header = message[ii_message++];
+	msg_vehicle_config.num_modules = message[ii_message++];
+	msg_vehicle_config.drive_type = message[ii_message++];
+
+	for(int ii = 0; ii < NUM_MAX_PODS; ii++)
+	{
+		msg_vehicle_config.pod_ids[ii] = message[ii_message++];
+	}
+
+	return 0;
+}
+
+uint8_t vehicle_message_parse_command(char message[])
+{
+	uint16_t ii_message = 0;
+
+	// Store the message into the struct
+	msg_to_vehicle.header = (uint8_t)message[ii_message++];
+	msg_to_vehicle.direction = (direction_t)message[ii_message++];
+	msg_to_vehicle.throttle = (uint8_t)message[ii_message++];
+	msg_to_vehicle.actuation_time = (uint8_t)message[ii_message++];
+
 	return 0;
 }
 
@@ -30,6 +73,8 @@ uint8_t assemble_message_from_vehicle(char message[], uint16_t buf_size)
 	{
 		message_error_handler(message, ERROR_MSG_SIZE);
 		return 1;
+	}else{
+		message[MSG_ERROR_INDEX] = '\0';
 	}
 
 	// Initialize the counter
@@ -52,7 +97,7 @@ uint8_t assemble_message_from_vehicle(char message[], uint16_t buf_size)
 
 	for(int ii = 0; ii < NUM_TOTAL_DIGITAL_SENSORS; ii++)
 	{
-		message[ii_message++] = 'c'; //(char)(msg_from_vehicle.sensors[ii])
+		message[ii_message++] = (char)(msg_from_vehicle.sensors[ii]);
 	}
 
 	// Fill the remainder of the message with NULL characters

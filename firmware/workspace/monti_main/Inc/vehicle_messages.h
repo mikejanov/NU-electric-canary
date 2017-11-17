@@ -14,13 +14,17 @@
 #define NUM_TOTAL_ENCODER_VALUES	6
 #define NUM_TOTAL_ACCEL_AXIS		4
 #define NUM_TOTAL_DIGITAL_SENSORS	16
+#define NUM_MAX_PODS				8
 
 #define MSG_TX_BUFFER_SIZE sizeof(msg_from_vehicle)
 #define MSG_RX_BUFFER_SIZE sizeof(msg_vehicle_config)
 
-#define ERROR_MSG_SIZE 0x01
+#define MSG_ERROR_INDEX			1
+#define ERROR_MSG_SIZE		0x01
+#define	ERROR_MSG_HEADER	0x02
 
-void message_error_handler(char message[], char error_id);
+#define MSG_HEADER_CONFIG	0x01
+#define MSG_HEADER_COMMAND	0x02
 
 /*
  * @header
@@ -65,8 +69,6 @@ struct message_from_vehicle
 	uint8_t sensors[NUM_TOTAL_DIGITAL_SENSORS];
 }msg_from_vehicle;
 
-uint8_t assemble_message_from_vehicle(char message[], uint16_t buf_size);
-
 /*
  * @header
  * 	Contains configuration options according to the following
@@ -98,13 +100,6 @@ struct message_to_vehicle
 	uint8_t actuation_time;
 }msg_to_vehicle;
 
-/**
- * Called on UART RX callback with a message to change the current
- *  vehicle configuration. Always uses the msg_to_vehicle register
- *  table.
- */
-uint8_t vehicle_message_initialize(void);
-
 /*
  * @header
  * 	Contains configuration options according to the following
@@ -130,7 +125,23 @@ struct message_vehicle_config
 	uint8_t header;
 	uint8_t num_modules;
 	uint8_t drive_type;
-	uint8_t pod_ids[8];
+	uint8_t pod_ids[NUM_MAX_PODS];
 }msg_vehicle_config;
+
+
+/**
+ * Called on UART RX callback. Determines which message type is being received.
+ */
+uint8_t vehicle_message_receive(char message[]);
+uint8_t vehicle_message_parse_config(char message[]);
+uint8_t vehicle_message_parse_command(char message[]);
+
+uint8_t assemble_message_from_vehicle(char message[], uint16_t buf_size);
+
+/**
+ * Changes the message to all NULL except for the error message
+ * TODO: The error isn't actually saved in the struct, it's just transmitted in the message.
+ */
+void message_error_handler(char message[], char error_id);
 
 #endif /* VEHICLE_MESSAGES_H_ */
