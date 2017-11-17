@@ -55,11 +55,8 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
-#define MSG_TX_BUFFER_SIZE sizeof(msg_from_vehicle)
-#define MSG_RX_BUFFER_SIZE sizeof(msg_vehicle_config)
-
-char msg_rx[MSG_RX_BUFFER_SIZE+1];
-char msg_tx[MSG_TX_BUFFER_SIZE+1];
+char msg_rx[MSG_TX_BUFFER_SIZE];
+char msg_tx[MSG_TX_BUFFER_SIZE];
 uint16_t msg_tx_count = 0;
 uint16_t msg_rx_count = 0;
 /* USER CODE END PV */
@@ -160,15 +157,12 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 1000 == 0)
 	  {
-		  //assemble_message_from_vehicle(msg_tx, MSG_BUFFER_SIZE);
-		  //HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_tx, MSG_BUFFER_SIZE);
-		  //HAL_UART_Receive_IT(&huart2, (uint8_t*)msg_tx, strlen(msg_rx));
-
-
+		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
 
 		  //strcpy(msg_tx, msg_tx);
 		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_loop, strlen(msg_loop), 0xFFFF);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
+		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
 		  //HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_loop, strlen(msg_loop));
 		  //HAL_UART_Transmit(&huart2, huart2.pRxBuffPtr, MSG_BUFFER_SIZE, 0xFFFF);
 		  /*

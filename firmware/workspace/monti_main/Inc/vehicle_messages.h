@@ -9,10 +9,18 @@
 #define VEHICLE_MESSAGES_H_
 
 #include "drivetrain.h"
+#include "string.h"
 
 #define NUM_TOTAL_ENCODER_VALUES	6
 #define NUM_TOTAL_ACCEL_AXIS		4
 #define NUM_TOTAL_DIGITAL_SENSORS	16
+
+#define MSG_TX_BUFFER_SIZE sizeof(msg_from_vehicle)
+#define MSG_RX_BUFFER_SIZE sizeof(msg_vehicle_config)
+
+#define ERROR_MSG_SIZE 0x01
+
+void message_error_handler(char message[], char error_id);
 
 /*
  * @header
@@ -57,7 +65,7 @@ struct message_from_vehicle
 	uint8_t sensors[NUM_TOTAL_DIGITAL_SENSORS];
 }msg_from_vehicle;
 
-void assemble_message_from_vehicle(char* message, uint16_t buf_size);
+uint8_t assemble_message_from_vehicle(char message[], uint16_t buf_size);
 
 /*
  * @header
@@ -95,7 +103,7 @@ struct message_to_vehicle
  *  vehicle configuration. Always uses the msg_to_vehicle register
  *  table.
  */
-void vehicle_message_initialize(void);
+uint8_t vehicle_message_initialize(void);
 
 /*
  * @header
