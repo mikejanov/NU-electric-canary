@@ -46,12 +46,12 @@
 
 /* Private define ------------------------------------------------------------*/
 
-#define MOTOR_A_PWM_Pin GPIO_PIN_0
-#define MOTOR_A_PWM_GPIO_Port GPIOC
 #define MOTOR_B_PWM_Pin GPIO_PIN_1
 #define MOTOR_B_PWM_GPIO_Port GPIOC
 #define MOTOR_C_PWM_Pin GPIO_PIN_2
 #define MOTOR_C_PWM_GPIO_Port GPIOC
+#define MOTOR_A_PWM_Pin GPIO_PIN_3
+#define MOTOR_A_PWM_GPIO_Port GPIOC
 #define AIN_0_Pin GPIO_PIN_4
 #define AIN_0_GPIO_Port GPIOA
 #define AIN_1_Pin GPIO_PIN_5

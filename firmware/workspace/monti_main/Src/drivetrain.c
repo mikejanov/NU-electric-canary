@@ -31,7 +31,7 @@ void configure_motors(struct motor _motors[])
 	  _motors[0].enc_b_bus = MOTOR_A_ENC_B_GPIO_Port;
 	  _motors[0].enc_b_pin = MOTOR_A_ENC_B_Pin;
 	  _motors[0].pwm_duty_base = &htim1;
-	  _motors[0].pwm_duty_channel = TIM_CHANNEL_1;
+	  _motors[0].pwm_duty_channel = TIM_CHANNEL_4;
 	  _motors[0].in_pos_bus = MOTOR_A_POS_GPIO_Port;
 	  _motors[0].in_pos_pin = MOTOR_A_POS_Pin;
 	  _motors[0].in_neg_bus = MOTOR_A_NEG_GPIO_Port;

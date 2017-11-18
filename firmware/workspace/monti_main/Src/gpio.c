@@ -78,8 +78,10 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, MOTOR_C_POS_Pin|MOTOR_C_NEG_Pin, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PCPin PCPin PCPin PCPin */
-  GPIO_InitStruct.Pin = DIN_0_Pin|DIN_1_Pin|DIN_6_Pin|MOTOR_B_ENC_A_Pin;
+  /*Configure GPIO pins : PC0 PCPin PCPin PCPin 
+                           PCPin */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|DIN_0_Pin|DIN_1_Pin|DIN_6_Pin 
+                          |MOTOR_B_ENC_A_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);

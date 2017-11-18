@@ -123,15 +123,15 @@ int main(void)
   //uint16_t inc_duty_cycle = 0;
   //drive_motor(&motors[0], 0, 1, 0);
 
-  //drive_system_holonomic3(&holonomic3_system, 50, DEG_CW);
-  drive_motors_holonomic3(&holonomic3_system, 25, 50, 75);
+  drive_system_holonomic3(&holonomic3_system, 50, DEG_CW);
+  //drive_motors_holonomic3(&holonomic3_system, 10, 10, 10);
 
   HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
 
   //char* msg_fail = "Transmission Failed\r\n";
   //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
 
-  char *msg_loop = "Hello World";
+  //char *msg_loop = "Hello World";
 
   /* USER CODE END 2 */
 
