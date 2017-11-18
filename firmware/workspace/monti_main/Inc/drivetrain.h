@@ -87,10 +87,13 @@ void drive_motor(struct motor *_motor,
 				 uint16_t _pwm_duty,
 				 uint8_t _in_pos,
 				 uint8_t _in_neg);
+void drive_motor_struct(struct motor *_motor);
 
 void set_motor_stopped(struct motor *_motor);
 void set_motor_negative(struct motor *_motor);
 void set_motor_positive(struct motor *_motor);
+
+void throttle_motor(uint8_t _throttle, struct motor *_motor);
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty);
 

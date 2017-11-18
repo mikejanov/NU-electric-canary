@@ -99,8 +99,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_I2C1_Init();
-  MX_I2C2_Init();
+//  MX_I2C1_Init();
+//  MX_I2C2_Init();
   MX_USART2_UART_Init();
   MX_ADC2_Init();
   MX_TIM1_Init();
@@ -123,7 +123,7 @@ int main(void)
   //uint16_t inc_duty_cycle = 0;
   //drive_motor(&motors[0], 0, 1, 0);
 
-  drive_system_holonomic3(&holonomic3_system, 50, DEG_CW);
+  drive_system_holonomic3(&holonomic3_system, 0, DEG_CW);
   //drive_motors_holonomic3(&holonomic3_system, 10, 10, 10);
 
   HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);

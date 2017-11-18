@@ -20,12 +20,6 @@ void initialize_holonomic3(uint16_t _wheel_diameter,
 	this_drivetrain->motors[0] = _motor_front;
 	this_drivetrain->motors[1] = _motor_right;
 	this_drivetrain->motors[2] = _motor_left;
-
-	/*
-	this_drivetrain->motor_front = _motor_front;
-	this_drivetrain->motor_right = _motor_right;
-	this_drivetrain->motor_left = _motor_left;
-	*/
 }
 
 void drive_system_holonomic3(void *_drivetrain,
@@ -33,7 +27,6 @@ void drive_system_holonomic3(void *_drivetrain,
 							 direction_t _direction)
 {
 	struct holonomic3 *this_drivetrain = (struct holonomic3*)_drivetrain;
-	uint16_t motor_pwm[3];
 
 	/**
 	 * Set parameters before driving motors
@@ -42,94 +35,79 @@ void drive_system_holonomic3(void *_drivetrain,
 	 * 	However, we felt it was more readable to explicitly name what each directionality was in each
 	 * 	option for movement instead.
 	 *
-	 * 	TODO: PWM speeds are placeholder, but proportionally roughly accurate
+	 * 	TODO: PWM speeds have a max of 99. 100 breaks it.
 	 */
 
 	// Forward or backward
 	if((_direction == DEG_0) || (_direction == DEG_180))
 	{
-		// Set directionality
-		// 	0 = {stop}
-		//	1 = POS
-		//	2 = POS / NEG
 		set_motor_stopped(this_drivetrain->motors[0]);
-		set_motor_positive(this_drivetrain->motors[1]);
 		if(_direction == DEG_0)
 		{
+			set_motor_negative(this_drivetrain->motors[1]);
 			set_motor_positive(this_drivetrain->motors[2]);
 		}
-		else
+		if(_direction == DEG_180)
 		{
+			set_motor_positive(this_drivetrain->motors[1]);
 			set_motor_negative(this_drivetrain->motors[2]);
 		}
 
 		// Set speed
-		motor_pwm[0] = 0;
-		motor_pwm[1] = 100;
-		motor_pwm[2] = 100;
+		this_drivetrain->motors[0]->pwm_duty = 0;
+		this_drivetrain->motors[1]->pwm_duty = 99;
+		this_drivetrain->motors[2]->pwm_duty = 99;
 	}
 	// Right-side angles
 	else if((_direction == DEG_45) || (_direction == DEG_135))
 	{
-		// Set directionality
-		// 	0 = POS
-		//	1 = NEG / POS
-		//	2 = POS / NEG
 		set_motor_positive(this_drivetrain->motors[0]);
 		if(_direction == DEG_45)
 		{
 			set_motor_negative(this_drivetrain->motors[1]);
-			set_motor_positive(this_drivetrain->motors[2]);
+			set_motor_negative(this_drivetrain->motors[2]);
 		}
-		else
+		if(_direction == DEG_135)
 		{
 			set_motor_positive(this_drivetrain->motors[1]);
 			set_motor_negative(this_drivetrain->motors[2]);
 		}
 
 		// Set speed
-		motor_pwm[0] = 100;
-		motor_pwm[1] = 100;
-		motor_pwm[2] = 45;
+		this_drivetrain->motors[0]->pwm_duty = 99;
+		this_drivetrain->motors[1]->pwm_duty = 99;
+		this_drivetrain->motors[2]->pwm_duty = 45;
 	}
 	// Left-side angles
 	else if((_direction == DEG_225) || (_direction == DEG_315))
 	{
-		// Set directionality
-		// 	0 = NEG
-		//	1 = POS / NEG
-		//	2 = NEG / POS
 		set_motor_negative(this_drivetrain->motors[0]);
 		if(_direction == DEG_225)
+		{
+			set_motor_negative(this_drivetrain->motors[1]);
+			set_motor_positive(this_drivetrain->motors[2]);
+		}
+		if(_direction == DEG_315)
 		{
 			set_motor_positive(this_drivetrain->motors[1]);
 			set_motor_negative(this_drivetrain->motors[2]);
 		}
-		else
-		{
-			set_motor_negative(this_drivetrain->motors[1]);
-			set_motor_positive(this_drivetrain->motors[2]);
-		}
 
 		// Set speed
-		motor_pwm[0] = 100;
-		motor_pwm[1] = 45;
-		motor_pwm[2] = 100;
+		this_drivetrain->motors[0]->pwm_duty = 99;
+		this_drivetrain->motors[1]->pwm_duty = 45;
+		this_drivetrain->motors[2]->pwm_duty = 99;
 	}
 	// Parallel strafing
 	else if((_direction == DEG_90) || (_direction == DEG_270))
 	{
-		// Set directionality
-		// 	0 = POS / NEG
-		//	1 = NEG / POS
-		//	2 = POS / NEG
 		if(_direction == DEG_90)
 		{
 			set_motor_positive(this_drivetrain->motors[0]);
 			set_motor_negative(this_drivetrain->motors[1]);
-			set_motor_positive(this_drivetrain->motors[2]);
+			set_motor_negative(this_drivetrain->motors[2]);
 		}
-		else
+		if(_direction == DEG_270)
 		{
 			set_motor_negative(this_drivetrain->motors[0]);
 			set_motor_positive(this_drivetrain->motors[1]);
@@ -137,9 +115,9 @@ void drive_system_holonomic3(void *_drivetrain,
 		}
 
 		// Set speed
-		motor_pwm[0] = 100;
-		motor_pwm[1] = 42;
-		motor_pwm[2] = 42;
+		this_drivetrain->motors[0]->pwm_duty = 99;
+		this_drivetrain->motors[1]->pwm_duty = 42;
+		this_drivetrain->motors[2]->pwm_duty = 42;
 	}
 	else if(_direction == DEG_CW)
 	{
@@ -152,9 +130,9 @@ void drive_system_holonomic3(void *_drivetrain,
 		set_motor_positive(this_drivetrain->motors[2]);
 
 		// Set speed
-		motor_pwm[0] = 100;
-		motor_pwm[1] = 100;
-		motor_pwm[2] = 100;
+		this_drivetrain->motors[0]->pwm_duty = 99;
+		this_drivetrain->motors[1]->pwm_duty = 99;
+		this_drivetrain->motors[2]->pwm_duty = 99;
 	}
 	else if(_direction == DEG_CCW)
 	{
@@ -167,20 +145,20 @@ void drive_system_holonomic3(void *_drivetrain,
 		set_motor_negative(this_drivetrain->motors[2]);
 
 		// Set speed
-		motor_pwm[0] = 100;
-		motor_pwm[1] = 100;
-		motor_pwm[2] = 100;
+		this_drivetrain->motors[0]->pwm_duty = 99;
+		this_drivetrain->motors[1]->pwm_duty = 99;
+		this_drivetrain->motors[2]->pwm_duty = 99;
 	}
 	else
 	{
 		// Do nothing
 	}
 
-	// Finally, drive the motors
+	// Finally, throttle and drive the motors
 	for(int imotor = 0; imotor < 3; imotor ++)
 	{
-		drive_motor(this_drivetrain->motors[imotor], motor_pwm[imotor],
-					this_drivetrain->motors[imotor]->in_pos, this_drivetrain->motors[imotor]->in_neg);
+		throttle_motor(_system_speed, this_drivetrain->motors[imotor]);
+		drive_motor_struct(this_drivetrain->motors[imotor]);
 	}
 }
 

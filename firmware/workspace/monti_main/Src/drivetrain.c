@@ -121,6 +121,12 @@ void drive_motor(struct motor *_motor,
 	}
 }
 
+void drive_motor_struct(struct motor *_motor)
+{
+	drive_motor(_motor, _motor->pwm_duty,
+				_motor->in_pos, _motor->in_neg);
+}
+
 void set_motor_stopped(struct motor *_motor)
 {
 	_motor->in_pos = 0;
@@ -129,14 +135,19 @@ void set_motor_stopped(struct motor *_motor)
 
 void set_motor_negative(struct motor *_motor)
 {
-	_motor->in_pos = 0;
-	_motor->in_neg = 1;
+	_motor->in_pos = 1;
+	_motor->in_neg = 0;
 }
 
 void set_motor_positive(struct motor *_motor)
 {
-	_motor->in_pos = 1;
-	_motor->in_neg = 0;
+	_motor->in_pos = 0;
+	_motor->in_neg = 1;
+}
+
+void throttle_motor(uint8_t _throttle, struct motor *_motor)
+{
+	_motor->pwm_duty = (uint8_t)(_motor->pwm_duty * _throttle / 100);
 }
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)
