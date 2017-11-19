@@ -59,6 +59,10 @@ char msg_rx[MSG_TX_BUFFER_SIZE];
 char msg_tx[MSG_TX_BUFFER_SIZE];
 uint16_t msg_tx_count = 0;
 uint16_t msg_rx_count = 0;
+uint8_t msg_rx_type = MSG_HEADER_CONFIG;
+
+struct motor motors[NUM_MOTORS_ENABLED];
+struct holonomic3 holonomic3_system;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -109,9 +113,6 @@ int main(void)
   __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
   HAL_NVIC_EnableIRQ(USART2_IRQn);
 
-  struct motor motors[NUM_MOTORS_ENABLED];
-  struct holonomic3 holonomic3_system;
-
   uint16_t wheel_size = 22;
 
   configure_motors(motors);
@@ -153,8 +154,8 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 1000 == 0)
 	  {
-		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
-		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
+//		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
+//		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
 
 		  //strcpy(msg_tx, msg_tx);
 		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_loop, strlen(msg_loop), 0xFFFF);
@@ -258,17 +259,23 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == huart2.Instance)
 	{
-		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
+		msg_rx_type = vehicle_message_receive(msg_rx);
+		//HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
 
-		//assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
-		//HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE);
-
-
-		//HAL_UART_Receive_IT(&huart2, (uint8_t*)msg_tx, strlen(msg_rx));
-
-		//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
-
-		HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
+		switch(msg_rx_type)
+		{
+		case MSG_HEADER_CONFIG:
+			// TODO
+			break;
+		case MSG_HEADER_COMMAND:
+			drive_system_holonomic3(&holonomic3_system,
+									msg_to_vehicle.throttle,
+									msg_to_vehicle.direction);
+			break;
+		default:
+			// Nothing
+			break;
+		}
 	}
 }
 /* USER CODE END 4 */

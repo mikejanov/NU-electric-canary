@@ -30,8 +30,8 @@
  * @header
  * 	Contains configuration options according to the following
  * 		MSB scheme:
- * 		(0) -
- * 		(1) -
+ * 		(0) - Config
+ * 		(1) - Command
  * 		(2) -
  * 		(3) -
  * 		(4) -
@@ -41,8 +41,8 @@
  * @error
  * 	Error messages are bit-by-bit according to the following
  * 		MSB scheme:
- * 		(0) -
- * 		(1) -
+ * 		(0) - Buffer too small
+ * 		(1) - Unknown header
  * 		(2) -
  * 		(3) -
  * 		(4) -
@@ -73,8 +73,8 @@ struct message_from_vehicle
  * @header
  * 	Contains configuration options according to the following
  * 		MSB scheme:
- * 		(0) -
- * 		(1) -
+ * 		(0) - Config
+ * 		(1) - Command
  * 		(2) -
  * 		(3) -
  * 		(4) -

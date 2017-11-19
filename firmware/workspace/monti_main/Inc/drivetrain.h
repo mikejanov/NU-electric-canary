@@ -56,17 +56,17 @@ struct motor
  */
 typedef enum direction
 {
-	DEG_0,
-	DEG_45,
-	DEG_90,
-	DEG_135,
-	DEG_180,
-	DEG_225,
-	DEG_270,
-	DEG_315,
-	DEG_360,
-	DEG_CW,
-	DEG_CCW
+	DEG_0	= 0,
+	DEG_45 	= 1,
+	DEG_90	= 2,
+	DEG_135 = 3,
+	DEG_180 = 4,
+	DEG_225 = 5,
+	DEG_270 = 6,
+	DEG_315 = 7,
+	DEG_360 = 8,
+	DEG_CW	= 9,
+	DEG_CCW	= 10
 }direction_t;
 
 typedef enum drivetrain_options

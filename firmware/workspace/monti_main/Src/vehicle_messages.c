@@ -24,16 +24,14 @@ uint8_t vehicle_message_receive(char message[])
 	{
 	case(MSG_HEADER_CONFIG):
 		vehicle_message_parse_config(message);
-		break;
+		return MSG_HEADER_CONFIG;
 	case(MSG_HEADER_COMMAND):
 		vehicle_message_parse_command(message);
-		break;
+		return MSG_HEADER_COMMAND;
 	default:
 		message_error_handler(message, ERROR_MSG_HEADER);
 		return 1;
 	}
-
-	return 0;
 }
 
 uint8_t vehicle_message_parse_config(char message[])
