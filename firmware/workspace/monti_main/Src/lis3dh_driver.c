@@ -39,14 +39,14 @@
 * Output		: Data Read
 * Return		: None
 *******************************************************************************/
-u8_t LIS3DH_ReadReg(u8_t Reg, u8_t* Data) {
+u8_t LIS3DH_ReadReg(u8_t Reg, u8_t *Data) {
   HAL_StatusTypeDef rslt;
 
   // Send just the addr after slave id
-  rslt = HAL_I2C_Master_Transmit(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, &Reg, sizeof(Reg), 1000);
+  rslt = HAL_I2C_Master_Transmit_IT(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, &Reg, sizeof(Reg));
 
   // Begin to read from I2C for length of Data
-  rslt = HAL_I2C_Master_Receive(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, Data, sizeof(Data), 1000);
+  rslt = HAL_I2C_Master_Receive_IT(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, Data, sizeof(Data));
 
   if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
 	  rslt = MEMS_ERROR;
@@ -70,7 +70,7 @@ u8_t LIS3DH_WriteReg(u8_t WriteAddr, u8_t Data) {
   HAL_StatusTypeDef rslt;
 
   // Send Data to WriteAddr
-  rslt = HAL_I2C_Master_Transmit(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, &WriteAddr, sizeof(Data), 1000);
+  rslt = HAL_I2C_Master_Transmit_IT(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, &WriteAddr, sizeof(Data));
 
   if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
 	  rslt = MEMS_ERROR;

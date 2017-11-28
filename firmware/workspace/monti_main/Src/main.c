@@ -84,7 +84,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	AxesRaw_t data;
+	// AxesRaw_t data;
+	uint8_t data_2;
 	LIS3DH_Monti_Init();
 
   /* USER CODE END 1 */
@@ -143,9 +144,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint8_t addr = 0x0F;
   while (1)
   {
-	  LIS3DH_GetAccAxesRaw(&data);
+	  LIS3DH_ReadReg(addr, &data_2);
+	  HAL_Delay(100);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
