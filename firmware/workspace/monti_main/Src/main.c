@@ -103,8 +103,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-//  MX_I2C1_Init();
-//  MX_I2C2_Init();
+  MX_I2C1_Init();
+  MX_I2C2_Init();
   MX_USART2_UART_Init();
   MX_ADC2_Init();
   MX_TIM1_Init();
@@ -124,7 +124,7 @@ int main(void)
   //uint16_t inc_duty_cycle = 0;
   //drive_motor(&motors[0], 0, 1, 0);
 
-  drive_system_holonomic3(&holonomic3_system, 0, DEG_CW);
+  drive_system_holonomic3(&holonomic3_system, 0, DEG_0);
   //drive_motors_holonomic3(&holonomic3_system, 10, 10, 10);
 
   HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
@@ -154,8 +154,8 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 1000 == 0)
 	  {
-//		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
-//		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
+		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
+		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
 
 		  //strcpy(msg_tx, msg_tx);
 		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_loop, strlen(msg_loop), 0xFFFF);
@@ -247,6 +247,9 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+/**
+ * UART Callbacks
+ */
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == huart2.Instance)
@@ -276,6 +279,37 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			// Nothing
 			break;
 		}
+	}
+}
+
+/**
+ * GPIO Callbacks
+ */
+#define MOTOR_A_ENC_A_Pin	13
+#define MOTOR_A_ENC_B_Pin	5
+#define MOTOR_B_ENC_A_Pin	12
+#define MOTOR_B_ENC_B_Pin	2
+#define MOTOR_C_ENC_A_Pin	11
+//MOTOR_C_ENC_B_Pin currently on 12, which is no good. Uses a Systick interrupt instead
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	switch(GPIO_Pin)
+	{
+	case MOTOR_A_ENC_A_Pin:
+
+		break;
+	case MOTOR_A_ENC_B_Pin:
+
+		break;
+	case MOTOR_B_ENC_A_Pin:
+
+		break;
+	case MOTOR_B_ENC_B_Pin:
+
+		break;
+	case MOTOR_C_ENC_A_Pin:
+
+		break;
 	}
 }
 /* USER CODE END 4 */
