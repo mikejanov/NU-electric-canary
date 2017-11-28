@@ -84,7 +84,7 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	AxesRaw_t data;
+	uint8_t data[2];
 	LIS3DH_Monti_Init();
 
   /* USER CODE END 1 */
@@ -108,7 +108,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  // MX_I2C1_Init();
+  MX_I2C1_Init();
   MX_I2C2_Init();
   MX_USART2_UART_Init();
   MX_ADC2_Init();
@@ -138,14 +138,23 @@ int main(void)
   //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
 
   //char *msg_loop = "Hello World";
-
+  uint8_t addr[] = {0x2E, 0x40};
+  uint8_t addr_2 = 0x28;
+  uint8_t config_addr = 0x2E;
+  uint8_t config_data = 0x40;
+  HAL_I2C_Master_Transmit(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, &addr, sizeof(addr), 1000);
+  HAL_Delay(1000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  LIS3DH_GetAccAxesRaw(&data);
+	  LIS3DH_WriteReg(config_addr, config_data);
+	  // HAL_I2C_Master_Transmit(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, &addr_2, sizeof(addr_2), 1000);
+	  // HAL_I2C_Master_Receive(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, &data, sizeof(data), 1000);
+	  // LIS3DH_ReadReg(addr,&data);
+	  HAL_Delay(1000);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */

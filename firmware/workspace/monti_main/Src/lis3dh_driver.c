@@ -43,10 +43,10 @@ u8_t LIS3DH_ReadReg(u8_t Reg, u8_t* Data) {
   HAL_StatusTypeDef rslt;
 
   // Send just the addr after slave id
-  rslt = HAL_I2C_Master_Transmit(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, &Reg, sizeof(Reg), 1000);
+  rslt = HAL_I2C_Master_Transmit(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, &Reg, sizeof(Reg), 1000);
 
   // Begin to read from I2C for length of Data
-  rslt = HAL_I2C_Master_Receive(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, Data, sizeof(Data), 1000);
+  rslt = HAL_I2C_Master_Receive(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, Data, sizeof(Data), 1000);
 
   if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
 	  rslt = MEMS_ERROR;
@@ -68,9 +68,9 @@ u8_t LIS3DH_ReadReg(u8_t Reg, u8_t* Data) {
 *******************************************************************************/
 u8_t LIS3DH_WriteReg(u8_t WriteAddr, u8_t Data) {
   HAL_StatusTypeDef rslt;
-
+  uint8_t packet[] = {WriteAddr, Data};
   // Send Data to WriteAddr
-  rslt = HAL_I2C_Master_Transmit(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, &WriteAddr, sizeof(Data), 1000);
+  rslt = HAL_I2C_Master_Transmit(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, &packet, sizeof(packet), 1000);
 
   if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
 	  rslt = MEMS_ERROR;
@@ -92,7 +92,7 @@ u8_t LIS3DH_Monti_Init() {
 	uint8_t check;
 	check = LIS3DH_SetODR(LIS3DH_ODR_100Hz);
 	check = LIS3DH_SetMode(LIS3DH_NORMAL);
-	check = LIS3DH_SetFullScale(LIS3DH_FULLSCALE_2);
+	check = LIS3DH_SetFullScale(LIS3DH_FULLSCALE_16);
 	check = LIS3DH_SetAxis(LIS3DH_X_ENABLE | LIS3DH_Y_ENABLE | LIS3DH_Z_ENABLE);
 
 	if (check == 0) {
