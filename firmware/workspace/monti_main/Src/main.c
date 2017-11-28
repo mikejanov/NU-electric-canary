@@ -49,6 +49,9 @@
 #include "drivetrain.h"
 #include "vehicle_messages.h"
 #include "string.h"
+#include "bme280_monti.h"
+#include "lis3dh_driver.h"
+#include "non_i2c_sensors.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -81,6 +84,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
+	AxesRaw_t data;
+	LIS3DH_Monti_Init();
 
   /* USER CODE END 1 */
 
@@ -103,8 +108,8 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-//  MX_I2C1_Init();
-//  MX_I2C2_Init();
+  // MX_I2C1_Init();
+  MX_I2C2_Init();
   MX_USART2_UART_Init();
   MX_ADC2_Init();
   MX_TIM1_Init();
@@ -140,6 +145,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  LIS3DH_GetAccAxesRaw(&data);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
