@@ -55,14 +55,24 @@
 
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
+// UART Transmission
 char msg_rx[MSG_TX_BUFFER_SIZE];
 char msg_tx[MSG_TX_BUFFER_SIZE];
 uint16_t msg_tx_count = 0;
 uint16_t msg_rx_count = 0;
 uint8_t msg_rx_type = MSG_HEADER_CONFIG;
 
+// Motors
 struct motor motors[NUM_MOTORS_ENABLED];
 struct holonomic3 holonomic3_system;
+
+// Encoders
+//uint8_t bool_motor_a_enc_a = 0;
+//uint8_t bool_motor_a_enc_b = 0;
+//uint8_t bool_motor_b_enc_a = 0;
+//uint8_t bool_motor_b_enc_b = 0;
+//uint8_t bool_motor_c_enc_a = 0;
+//uint8_t bool_motor_C_enc_B = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -179,6 +189,15 @@ int main(void)
 		  //drive_motor(&motors[0], inc_duty_cycle, 1, 0);
 		  //inc_duty_cycle = (inc_duty_cycle + 1) % 100;
 	  }
+
+	  /**
+	   * Gather encoder values and calculate speed feedback
+	   */
+	  if(HAL_GetTick() % 10 == 0)
+	  {
+		  HAL_GPIO_ReadPin(MOTOR_A_ENC_A_GPIO_Port, MOTOR_A_ENC_A_Pin);
+
+	  }
   }
   /* USER CODE END 3 */
 
@@ -285,18 +304,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 /**
  * GPIO Callbacks
  */
-#define MOTOR_A_ENC_A_Pin	13
-#define MOTOR_A_ENC_B_Pin	5
-#define MOTOR_B_ENC_A_Pin	12
-#define MOTOR_B_ENC_B_Pin	2
-#define MOTOR_C_ENC_A_Pin	11
-//MOTOR_C_ENC_B_Pin currently on 12, which is no good. Uses a Systick interrupt instead
+// Rising edge callback
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+	/*
 	switch(GPIO_Pin)
 	{
 	case MOTOR_A_ENC_A_Pin:
-
+		//bool_motor_a_enc_a = !bool_motor_a_enc_a;
 		break;
 	case MOTOR_A_ENC_B_Pin:
 
@@ -311,6 +326,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 		break;
 	}
+	*/
 }
 /* USER CODE END 4 */
 
