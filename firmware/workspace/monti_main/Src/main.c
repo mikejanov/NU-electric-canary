@@ -119,6 +119,7 @@ int main(void)
   HAL_NVIC_EnableIRQ(USART2_IRQn);
 
   drivetrain_options_t current_drivetrain = drivetrains_holonomic3;
+  uint32_t current_time = 0;
 
   configure_motors(motors);
   initialize_drivetrain(motors,
@@ -166,15 +167,18 @@ int main(void)
 
 	  /**
 	   * Gather encoder values and calculate speed feedback
+	   * TODO: 1kHz is too slow. Need at least 10kHz
 	   */
-	  if(HAL_GetTick() % 10 == 0)
+	  if(HAL_GetTick() % 1 == 0)
 	  {
 		  update_encoders(motors);
+		  current_time = HAL_GetTick();
 		  for(int ii = 0; ii < NUM_MOTORS_ENABLED; ii++)
 		  {
 			  update_speed_feedback(&motors[ii],
-					  	  	  	  	HAL_GetTick(),
+					  	  	  	 	HAL_GetTick(),
 									current_drivetrain);
+			  msg_from_vehicle.encoders[ii] = motors[ii].linear_speed;
 		  }
 	  }
   }

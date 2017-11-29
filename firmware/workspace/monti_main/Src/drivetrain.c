@@ -167,17 +167,24 @@ void update_speed_feedback(struct motor *_motor, uint32_t _systick, drivetrain_o
 {
 	uint32_t time_diff = 0;
 
-	// Check if there is a rising edge on the XOR
-	if(_motor->enc_a ^ _motor->enc_b)
+	// Checks if anything changed
+	if((_motor->enc_a_last != _motor->enc_a)||(_motor->enc_b_last != _motor->enc_b))
 	{
-		// There are 4 XOR rising edges in one revolution
-		time_diff = _motor->enc_last_rise - _systick;
-		// Update the last rise
-		_motor->enc_last_rise  = _systick;
-		// Update the motor struct
-		_motor->linear_speed = calculate_wheel_linear_speed(_motor,
-															time_diff,
-															_drivetrain_type);
+		// Set new last values
+		_motor->enc_a_last = _motor->enc_a;
+		_motor->enc_b_last = _motor->enc_b;
+		// Check if there is a rising edge on the XOR
+		if(_motor->enc_a ^ _motor->enc_b)
+		{
+			// There are 4 XOR rising edges in one revolution
+			time_diff = _systick - _motor->enc_last_rise;
+			// Update the last rise
+			_motor->enc_last_rise  = _systick;
+			// Update the motor struct
+			_motor->linear_speed = calculate_wheel_linear_speed(_motor,
+																time_diff,
+																_drivetrain_type);
+		}
 	}
 
 	// Otherwise nothing is updated
@@ -190,7 +197,7 @@ uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_m
 	uint32_t time_diffs_per_rev = 4;
 	uint32_t ms_per_rev = time_diffs_per_rev * _time_diff_ms;
 	uint16_t wheel_diameter = 0;
-	uint8_t wheel_linear_speed = 0;
+	uint16_t wheel_linear_speed = 0;
 
 	switch(_drivetrain_type)
 	{
@@ -204,8 +211,8 @@ uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_m
 
 	// 1000(ms/s) * PI*diameter(mm/rev) * 1/1000(m/mm) * 1/ms_per_rev(rev/ms)
 	// The 1000s cancel out
-	wheel_linear_speed = M_PI * wheel_diameter / ms_per_rev;
-	return wheel_linear_speed;
+	wheel_linear_speed = _time_diff_ms; //M_PI * wheel_diameter / ms_per_rev
+	return (uint8_t)wheel_linear_speed;
 }
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)

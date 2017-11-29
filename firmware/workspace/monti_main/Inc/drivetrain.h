@@ -32,6 +32,8 @@ struct motor
 
 	// Feedback Values
 	uint32_t	enc_last_rise;	// SysTick of the last (enc_a XOR enc_b)
+	uint8_t		enc_a_last;		// Keeps track of change for encoder a
+	uint8_t		enc_b_last;		// Keeps track of change for encoder b
 	// TODO: decouple linear_speed from motor struct
 	uint8_t		linear_speed;	// Coupled with the wheel size of currently-active drivetrain
 
