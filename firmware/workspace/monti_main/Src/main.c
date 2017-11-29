@@ -39,7 +39,6 @@
 #include "main.h"
 #include "stm32f3xx_hal.h"
 #include "adc.h"
-#include "dma.h"
 #include "i2c.h"
 #include "tim.h"
 #include "usart.h"
@@ -107,7 +106,6 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_DMA_Init();
   MX_I2C1_Init();
   MX_I2C2_Init();
   MX_USART2_UART_Init();
@@ -133,8 +131,6 @@ int main(void)
   //drive_system_holonomic3(0, DEG_0);
   //drive_motors_holonomic3(10, 10, 10);
   ////#DEBUG END
-
-  //HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
 
   /* USER CODE END 2 */
 
