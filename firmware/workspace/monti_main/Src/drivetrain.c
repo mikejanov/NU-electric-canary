@@ -8,7 +8,6 @@
 #include "drivetrain.h"
 
 void initialize_drivetrain(struct motor _motors[],
-							void *_drivetrain,
 						   	drivetrain_options_t _drivetrain_type,
 		   	   	   	   	    uint16_t _wheel_diameter)
 {
@@ -18,8 +17,12 @@ void initialize_drivetrain(struct motor _motors[],
 	  switch (_drivetrain_type){
 	  case drivetrains_holonomic3:
 		  initialize_holonomic3(_wheel_diameter,
-				  	  	  	  	_drivetrain,
 								&_motors[0], &_motors[1], &_motors[2]);
+		  break;
+	  case drivetrains_differential2wd:
+		  initialize_differential2wd(_wheel_diameter,
+		  							 &_motors[0], &_motors[1]);
+		  break;
 	  }
 }
 
@@ -160,9 +163,10 @@ void update_encoders(struct motor _motors[])
 	_motors[2].enc_b = HAL_GPIO_ReadPin(MOTOR_C_ENC_B_GPIO_Port, MOTOR_C_ENC_B_Pin);
 }
 
-uint8_t update_speed_feedback(struct motor *_motor, uint32_t _systick)
+void update_speed_feedback(struct motor *_motor, uint32_t _systick, drivetrain_options_t _drivetrain_type)
 {
 	uint32_t time_diff = 0;
+
 	// Check if there is a rising edge on the XOR
 	if(_motor->enc_a ^ _motor->enc_b)
 	{
@@ -170,7 +174,38 @@ uint8_t update_speed_feedback(struct motor *_motor, uint32_t _systick)
 		time_diff = _motor->enc_last_rise - _systick;
 		// Update the last rise
 		_motor->enc_last_rise  = _systick;
+		// Update the motor struct
+		_motor->linear_speed = calculate_wheel_linear_speed(_motor,
+															time_diff,
+															_drivetrain_type);
 	}
+
+	// Otherwise nothing is updated
+}
+
+uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_ms, drivetrain_options_t _drivetrain_type)
+{
+	// Note: assumes 4 encoder time diffs per revolution
+	// TODO: make more encoder-agnostic
+	uint32_t time_diffs_per_rev = 4;
+	uint32_t ms_per_rev = time_diffs_per_rev * _time_diff_ms;
+	uint16_t wheel_diameter = 0;
+	uint8_t wheel_linear_speed = 0;
+
+	switch(_drivetrain_type)
+	{
+	case drivetrains_differential2wd:
+		wheel_diameter = differential2wd_system.wheel_diameter;
+		break;
+	case drivetrains_holonomic3:
+		wheel_diameter = holonomic3_system.wheel_diameter;
+		break;
+	}
+
+	// 1000(ms/s) * PI*diameter(mm/rev) * 1/1000(m/mm) * 1/ms_per_rev(rev/ms)
+	// The 1000s cancel out
+	wheel_linear_speed = M_PI * wheel_diameter / ms_per_rev;
+	return wheel_linear_speed;
 }
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)

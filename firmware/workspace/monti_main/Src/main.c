@@ -64,15 +64,10 @@ uint8_t msg_rx_type = MSG_HEADER_CONFIG;
 
 // Motors
 struct motor motors[NUM_MOTORS_ENABLED];
-struct holonomic3 holonomic3_system;
 
-// Encoders
-//uint8_t bool_motor_a_enc_a = 0;
-//uint8_t bool_motor_a_enc_b = 0;
-//uint8_t bool_motor_b_enc_a = 0;
-//uint8_t bool_motor_b_enc_b = 0;
-//uint8_t bool_motor_c_enc_a = 0;
-//uint8_t bool_motor_C_enc_B = 0;
+// Drivetrain Wheel Sizes
+#define HOLONOMIC3_WHEEL_DIA_MM			22
+#define DIFFERENTIAL2WD_WHEEL_DIA_MM	83
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -123,26 +118,22 @@ int main(void)
   __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
   HAL_NVIC_EnableIRQ(USART2_IRQn);
 
-  uint16_t wheel_size = 22;
+  drivetrain_options_t current_drivetrain = drivetrains_holonomic3;
 
   configure_motors(motors);
   initialize_drivetrain(motors,
-		  	  	  	  	&holonomic3_system,
 						drivetrains_holonomic3,
-						wheel_size);
+						HOLONOMIC3_WHEEL_DIA_MM);
+  initialize_drivetrain(motors,
+						drivetrains_differential2wd,
+						DIFFERENTIAL2WD_WHEEL_DIA_MM);
 
-  //uint16_t inc_duty_cycle = 0;
-  //drive_motor(&motors[0], 0, 1, 0);
+  ////#DEBUG START
+  //drive_system_holonomic3(0, DEG_0);
+  //drive_motors_holonomic3(10, 10, 10);
+  ////#DEBUG END
 
-  drive_system_holonomic3(&holonomic3_system, 0, DEG_0);
-  //drive_motors_holonomic3(&holonomic3_system, 10, 10, 10);
-
-  HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
-
-  //char* msg_fail = "Transmission Failed\r\n";
-  //HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_6);
-
-  //char *msg_loop = "Hello World";
+  //HAL_UART_Receive_DMA(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE);
 
   /* USER CODE END 2 */
 
@@ -167,27 +158,10 @@ int main(void)
 		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
 		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
 
-		  //strcpy(msg_tx, msg_tx);
+		  ////#DEBUG START
 		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_loop, strlen(msg_loop), 0xFFFF);
 		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
-		  //HAL_UART_Transmit_IT(&huart2, (uint8_t*)msg_loop, strlen(msg_loop));
-		  //HAL_UART_Transmit(&huart2, huart2.pRxBuffPtr, MSG_BUFFER_SIZE, 0xFFFF);
-		  /*
-		  if(HAL_UART_Transmit(&huart2, fs, huart2.RxXferSize, 0xFFFF) != HAL_OK)
-		  {
-			  HAL_UART_Transmit(&huart2, (uint8_t*)msg_fail, strlen(msg_fail), 0xFFFF);
-		  }
-		  */
-		  //huart2.RxXferSize
-		  /*
-		  if(HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, strlen(msg_rx), 10)!= HAL_OK)
-		  {
-		    Error_Handler();
-		  }
-		  */
-		  //HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, strlen(msg_tx), 0xFFFF);
-		  //drive_motor(&motors[0], inc_duty_cycle, 1, 0);
-		  //inc_duty_cycle = (inc_duty_cycle + 1) % 100;
+		  ////#DEBUG END
 	  }
 
 	  /**
@@ -196,7 +170,12 @@ int main(void)
 	  if(HAL_GetTick() % 10 == 0)
 	  {
 		  update_encoders(motors);
-		  msg_from_vehicle.encoders[0] =
+		  for(int ii = 0; ii < NUM_MOTORS_ENABLED; ii++)
+		  {
+			  update_speed_feedback(&motors[ii],
+					  	  	  	  	HAL_GetTick(),
+									current_drivetrain);
+		  }
 	  }
   }
   /* USER CODE END 3 */
@@ -290,8 +269,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			// TODO
 			break;
 		case MSG_HEADER_COMMAND:
-			drive_system_holonomic3(&holonomic3_system,
-									msg_to_vehicle.throttle,
+			drive_system_holonomic3(msg_to_vehicle.throttle,
 									msg_to_vehicle.direction);
 			break;
 		default:

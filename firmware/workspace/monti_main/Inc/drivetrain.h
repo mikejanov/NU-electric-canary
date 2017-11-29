@@ -16,6 +16,7 @@
 #include "tim.h"
 
 #include "holonomic3.h"
+#include "differential2wd.h"
 
 #define NUM_MOTORS_ENABLED	3
 
@@ -25,10 +26,14 @@ struct motor
 
 	uint8_t 	enc_a;			// Boolean output value of Encoder A
 	uint8_t		enc_b;			// Boolean output value of Encoder B
-	uint32_t	enc_last_rise;	// SysTick of the last (enc_a XOR enc_b)
 	uint8_t		pwm_duty;		// Integer between 0-100 representing the duty cycle of the motor
 	uint8_t		in_pos;			// Boolean clockwise motor enable pin
 	uint8_t		in_neg;			// Boolean counter-clockwise motor enable pin
+
+	// Feedback Values
+	uint32_t	enc_last_rise;	// SysTick of the last (enc_a XOR enc_b)
+	// TODO: decouple linear_speed from motor struct
+	uint8_t		linear_speed;	// Coupled with the wheel size of currently-active drivetrain
 
 	// GPIO Control Pins
 	GPIO_TypeDef*	enc_a_bus;		// GPIO_x bus of pin
@@ -72,11 +77,11 @@ typedef enum direction
 
 typedef enum drivetrain_options
 {
+	drivetrains_differential2wd,
 	drivetrains_holonomic3
 }drivetrain_options_t;
 
 void initialize_drivetrain(struct motor _motors[],
-						   void *_drivetrain,
 						   drivetrain_options_t _drivetrain_type,
 		   	   	   	   	   uint16_t _wheel_diameter);
 
@@ -97,6 +102,8 @@ void set_motor_positive(struct motor *_motor);
 void throttle_motor(uint8_t _throttle, struct motor *_motor);
 
 void update_encoders(struct motor _motors[]);
+void update_speed_feedback(struct motor *_motor, uint32_t _systick, drivetrain_options_t _drivetrain_type);
+uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_ms, drivetrain_options_t _drivetrain_type);
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty);
 
