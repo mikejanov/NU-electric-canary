@@ -150,6 +150,29 @@ void throttle_motor(uint8_t _throttle, struct motor *_motor)
 	_motor->pwm_duty = (uint8_t)(_motor->pwm_duty * _throttle / 100);
 }
 
+void update_encoders(struct motor _motors[])
+{
+	_motors[0].enc_a = HAL_GPIO_ReadPin(MOTOR_A_ENC_A_GPIO_Port, MOTOR_A_ENC_A_Pin);
+	_motors[0].enc_b = HAL_GPIO_ReadPin(MOTOR_A_ENC_B_GPIO_Port, MOTOR_A_ENC_B_Pin);
+	_motors[1].enc_a = HAL_GPIO_ReadPin(MOTOR_B_ENC_A_GPIO_Port, MOTOR_B_ENC_A_Pin);
+	_motors[1].enc_b = HAL_GPIO_ReadPin(MOTOR_B_ENC_B_GPIO_Port, MOTOR_B_ENC_B_Pin);
+	_motors[2].enc_a = HAL_GPIO_ReadPin(MOTOR_C_ENC_A_GPIO_Port, MOTOR_C_ENC_A_Pin);
+	_motors[2].enc_b = HAL_GPIO_ReadPin(MOTOR_C_ENC_B_GPIO_Port, MOTOR_C_ENC_B_Pin);
+}
+
+uint8_t update_speed_feedback(struct motor *_motor, uint32_t _systick)
+{
+	uint32_t time_diff = 0;
+	// Check if there is a rising edge on the XOR
+	if(_motor->enc_a ^ _motor->enc_b)
+	{
+		// There are 4 XOR rising edges in one revolution
+		time_diff = _motor->enc_last_rise - _systick;
+		// Update the last rise
+		_motor->enc_last_rise  = _systick;
+	}
+}
+
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)
 {
 

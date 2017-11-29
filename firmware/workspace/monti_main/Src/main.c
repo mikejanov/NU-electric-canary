@@ -195,8 +195,8 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 10 == 0)
 	  {
-		  HAL_GPIO_ReadPin(MOTOR_A_ENC_A_GPIO_Port, MOTOR_A_ENC_A_Pin);
-
+		  update_encoders(motors);
+		  msg_from_vehicle.encoders[0] =
 	  }
   }
   /* USER CODE END 3 */

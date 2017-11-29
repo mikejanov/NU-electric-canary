@@ -15,7 +15,7 @@ struct holonomic3
 	uint16_t wheel_diameter;	// Wheel diameter in millimeters
 
 	struct motor *motors[3];	// Array of motor pointers: [0] == front; [1] == right; [2] == left
-};
+}holonomic3_system;
 
 void initialize_holonomic3(uint16_t _wheel_diameter,
 						   void *_drivetrain,

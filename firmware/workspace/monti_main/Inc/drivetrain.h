@@ -23,11 +23,12 @@ struct motor
 {
 	// Control Values
 
-	uint8_t 	enc_a;		// Boolean output value of Encoder A
-	uint8_t		enc_b;		// Boolean output value of Encoder B
-	uint8_t		pwm_duty;	// Integer between 0-100 representing the duty cycle of the motor
-	uint8_t		in_pos;		// Boolean clockwise motor enable pin
-	uint8_t		in_neg;		// Boolean counter-clockwise motor enable pin
+	uint8_t 	enc_a;			// Boolean output value of Encoder A
+	uint8_t		enc_b;			// Boolean output value of Encoder B
+	uint32_t	enc_last_rise;	// SysTick of the last (enc_a XOR enc_b)
+	uint8_t		pwm_duty;		// Integer between 0-100 representing the duty cycle of the motor
+	uint8_t		in_pos;			// Boolean clockwise motor enable pin
+	uint8_t		in_neg;			// Boolean counter-clockwise motor enable pin
 
 	// GPIO Control Pins
 	GPIO_TypeDef*	enc_a_bus;		// GPIO_x bus of pin
@@ -94,6 +95,8 @@ void set_motor_negative(struct motor *_motor);
 void set_motor_positive(struct motor *_motor);
 
 void throttle_motor(uint8_t _throttle, struct motor *_motor);
+
+void update_encoders(struct motor _motors[]);
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty);
 
