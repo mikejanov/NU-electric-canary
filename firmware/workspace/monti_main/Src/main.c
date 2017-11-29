@@ -84,7 +84,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-	uint8_t data[2];
+	// AxesRaw_t data;
+	uint8_t data_2;
 	LIS3DH_Monti_Init();
 
   /* USER CODE END 1 */
@@ -148,13 +149,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint8_t addr = 0x0F;
   while (1)
   {
-	  LIS3DH_WriteReg(config_addr, config_data);
-	  // HAL_I2C_Master_Transmit(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, &addr_2, sizeof(addr_2), 1000);
-	  // HAL_I2C_Master_Receive(&hi2c1, LIS3DH_MEMS_I2C_ADDRESS<<1, &data, sizeof(data), 1000);
-	  // LIS3DH_ReadReg(addr,&data);
-	  HAL_Delay(1000);
+	  LIS3DH_ReadReg(addr, &data_2);
+	  HAL_Delay(100);
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
