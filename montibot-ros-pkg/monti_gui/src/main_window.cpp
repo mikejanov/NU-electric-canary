@@ -36,8 +36,8 @@ MainWindow::MainWindow(int argc, char** argv, QWidget *parent)
     QObject::connect(ui.actionAbout_Qt, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt())); // qApp is a global variable for the application
 
     ReadSettings();
-	setWindowIcon(QIcon(":/images/icon.png"));
-	ui.tab_manager->setCurrentIndex(0); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
+	setWindowIcon(QIcon(":/images/monti_head_transparent.png"));
+	ui.tab_manager->setCurrentIndex(1); // ensure the first tab is showing - qt-designer should have this already hardwired, but often loses it (settings?).
     QObject::connect(&qnode, SIGNAL(rosShutdown()), this, SLOT(close()));
 
 	/*********************
@@ -127,7 +127,7 @@ void MainWindow::updateLoggingView() {
 *****************************************************************************/
 
 void MainWindow::on_actionAbout_triggered() {
-    QMessageBox::about(this, tr("About ..."),tr("<h2>PACKAGE_NAME Test Program 0.10</h2><p>Copyright Yujin Robot</p><p>This package needs an about description.</p>"));
+    QMessageBox::about(this, tr("About ..."),tr("<h2>MoNTI App</h2><p>Created By NU Electric Canary</p><p>Capstone Summer 2/Fall 2017</p>"));
 }
 
 /*****************************************************************************
