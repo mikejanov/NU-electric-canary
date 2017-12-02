@@ -8,7 +8,6 @@
 #include "drivetrain.h"
 
 void initialize_drivetrain(struct motor _motors[],
-							void *_drivetrain,
 						   	drivetrain_options_t _drivetrain_type,
 		   	   	   	   	    uint16_t _wheel_diameter)
 {
@@ -18,8 +17,12 @@ void initialize_drivetrain(struct motor _motors[],
 	  switch (_drivetrain_type){
 	  case drivetrains_holonomic3:
 		  initialize_holonomic3(_wheel_diameter,
-				  	  	  	  	_drivetrain,
 								&_motors[0], &_motors[1], &_motors[2]);
+		  break;
+	  case drivetrains_differential2wd:
+		  initialize_differential2wd(_wheel_diameter,
+		  							 &_motors[0], &_motors[1]);
+		  break;
 	  }
 }
 
@@ -148,6 +151,68 @@ void set_motor_positive(struct motor *_motor)
 void throttle_motor(uint8_t _throttle, struct motor *_motor)
 {
 	_motor->pwm_duty = (uint8_t)(_motor->pwm_duty * _throttle / 100);
+}
+
+void update_encoders(struct motor _motors[])
+{
+	_motors[0].enc_a = HAL_GPIO_ReadPin(MOTOR_A_ENC_A_GPIO_Port, MOTOR_A_ENC_A_Pin);
+	_motors[0].enc_b = HAL_GPIO_ReadPin(MOTOR_A_ENC_B_GPIO_Port, MOTOR_A_ENC_B_Pin);
+	_motors[1].enc_a = HAL_GPIO_ReadPin(MOTOR_B_ENC_A_GPIO_Port, MOTOR_B_ENC_A_Pin);
+	_motors[1].enc_b = HAL_GPIO_ReadPin(MOTOR_B_ENC_B_GPIO_Port, MOTOR_B_ENC_B_Pin);
+	_motors[2].enc_a = HAL_GPIO_ReadPin(MOTOR_C_ENC_A_GPIO_Port, MOTOR_C_ENC_A_Pin);
+	_motors[2].enc_b = HAL_GPIO_ReadPin(MOTOR_C_ENC_B_GPIO_Port, MOTOR_C_ENC_B_Pin);
+}
+
+void update_speed_feedback(struct motor *_motor, uint32_t _systick, drivetrain_options_t _drivetrain_type)
+{
+	uint32_t time_diff = 0;
+
+	// Checks if anything changed
+	if((_motor->enc_a_last != _motor->enc_a)||(_motor->enc_b_last != _motor->enc_b))
+	{
+		// Set new last values
+		_motor->enc_a_last = _motor->enc_a;
+		_motor->enc_b_last = _motor->enc_b;
+		// Check if there is a rising edge on the XOR
+		if(_motor->enc_a ^ _motor->enc_b)
+		{
+			// There are 4 XOR rising edges in one revolution
+			time_diff = _systick - _motor->enc_last_rise;
+			// Update the last rise
+			_motor->enc_last_rise  = _systick;
+			// Update the motor struct
+			_motor->linear_speed = calculate_wheel_linear_speed(_motor,
+																time_diff,
+																_drivetrain_type);
+		}
+	}
+
+	// Otherwise nothing is updated
+}
+
+uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_ms, drivetrain_options_t _drivetrain_type)
+{
+	// Note: assumes 4 encoder time diffs per revolution
+	// TODO: make more encoder-agnostic
+	uint32_t time_diffs_per_rev = 4;
+	uint32_t ms_per_rev = time_diffs_per_rev * _time_diff_ms;
+	uint16_t wheel_diameter = 0;
+	uint16_t wheel_linear_speed = 0;
+
+	switch(_drivetrain_type)
+	{
+	case drivetrains_differential2wd:
+		wheel_diameter = differential2wd_system.wheel_diameter;
+		break;
+	case drivetrains_holonomic3:
+		wheel_diameter = holonomic3_system.wheel_diameter;
+		break;
+	}
+
+	// 1000(ms/s) * PI*diameter(mm/rev) * 1/1000(m/mm) * 1/ms_per_rev(rev/ms)
+	// The 1000s cancel out
+	wheel_linear_speed = _time_diff_ms; //M_PI * wheel_diameter / ms_per_rev
+	return (uint8_t)wheel_linear_speed;
 }
 
 uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)

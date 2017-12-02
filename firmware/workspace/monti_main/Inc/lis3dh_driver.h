@@ -451,7 +451,7 @@ LIS3DH_NO_CLICK                        =               0x00
 
 //FIFO REGISTERS
 #define LIS3DH_FIFO_CTRL_REG			        0x2E
-#define LIS3DH_FIFO_SRC_REG			        0x2F
+#define LIS3DH_FIFO_SRC_REG			        	0x2F
 
 
 /* Exported macro ------------------------------------------------------------*/

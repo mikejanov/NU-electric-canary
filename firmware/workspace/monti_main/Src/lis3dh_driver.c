@@ -68,7 +68,7 @@ u8_t LIS3DH_ReadReg(u8_t Reg, u8_t *Data) {
 *******************************************************************************/
 u8_t LIS3DH_WriteReg(u8_t WriteAddr, u8_t Data) {
   HAL_StatusTypeDef rslt;
-  uint8_t packet[] = {WriteAddr, Data};
+  // uint8_t packet[] = {WriteAddr, Data};
   // Send Data to WriteAddr
   rslt = HAL_I2C_Master_Transmit_IT(&hi2c2, LIS3DH_MEMS_I2C_ADDRESS<<1, &WriteAddr, sizeof(Data));
 

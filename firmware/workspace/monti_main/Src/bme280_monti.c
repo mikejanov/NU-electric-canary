@@ -67,11 +67,11 @@ int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16
     int8_t rtrn_rslt = 1;
 
     // Write the register addr to the slave id, should be 8bits
-    HAL_I2C_Master_Transmit_IT(&hi2c2, dev_id<<1, &reg_addr, sizeof(reg_addr));
+    HAL_I2C_Master_Transmit(&hi2c2, dev_id<<1, &reg_addr, sizeof(reg_addr), 1000);
     HAL_Delay(100);
 
     // Read a number of bytes that is expected from
-    rslt = HAL_I2C_Master_Receive_IT(&hi2c2, dev_id<<1, &reg_addr, len);
+    rslt = HAL_I2C_Master_Receive(&hi2c2, dev_id<<1, &reg_addr, len, 1000);
     HAL_Delay(100);
 
     if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
@@ -91,7 +91,7 @@ int8_t set_normal_mode(I2C_HandleTypeDef *i2c, uint8_t dev_id)
 	HAL_StatusTypeDef rslt;
 	int8_t rtrn_rslt = 1;
 
-	rslt = HAL_I2C_Master_Transmit_IT(i2c, dev_id<<1, &reg_data, sizeof(reg_data));
+	rslt = HAL_I2C_Master_Transmit(i2c, dev_id<<1, &reg_data, sizeof(reg_data), 1000);
 	HAL_Delay(1000);
 
 	if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
