@@ -18,11 +18,11 @@ class montiRobot():
 		rospy.Subscriber(name + 'control_command', msgs.Monti_Control, self.send_monti_control_cb)
 		rospy.Subscriber(name + 'config', msgs.Monti_Config, self.send_monti_config_cb)
 
-		self.init_comms()
+		#self.init_comms()
 
-		# self.set_robot_config()
-		# while not rospy.is_shutdown():
-		# 	self.pub_monti_state(5)
+		self.set_robot_config()
+		while not rospy.is_shutdown():
+			self.pub_monti_state(5)
 
 	def init_comms(self):
 		#Initialize communication with the Monti ROV
