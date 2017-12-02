@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import rospy
 import monti_msgs.msg as msgs
+import numpy
 import serial
 
 class montiRobot():
@@ -9,7 +10,7 @@ class montiRobot():
 		rospy.loginfo("Starting the monti_robot ROS node")
 		self.rate = rospy.Rate(15)
 		
-		self.sensors = [["BNO055", "IMU"], ["US5881LUA", "Hall Effect"], ["MCP9808", "Temperature"]]
+		self.sensors = [["BME280", 3, "Temperature", "Pressure", "Humidity"], ["LIS3DH", 3, "Accelerometer X", "Accelerometer Y", "Accelerometer Z"], ["US5881LUA", 1, "Hall Effect"], ["MiCS5524", 1, "CO, Alcohol, and VOC Gas"]]
 
 		# Create the robot state publisher
 		self.state_pub = rospy.Publisher(name + 'state', msgs.Monti_Robot_State, queue_size = 10)
@@ -20,7 +21,10 @@ class montiRobot():
 
 		#self.init_comms()
 
+		#set an initital configuration state containing only the drivetrain
 		self.set_robot_config()
+
+		#Tesing the messages
 		while not rospy.is_shutdown():
 			self.pub_monti_state(5)
 
@@ -35,8 +39,17 @@ class montiRobot():
 	def set_robot_config(self):
 		self.present_sensors = input("Please enter the ID numbers of present modules: ")
 
+		self.packet_config = [] #Stores the starting packet index of each sensor
+		packet_pos = 0
+		for sensor_id in self.present_sensors:
+			#Save the start position for the sensor data in the state message
+			self.packet_config.append(packet_pos)
+
+			#Calculate where the next sensor starts in the state message
+			packet_pos = packet_pos + self.sensors[sensor_id][1]
+
 	def pub_monti_state(self, state):
-		# Function called when data is reveived from robot
+		# Function called when data is received from robot
 		# Publishes state data to the state topic
 		state = msgs.Monti_Robot_State()
 
@@ -45,22 +58,15 @@ class montiRobot():
 		for i in range(6):
 			state.encoders[i] = 24
 
-		state.accelerometer.triple_axis_accel = 12
-		state.accelerometer.x_accel = 4
-		state.accelerometer.y_accel = 17
-		state.accelerometer.z_accel = 10
-
-		state.environment.pressure = 4
-		state.environment.temperature = 8
-		state.environment.humidity = 12
-
-		state.temperature = 17
-
 		if (len(self.present_sensors)>0):
-			for i in range(len(self.present_sensors)):
-				state.modular_sensors[i].part_number = self.sensors[self.present_sensors[i]][0]
-				state.modular_sensors[i].type_of_data = self.sensors[self.present_sensors[i]][1]
-				state.modular_sensors[i].data = i
+			p=0
+			for sensor_id in self.present_sensors:
+				sensor_start = self.packet_config[p]
+				for i in range(self.sensors[sensor_id][1]):
+					state.modular_sensors[sensor_start + i].part_number = self.sensors[sensor_id][0]
+					state.modular_sensors[sensor_start + i].type_of_data = self.sensors[sensor_id][i+2]
+					state.modular_sensors[sensor_start + i].data = i
+				p=p+1
 
 		self.state_pub.publish(state)
 		self.rate.sleep()
