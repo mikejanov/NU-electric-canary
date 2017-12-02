@@ -27,7 +27,7 @@ int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr,
 int8_t sensor_init(struct bme280_dev *dev);
 
 // Set the oversampling for temperature and pressure, and data mode
-int8_t set_normal_mode(I2C_HandleTypeDef *i2c, uint8_t dev_id);
+int8_t set_normal_mode(uint8_t dev_id);
 
 // Get temperature, humidity, and pressure data from the bme280
 int8_t get_bme280_all_data(struct bme280_dev *dev, struct bme280_data *comp_data);

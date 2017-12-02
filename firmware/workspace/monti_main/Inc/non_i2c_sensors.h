@@ -10,11 +10,9 @@
 
 #include "stm32f3xx_hal.h"
 
-// Gas sensor
-int8_t Read_Gas_Sensor();
-
-// Hall effect sensor
-uint8_t Read_Hall();
+uint8_t Read_Gas_Sensor();
+uint8_t Read_Hall_Sensor();
+uint8_t ultrasonic_detect();
 
 
 #endif /* NON_I2C_SENSORS_H_ */

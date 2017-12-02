@@ -10,7 +10,7 @@ int8_t sensor_init(struct bme280_dev *dev)
 {
 	int8_t rslt;
 
-	dev->dev_id = BME280_I2C_ADDR_PRIM; // 0x76
+	dev->dev_id = BME280_I2C_ADDR_SEC; // 0x77
 	dev->intf = BME280_I2C_INTF;
 	dev->read = user_i2c_read;
 	dev->write = user_i2c_write;
@@ -45,45 +45,38 @@ void user_delay_ms(uint32_t period)
 
 int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
-    HAL_StatusTypeDef rslt = 1; /* Return 0 for Success, non-zero for failure */
     int8_t rtrn_rslt = 1;
 
     // Transmit slave id, reg_data needs to be register addr and register data (16 bits)
-    rslt = HAL_I2C_Master_Transmit(&hi2c2, dev_id<<1, &reg_addr, len, 1000);
-    HAL_Delay(100);
-
-    if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
-    	rtrn_rslt = 1;
-    } else {
-    	return 0;
-    }
+    HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, &reg_addr, len);
+    // HAL_Delay(100);
 
     return rtrn_rslt;
 }
 
 int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
-    HAL_StatusTypeDef rslt; /* Return 0 for Success, non-zero for failure */
     int8_t rtrn_rslt = 1;
 
     // Write the register addr to the slave id, should be 8bits
-    HAL_I2C_Master_Transmit(&hi2c2, dev_id<<1, &reg_addr, sizeof(reg_addr), 1000);
-    HAL_Delay(100);
+    HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, &reg_addr, sizeof(reg_addr));
+    // HAL_Delay(100);
 
     // Read a number of bytes that is expected from
-    rslt = HAL_I2C_Master_Receive(&hi2c2, dev_id<<1, &reg_addr, len, 1000);
-    HAL_Delay(100);
-
+    HAL_I2C_Master_Receive_IT(&hi2c1, dev_id<<1, reg_data, len);
+    // HAL_Delay(100);
+    /*
+    rslt = 1;
     if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
     	rtrn_rslt = 1;
     } else {
     	return 0;
     }
-
-    return rtrn_rslt;
+    */
+	return rtrn_rslt;
 }
 
-int8_t set_normal_mode(I2C_HandleTypeDef *i2c, uint8_t dev_id)
+int8_t set_normal_mode(uint8_t dev_id)
 {
 	// 0x3B sets the osrs_t as 001, osrs_p as 110, and mode as 11 (normal mode)
 	// ^^ "Indoor Navigation Mode"
@@ -91,14 +84,8 @@ int8_t set_normal_mode(I2C_HandleTypeDef *i2c, uint8_t dev_id)
 	HAL_StatusTypeDef rslt;
 	int8_t rtrn_rslt = 1;
 
-	rslt = HAL_I2C_Master_Transmit(i2c, dev_id<<1, &reg_data, sizeof(reg_data), 1000);
-	HAL_Delay(1000);
-
-	if (rslt == HAL_ERROR || rslt == HAL_TIMEOUT) {
-		rtrn_rslt = 1;
-	} else {
-		return 0;
-	}
+	HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, reg_data, sizeof(reg_data));
+	HAL_Delay(100);
 
 	return rtrn_rslt;
 }
@@ -107,6 +94,6 @@ int8_t get_bme280_all_data(struct bme280_dev *dev, struct bme280_data *comp_data
 {
 	int8_t rslt;
 	rslt = bme280_get_sensor_data(BME280_ALL, comp_data, dev);
-	dev->delay_ms(250);
+	// dev->delay_ms(250);
 	return rslt;
 }

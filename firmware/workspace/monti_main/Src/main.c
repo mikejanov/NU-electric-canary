@@ -71,6 +71,12 @@ struct motor motors[NUM_MOTORS_ENABLED];
 // Drivetrain Wheel Sizes
 #define HOLONOMIC3_WHEEL_DIA_MM			22
 #define DIFFERENTIAL2WD_WHEEL_DIA_MM	83
+
+// BME280 Temperature Sensor
+struct bme280_dev dev;
+struct bme280_data comp_data;
+int8_t rslt = BME280_OK;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -111,7 +117,7 @@ int main(void)
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
 	MX_I2C1_Init();
-	MX_I2C2_Init();
+	// MX_I2C2_Init();
 	MX_USART2_UART_Init();
 	MX_ADC2_Init();
 	MX_TIM1_Init();
@@ -131,19 +137,14 @@ int main(void)
 			drivetrains_differential2wd,
 			DIFFERENTIAL2WD_WHEEL_DIA_MM);
 
-	struct bme280_dev dev;
-	struct bme280_data comp_data;
-	int8_t rslt = BME280_OK;
-	rslt = sensor_init(&dev);
-	rslt = set_normal_mode(&hi2c1, dev.dev_id);
-	char temp_sensor_info[3];
-
-
 	////#DEBUG START
 	//drive_system_holonomic3(0, DEG_0);
 	//drive_motors_holonomic3(10, 10, 10);
 	////#DEBUG END
 
+	rslt = sensor_init(&dev);
+	rslt = set_normal_mode(dev.dev_id);
+	uint8_t reg_data = 0x07;
 	/* USER CODE END 2 */
 
 	/* Infinite loop */
@@ -190,28 +191,17 @@ int main(void)
 			}
 		}
 
-		/**
-		 * Gather temp sensor data
-		 */
 		if(HAL_GetTick() % 250 == 0)
 		{
-			rslt = get_bme280_all_data(&dev, &comp_data);
-			//uint32_t, int32_t, uint32_t
-			temp_sensor_info[0] = comp_data.pressure;
-			temp_sensor_info[1] = comp_data.temperature;
-			temp_sensor_info[2] = comp_data.humidity;
-			uint8_t TEMP_SIZE = sizeof(temp_sensor_info[0])+sizeof(temp_sensor_info[1])+sizeof(temp_sensor_info[2]);
+			msg_from_vehicle.sensors[13] = 0x1C;
 
-			if(rslt == 0) {
-				_Error_Handler(__FILE__, __LINE__);
-			}
-
-			assemble_message_from_vehicle(temp_sensor_info, sizeof(temp_sensor_info[0])+sizeof(temp_sensor_info[1])+sizeof(temp_sensor_info[2]));
-			HAL_UART_Transmit(&huart2, (uint8_t*)temp_sensor_info, TEMP_SIZE, 0xFFFF);
+			// if(rslt == 1) {
+			// 	_Error_Handler(__FILE__, __LINE__);
+			// }
 		}
-	}
-	/* USER CODE END 3 */
 
+	}
+		/* USER CODE END 3 */
 }
 
 /** System Clock Configuration
@@ -277,6 +267,38 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/**
+ * I2C Callbacks
+ */
+void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	msg_from_vehicle.sensors[14] = 0x1A;
+}
+
+
+void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	/*
+	uint8_t rslt = BME280_OK;
+	// uint8_t hall_data = Read_Hall_Sensor();
+	// msg_from_vehicle.sensors[0] = hall_data;
+
+	// Convert temperature to kelvin
+	// uint8_t temp = (comp_data.temperature+459.67)*(5.0/9.0);
+
+	uint8_t sensor_count = 0;
+	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) 0x02;
+	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.pressure;
+	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.humidity;
+	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature >>24;
+	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature >>16;
+	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature >>8;
+	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature;
+	*/
+	msg_from_vehicle.sensors[15] = 0x1B;
+}
+
 /**
  * UART Callbacks
  */
