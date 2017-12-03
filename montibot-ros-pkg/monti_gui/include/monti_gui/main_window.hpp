@@ -59,7 +59,29 @@ public Q_SLOTS:
     ** Monti connections
     *******************************************/
 
+    //Connect or disconnect with Monti
     void on_pushButton_connectMonti_clicked(bool check);
+    void on_pushButton_disconnectMonti_clicked(bool check);
+
+    //Set Monti configuration
+    void on_pushButton_setDrivetrain_clicked(bool check);
+    void on_pushButton_setNumPods_clicked(bool check);
+    void on_pushButton_setIds_clicked(bool check);
+
+    //Motion Control
+    void on_pushButton_idle_clicked(bool check);
+
+    //Standard Directions
+    void on_pushButton_forward_clicked(bool check);
+    void on_pushButton_backward_clicked(bool check);
+    void on_pushButton_left_clicked(bool check);
+    void on_pushButton_right_clicked(bool check);
+
+    //Angle Directions
+    void on_pushButton_45_bl_clicked(bool check);
+    void on_pushButton_45_br_clicked(bool check);
+    void on_pushButton_45_tl_clicked(bool check);
+    void on_pushButton_45_tr_clicked(bool check);
 
 private:
 	Ui::MainWindowDesign ui;
