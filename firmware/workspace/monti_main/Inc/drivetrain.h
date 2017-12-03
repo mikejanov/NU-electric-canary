@@ -15,9 +15,6 @@
 #include "gpio.h"
 #include "tim.h"
 
-#include "holonomic3.h"
-#include "differential2wd.h"
-
 #define NUM_MOTORS_ENABLED	3
 
 struct motor

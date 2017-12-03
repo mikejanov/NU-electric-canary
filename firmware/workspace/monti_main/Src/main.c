@@ -46,7 +46,11 @@
 
 /* USER CODE BEGIN Includes */
 #include "drivetrain.h"
+#include "holonomic3.h"
+#include "differential2wd.h"
+
 #include "vehicle_messages.h"
+
 #include "string.h"
 /* USER CODE END Includes */
 
@@ -55,14 +59,18 @@
 /* USER CODE BEGIN PV */
 /* Private variables ---------------------------------------------------------*/
 // UART Transmission
+#define MAX_TIME_SINCE_RX	1000
+
 char msg_rx[MSG_TX_BUFFER_SIZE];
 char msg_tx[MSG_TX_BUFFER_SIZE];
 uint16_t msg_tx_count = 0;
 uint16_t msg_rx_count = 0;
 uint8_t msg_rx_type = MSG_HEADER_CONFIG;
+uint32_t time_last_rx = 0;
 
 // Motors
 struct motor motors[NUM_MOTORS_ENABLED];
+drivetrain_options_t current_drivetrain = drivetrains_holonomic3;
 
 // Drivetrain Wheel Sizes
 #define HOLONOMIC3_WHEEL_DIA_MM			22
@@ -74,10 +82,30 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 /* Private function prototypes -----------------------------------------------*/
+void drive_system(drivetrain_options_t _drivetrain,
+				  uint8_t system_speed,
+				  direction_t _direction);
 
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
+
+void drive_system(drivetrain_options_t _drivetrain,
+				  uint8_t system_speed,
+				  direction_t _direction)
+{
+	switch (_drivetrain)
+	{
+	case drivetrains_holonomic3:
+		drive_system_holonomic3(msg_to_vehicle.throttle,
+								msg_to_vehicle.direction);
+		break;
+	case drivetrains_differential2wd:
+		drive_system_differential2wd(msg_to_vehicle.throttle,
+									 msg_to_vehicle.direction);
+		break;
+	}
+}
 
 /* USER CODE END 0 */
 
@@ -116,7 +144,6 @@ int main(void)
   __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
   HAL_NVIC_EnableIRQ(USART2_IRQn);
 
-  drivetrain_options_t current_drivetrain = drivetrains_holonomic3;
   uint32_t current_time = 0;
 
   configure_motors(motors);
@@ -175,6 +202,20 @@ int main(void)
 					  	  	  	 	HAL_GetTick(),
 									current_drivetrain);
 			  msg_from_vehicle.encoders[ii] = motors[ii].linear_speed;
+		  }
+	  }
+
+	  /**
+	   * Stop the robot if it hasn't received a command in a while,
+	   * 	but only check every half second.
+	   */
+	  if(HAL_GetTick() % 500 == 0)
+	  {
+		  if((HAL_GetTick() - time_last_rx) > MAX_TIME_SINCE_RX)
+		  {
+				drive_system(current_drivetrain,
+							 0,
+							 msg_to_vehicle.direction);
 		  }
 	  }
   }
@@ -252,7 +293,7 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if(huart->Instance == huart2.Instance)
 	{
-
+		// Do nothing
 	}
 }
 
@@ -261,16 +302,22 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if(huart->Instance == huart2.Instance)
 	{
 		msg_rx_type = vehicle_message_receive(msg_rx);
+
+		////#DEBUG START
 		//HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
+		////#DEBUG END
+
+		time_last_rx = HAL_GetTick(); // Reset RX timer
 
 		switch(msg_rx_type)
 		{
 		case MSG_HEADER_CONFIG:
-			// TODO
+			current_drivetrain = msg_vehicle_config.drive_type;
 			break;
 		case MSG_HEADER_COMMAND:
-			drive_system_holonomic3(msg_to_vehicle.throttle,
-									msg_to_vehicle.direction);
+			drive_system(current_drivetrain,
+						 msg_to_vehicle.throttle,
+						 msg_to_vehicle.direction);
 			break;
 		default:
 			// Nothing
