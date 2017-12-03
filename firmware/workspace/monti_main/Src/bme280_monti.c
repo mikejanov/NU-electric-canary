@@ -10,7 +10,7 @@ int8_t sensor_init(struct bme280_dev *dev)
 {
 	int8_t rslt;
 
-	dev->dev_id = BME280_I2C_ADDR_SEC; // 0x77
+	dev->dev_id = BME280_I2C_ADDR_SEC; // 0x77, 0x76 = BME280_I2C_ADDR_PRIM
 	dev->intf = BME280_I2C_INTF;
 	dev->read = user_i2c_read;
 	dev->write = user_i2c_write;
@@ -102,7 +102,6 @@ int8_t get_bme280_all_data(struct bme280_dev *dev, struct bme280_data *comp_data
 int8_t get_chip_id(uint8_t dev_id, uint8_t *reg_data)
 {
 	int8_t rslt = 1;
-	HAL_StatusTypeDef hal_rslt;
 	uint8_t reg_addr = 0xD0;
 
 	HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, &reg_addr, sizeof(reg_addr));
@@ -113,7 +112,7 @@ int8_t get_chip_id(uint8_t dev_id, uint8_t *reg_data)
     	reg_data[0] = 0x11;
     }
     */
-    // HAL_Delay(100);
+    HAL_Delay(200);
 
     //while(HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
     //{
@@ -121,6 +120,7 @@ int8_t get_chip_id(uint8_t dev_id, uint8_t *reg_data)
 
     // Read a number of bytes that is expected from
     HAL_I2C_Master_Receive_IT(&hi2c1, dev_id<<1, reg_data, sizeof(reg_data));
+    HAL_Delay(250);
 
 	return rslt;
 }
