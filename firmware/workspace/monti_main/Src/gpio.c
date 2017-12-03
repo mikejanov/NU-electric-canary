@@ -63,7 +63,6 @@ void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct;
 
   /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOF_CLK_ENABLE();
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
@@ -87,13 +86,13 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pins : PBPin PBPin PBPin PBPin 
                            PBPin PBPin PBPin */
   GPIO_InitStruct.Pin = DIN_2_Pin|DIN_3_Pin|DIN_4_Pin|DIN_5_Pin 
-                          |MOTOR_C_ENC_B_Pin|LIMIT_SWITCH_1_Pin|LIMIT_SWITCH_2_Pin;
+                          |USONIC_B_RECEIVE_Pin|LIMIT_SWITCH_1_Pin|LIMIT_SWITCH_2_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin PBPin */
-  GPIO_InitStruct.Pin = MOTOR_C_ENC_A_Pin|MOTOR_A_ENC_A_Pin|MOTOR_A_ENC_B_Pin;
+  GPIO_InitStruct.Pin = MOTOR_C_ENC_A_Pin|MOTOR_A_ENC_A_Pin|USONIC_A_TRIGGER_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
@@ -132,10 +131,10 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(MOTOR_B_ENC_A_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PtPin */
-  GPIO_InitStruct.Pin = MOTOR_B_ENC_B_Pin;
+  GPIO_InitStruct.Pin = USONIC_A_RECEIVE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(MOTOR_B_ENC_B_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(USONIC_A_RECEIVE_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI2_TSC_IRQn, 0, 0);

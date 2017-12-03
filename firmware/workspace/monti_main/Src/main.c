@@ -75,6 +75,9 @@ drivetrain_options_t current_drivetrain = drivetrains_holonomic3;
 // Drivetrain Wheel Sizes
 #define HOLONOMIC3_WHEEL_DIA_MM			22
 #define DIFFERENTIAL2WD_WHEEL_DIA_MM	83
+
+// Dual-Purpose Pin Defines
+#define USONIC_B_TRIGGER GPIO_PIN_11
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -263,12 +266,10 @@ void SystemClock_Config(void)
   }
 
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_I2C1
-                              |RCC_PERIPHCLK_I2C2|RCC_PERIPHCLK_TIM1
-                              |RCC_PERIPHCLK_ADC12;
+                              |RCC_PERIPHCLK_TIM1|RCC_PERIPHCLK_ADC12;
   PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV1;
   PeriphClkInit.I2c1ClockSelection = RCC_I2C1CLKSOURCE_HSI;
-  PeriphClkInit.I2c2ClockSelection = RCC_I2C2CLKSOURCE_HSI;
   PeriphClkInit.Tim1ClockSelection = RCC_TIM1CLK_HCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -334,26 +335,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 // Rising edge callback
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-	/*
+	// Only using one encoder, so there are two rising edges per revolution
 	switch(GPIO_Pin)
 	{
 	case MOTOR_A_ENC_A_Pin:
 		//bool_motor_a_enc_a = !bool_motor_a_enc_a;
 		break;
-	case MOTOR_A_ENC_B_Pin:
-
-		break;
 	case MOTOR_B_ENC_A_Pin:
-
-		break;
-	case MOTOR_B_ENC_B_Pin:
 
 		break;
 	case MOTOR_C_ENC_A_Pin:
 
 		break;
 	}
-	*/
 }
 /* USER CODE END 4 */
 
