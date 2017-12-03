@@ -201,11 +201,12 @@ uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_m
 
 	switch(_drivetrain_type)
 	{
+	// TODO fix this
 	case drivetrains_differential2wd:
-		wheel_diameter = differential2wd_system.wheel_diameter;
+		wheel_diameter = 83;//differential2wd_system.wheel_diameter;
 		break;
 	case drivetrains_holonomic3:
-		wheel_diameter = holonomic3_system.wheel_diameter;
+		wheel_diameter = 22;//holonomic3_system.wheel_diameter;
 		break;
 	}
 

@@ -30,7 +30,7 @@ uint8_t vehicle_message_receive(char message[])
 		return MSG_HEADER_COMMAND;
 	default:
 		message_error_handler(message, ERROR_MSG_HEADER);
-		return 1;
+		return 0x00;
 	}
 }
 

@@ -191,6 +191,7 @@ int main(void)
 	   * Gather encoder values and calculate speed feedback
 	   * TODO: 1kHz is too slow. Need at least 10kHz
 	   */
+	  /*
 	  if(HAL_GetTick() % 1 == 0)
 	  {
 		  update_encoders(motors);
@@ -203,6 +204,7 @@ int main(void)
 			  msg_from_vehicle.encoders[ii] = motors[ii].linear_speed;
 		  }
 	  }
+	  */
 
 	  /**
 	   * Stop the robot if it hasn't received a command in a while,
@@ -304,7 +306,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		msg_rx_type = vehicle_message_receive(msg_rx);
 
 		////#DEBUG START
-		//HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
+		HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
 		////#DEBUG END
 
 		time_last_rx = HAL_GetTick(); // Reset RX timer
