@@ -81,6 +81,7 @@ class montiRobot():
 	def send_monti_control_cb(self, command):
 		#Send the control command to the Monti ROV
 		rospy.loginfo("Sending motion control command to Monti")
+		print ("Moving in direction " + str(command.direction) + " at throttle " + str(command.throttle) + " for " + str(command.actuation_time) + " seconds")
 
 	def send_monti_config_cb(self, command):
 		#Send the control command to the Monti ROV

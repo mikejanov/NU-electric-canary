@@ -69,6 +69,7 @@ public Q_SLOTS:
     void on_pushButton_setIds_clicked(bool check);
 
     //Motion Control
+    uint8_t get_throttle();
     void on_pushButton_idle_clicked(bool check);
 
     //Standard Directions

@@ -53,8 +53,8 @@ bool QNode::init() {
 	
 	// Add your ros communications here.
 	monti_connection_pub = n.advertise<std_msgs::String>("monti/connection_status", 1000);
-	// monti_config_pub = n.advertise<std_msgs::String>("monti/config", 1000);
-	// monti_connection_pub = n.advertise<std_msgs::String>("monti/control_command", 1000);
+	monti_config_pub = n.advertise<monti_msgs::Monti_Config>("monti/config", 1000);
+	monti_control_pub = n.advertise<monti_msgs::Monti_Control>("monti/control_command", 1000);
 	start();
 	return true;
 }
@@ -156,7 +156,13 @@ void QNode::update_monti_connection(bool connection_status){  //Connect to the m
 	log(Info,std::string("I sent: ")+msg.data);
 }
 
-void QNode::move_monti(uint8_t direction, uint8_t throttle){}
+void QNode::move_monti(uint8_t direction, uint8_t throttle){
+	monti_control_msg.direction = direction;
+	monti_control_msg.throttle = throttle;
+	monti_control_msg.actuation_time = 5;
+
+	monti_control_pub.publish(monti_control_msg);
+}
 
 void QNode::set_monti_config(uint8_t drive_type, uint8_t num_pods, uint8_t pod_ids[]){}
 

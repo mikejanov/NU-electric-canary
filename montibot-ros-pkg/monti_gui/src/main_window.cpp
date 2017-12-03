@@ -177,11 +177,14 @@ void MainWindow::closeEvent(QCloseEvent *event)
 ** Implementation [Monti Control]
 *****************************************************************************/
 
+//Monti Connection Status
 void MainWindow::on_pushButton_connectMonti_clicked(bool check){
 	qnode.update_monti_connection(true);
 }
 
-void MainWindow::on_pushButton_disconnectMonti_clicked(bool check){}
+void MainWindow::on_pushButton_disconnectMonti_clicked(bool check){
+	qnode.update_monti_connection(false);
+}
 
 //Set Monti configuration
 void MainWindow::on_pushButton_setDrivetrain_clicked(bool check){}
@@ -189,19 +192,61 @@ void MainWindow::on_pushButton_setNumPods_clicked(bool check){}
 void MainWindow::on_pushButton_setIds_clicked(bool check){}
 
 //Motion Control
-void MainWindow::on_pushButton_idle_clicked(bool check){}
+uint8_t MainWindow::get_throttle(){
+	//Convert the throttle scaled level to a usable value by the ROV
+	int throttle_level = ui.verticalSlider_throttle->value();
+
+	//TODO: insert switch case here for conversion
+
+	return throttle_level;
+}
+
+void MainWindow::on_pushButton_idle_clicked(bool check){
+	qnode.move_monti(0, 0); //Don't move!
+}
 
 //Standard Directions
-void MainWindow::on_pushButton_forward_clicked(bool check){}
-void MainWindow::on_pushButton_backward_clicked(bool check){}
-void MainWindow::on_pushButton_left_clicked(bool check){}
-void MainWindow::on_pushButton_right_clicked(bool check){}
+void MainWindow::on_pushButton_forward_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(0, throttle); //DEG_0 in firmware
+}
+
+void MainWindow::on_pushButton_backward_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(4, throttle); //DEG_180 in firmware
+}
+void MainWindow::on_pushButton_left_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(6, throttle); //DEG_270 in firmware
+}
+
+void MainWindow::on_pushButton_right_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(2, throttle); //DEG_90 in firmware
+}
 
 //Angle Directions
-void MainWindow::on_pushButton_45_bl_clicked(bool check){}
-void MainWindow::on_pushButton_45_br_clicked(bool check){}
-void MainWindow::on_pushButton_45_tl_clicked(bool check){}
-void MainWindow::on_pushButton_45_tr_clicked(bool check){}
+
+void MainWindow::on_pushButton_45_tr_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(1, throttle); //DEG_45 in firmware
+}
+
+void MainWindow::on_pushButton_45_br_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(3, throttle); //DEG_135 in firmware
+}
+
+void MainWindow::on_pushButton_45_bl_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(5, throttle); //DEG_225 in firmware
+}
+
+void MainWindow::on_pushButton_45_tl_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(7, throttle); //DEG_315 in firmware
+}
+
 
 }  // namespace monti_gui
 

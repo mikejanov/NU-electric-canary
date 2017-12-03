@@ -20,6 +20,8 @@
 #include <string>
 #include <QThread>
 #include <QStringListModel>
+#include <monti_msgs/Monti_Control.h>
+#include <monti_msgs/Monti_Config.h>
 
 
 /*****************************************************************************
@@ -70,9 +72,11 @@ private:
 	char** init_argv;
 	ros::Publisher monti_connection_pub;
 	ros::Publisher monti_config_pub;
-	ros::Publisher monti_move_cmd_pub;
+	ros::Publisher monti_control_pub;
 	ros::Subscriber monti_state_sub;
     QStringListModel logging_model;
+    monti_msgs::Monti_Control monti_control_msg;
+    monti_msgs::Monti_Config monti_config_msg;
 };
 
 }  // namespace monti_gui
