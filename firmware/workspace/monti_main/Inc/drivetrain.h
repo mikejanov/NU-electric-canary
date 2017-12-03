@@ -14,6 +14,7 @@
 
 #include "gpio.h"
 #include "tim.h"
+#include "math.h"
 
 #define NUM_MOTORS_ENABLED	3
 
@@ -29,8 +30,10 @@ struct motor
 
 	// Feedback Values
 	uint32_t	enc_last_rise;	// SysTick of the last (enc_a XOR enc_b)
-	uint8_t		enc_a_last;		// Keeps track of change for encoder a
-	uint8_t		enc_b_last;		// Keeps track of change for encoder b
+	uint32_t	enc_last_count;	// Counts how many total (runtime) rising edges at the last poll
+	uint32_t	enc_count;		// Counts how many rising edges there have been since runtime
+	//uint8_t		enc_a_last;		// Keeps track of change for encoder a
+
 	// TODO: decouple linear_speed from motor struct
 	uint8_t		linear_speed;	// Coupled with the wheel size of currently-active drivetrain
 

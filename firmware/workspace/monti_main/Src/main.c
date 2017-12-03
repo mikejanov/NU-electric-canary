@@ -192,12 +192,11 @@ int main(void)
 
 	  /**
 	   * Gather encoder values and calculate speed feedback
-	   * TODO: 1kHz is too slow. Need at least 10kHz
+	   * NOTE: Need at least 10kHz
 	   */
-	  /*
-	  if(HAL_GetTick() % 1 == 0)
+	  if(HAL_GetTick() % 500 == 0)
 	  {
-		  update_encoders(motors);
+		  //update_encoders(motors);
 		  current_time = HAL_GetTick();
 		  for(int ii = 0; ii < NUM_MOTORS_ENABLED; ii++)
 		  {
@@ -207,7 +206,6 @@ int main(void)
 			  msg_from_vehicle.encoders[ii] = motors[ii].linear_speed;
 		  }
 	  }
-	  */
 
 	  /**
 	   * Stop the robot if it hasn't received a command in a while,
@@ -216,12 +214,12 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 500 == 0)
 	  {
-		  if((HAL_GetTick() - time_last_rx) > MAX_TIME_SINCE_RX)
-		  {
-				drive_system(current_drivetrain,
-							 0,
-							 msg_to_vehicle.direction);
-		  }
+		  //if((HAL_GetTick() - time_last_rx) > MAX_TIME_SINCE_RX)
+		  //{
+		//		drive_system(current_drivetrain,
+		//					 0,
+		//					 msg_to_vehicle.direction);
+		  //}
 	  }
   }
   /* USER CODE END 3 */
@@ -307,10 +305,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		msg_rx_type = vehicle_message_receive(msg_rx);
 
 		////#DEBUG START
-		HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
+		//HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
 		////#DEBUG END
 
-		time_last_rx = HAL_GetTick(); // Reset RX timer
+		//time_last_rx = HAL_GetTick(); // Reset RX timer
 
 		switch(msg_rx_type)
 		{
@@ -318,9 +316,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			current_drivetrain = msg_vehicle_config.drive_type;
 			break;
 		case MSG_HEADER_COMMAND:
+			HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
+			/*
 			drive_system(current_drivetrain,
 						 msg_to_vehicle.throttle,
 						 msg_to_vehicle.direction);
+						 */
+			drive_system_holonomic3(50, //msg_to_vehicle.throttle
+											1);//msg_to_vehicle.direction
 			break;
 		default:
 			// Nothing
@@ -339,13 +342,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 	switch(GPIO_Pin)
 	{
 	case MOTOR_A_ENC_A_Pin:
-		//bool_motor_a_enc_a = !bool_motor_a_enc_a;
+		motors[0].enc_count++;
 		break;
 	case MOTOR_B_ENC_A_Pin:
-
+		motors[1].enc_count++;
 		break;
 	case MOTOR_C_ENC_A_Pin:
-
+		motors[2].enc_count++;
 		break;
 	}
 }
