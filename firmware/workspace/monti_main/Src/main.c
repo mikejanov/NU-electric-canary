@@ -316,14 +316,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			current_drivetrain = msg_vehicle_config.drive_type;
 			break;
 		case MSG_HEADER_COMMAND:
-			HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
-			/*
 			drive_system(current_drivetrain,
 						 msg_to_vehicle.throttle,
 						 msg_to_vehicle.direction);
-						 */
+			/*
 			drive_system_holonomic3(50, //msg_to_vehicle.throttle
 											1);//msg_to_vehicle.direction
+											*/
 			break;
 		default:
 			// Nothing
