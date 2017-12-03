@@ -48,7 +48,7 @@ int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint1
     int8_t rtrn_rslt = 1;
 
     // Transmit slave id, reg_data needs to be register addr and register data (16 bits)
-    HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, &reg_addr, len);
+    // HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, &reg_addr, len);
     // HAL_Delay(100);
 
     return rtrn_rslt;
@@ -57,9 +57,10 @@ int8_t user_i2c_write(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint1
 int8_t user_i2c_read(uint8_t dev_id, uint8_t reg_addr, uint8_t *reg_data, uint16_t len)
 {
     int8_t rtrn_rslt = 1;
+    uint8_t reg_packet[] = {reg_addr};
 
     // Write the register addr to the slave id, should be 8bits
-    HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, &reg_addr, sizeof(reg_addr));
+    HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, reg_packet, sizeof(reg_packet));
     // HAL_Delay(100);
 
     // Read a number of bytes that is expected from
@@ -81,7 +82,7 @@ int8_t set_normal_mode(uint8_t dev_id)
 	// 0x3B sets the osrs_t as 001, osrs_p as 110, and mode as 11 (normal mode)
 	// ^^ "Indoor Navigation Mode"
 	uint8_t reg_data[] = {BME280_CTRL_MEAS_ADDR, 0x3B};
-	HAL_StatusTypeDef rslt;
+	// HAL_StatusTypeDef rslt;
 	int8_t rtrn_rslt = 1;
 
 	HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, reg_data, sizeof(reg_data));
@@ -95,5 +96,31 @@ int8_t get_bme280_all_data(struct bme280_dev *dev, struct bme280_data *comp_data
 	int8_t rslt;
 	rslt = bme280_get_sensor_data(BME280_ALL, comp_data, dev);
 	// dev->delay_ms(250);
+	return rslt;
+}
+
+int8_t get_chip_id(uint8_t dev_id, uint8_t *reg_data)
+{
+	int8_t rslt = 1;
+	HAL_StatusTypeDef hal_rslt;
+	uint8_t reg_addr = 0xD0;
+
+	HAL_I2C_Master_Transmit_IT(&hi2c1, dev_id<<1, &reg_addr, sizeof(reg_addr));
+
+	/*
+    if(hal_rslt == HAL_BUSY) {
+    	//&reg_addr, sizeof(reg_addr)
+    	reg_data[0] = 0x11;
+    }
+    */
+    // HAL_Delay(100);
+
+    //while(HAL_I2C_GetState(&hi2c1) != HAL_I2C_STATE_READY)
+    //{
+    //}
+
+    // Read a number of bytes that is expected from
+    HAL_I2C_Master_Receive_IT(&hi2c1, dev_id<<1, reg_data, sizeof(reg_data));
+
 	return rslt;
 }
