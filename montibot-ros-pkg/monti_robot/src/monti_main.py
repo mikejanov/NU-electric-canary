@@ -28,8 +28,11 @@ class montiRobot():
 		self.set_robot_config()
 
 		#Tesing the messages
-		while not rospy.is_shutdown():
-			self.pub_monti_state(5)
+		# while not rospy.is_shutdown():
+		# 	self.pub_monti_state(5)
+
+		#Poll Monti State Messages
+		self.poll_monti()
 
 	def init_comms_cb(self, state):
 		if (state.data == "connect"): # Open serial comms with monti
@@ -42,14 +45,21 @@ class montiRobot():
 					rospy.loginfo("Successfully connected to the Monti ROV on serial port " + serial_port)
 					return # Once successfully connected, stop trying
 				except SerialException:
-					print ("Unable to connect to Monti on port " + serial_port)
+					rospy.loginfo("Unable to connect to Monti on port " + serial_port)
 
 			# while (1):
 			# 	words = ser.read(11)
 			# 	print(words)
-		else (state.data == "disconnect"): # Close serial comms with monti
+		elif (state.data == "disconnect"): # Close serial comms with monti
 			print ("Disconnecting from Monti")
 			ser.close()
+
+	def poll_monti(self):
+		# Read state messages from the serial port while it is open and data is present
+		while (ser.is_open() and not rospy.is_shutdown()):
+			if (ser.inWaiting()!=-1):
+				raw_data = ser.read(21)
+				self.pub_monti_state(raw_data)
 
 
 	def set_robot_config(self):
