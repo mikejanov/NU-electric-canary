@@ -135,7 +135,6 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_I2C1_Init();
-  MX_I2C2_Init();
   MX_USART2_UART_Init();
   MX_ADC2_Init();
   MX_TIM1_Init();
@@ -208,6 +207,7 @@ int main(void)
 	  /**
 	   * Stop the robot if it hasn't received a command in a while,
 	   * 	but only check every half second.
+	   * 	TODO: Make this a flag flip instead
 	   */
 	  if(HAL_GetTick() % 500 == 0)
 	  {
