@@ -56,6 +56,11 @@ public:
 	QStringListModel* loggingModel() { return &logging_model; }
 	void log( const LogLevel &level, const std::string &msg);
 
+	//Monti ROV Control Functions
+	void update_monti_connection(bool connection_status);  //Connect to the monti rov, 1=connect, 0=disconnect
+	void move_monti(uint8_t direction, uint8_t throttle);
+	void set_monti_config(uint8_t drive_type, uint8_t num_pods, uint8_t pod_ids[]);
+
 Q_SIGNALS:
 	void loggingUpdated();
     void rosShutdown();
@@ -63,7 +68,10 @@ Q_SIGNALS:
 private:
 	int init_argc;
 	char** init_argv;
-	ros::Publisher chatter_publisher;
+	ros::Publisher monti_connection_pub;
+	ros::Publisher monti_config_pub;
+	ros::Publisher monti_move_cmd_pub;
+	ros::Subscriber monti_state_sub;
     QStringListModel logging_model;
 };
 

@@ -173,5 +173,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 	QMainWindow::closeEvent(event);
 }
 
-}  // namespace monti_gui
+/*****************************************************************************
+** Implementation [Monti Control]
+*****************************************************************************/
 
+void MainWindow::on_pushButton_connectMonti_clicked(bool check){
+	qnode.update_monti_connection(true);
+}
+
+}  // namespace monti_gui

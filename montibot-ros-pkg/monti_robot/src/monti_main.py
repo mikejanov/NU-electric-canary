@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import rospy
+from std_msgs.msg import String
 import monti_msgs.msg as msgs
 import numpy
 import serial
@@ -16,6 +17,7 @@ class montiRobot():
 		self.state_pub = rospy.Publisher(name + 'state', msgs.Monti_Robot_State, queue_size = 10)
 		
 		#Subscribe to the command and initiallization topics
+		rospy.Subscriber(name + 'connection_status', String, self.init_comms_cb)
 		rospy.Subscriber(name + 'control_command', msgs.Monti_Control, self.send_monti_control_cb)
 		rospy.Subscriber(name + 'config', msgs.Monti_Config, self.send_monti_config_cb)
 
@@ -28,12 +30,17 @@ class montiRobot():
 		while not rospy.is_shutdown():
 			self.pub_monti_state(5)
 
-	def init_comms(self):
-		#Initialize communication with the Monti ROV
-		ser = serial.Serial('/dev/ttyUSB1', baudrate=9600, parity='E', bytesize=7)
-		ser.write('MontiPython')
-		rospy.loginfo("Successfully connected to the Monti ROV on port A")
-		words = ser.read(11)
+	def init_comms_cb(self, state):
+		if (state.data == "connect"):
+			print ("initialized connection woooooh!")
+			# #Initialize communication with the Monti ROV
+			# ser = serial.Serial('/dev/ttyUSB1', baudrate=9600, parity='E', bytesize=7)
+			# ser.write('MontiPython')
+			# rospy.loginfo("Successfully connected to the Monti ROV on port A")
+			# words = ser.read(11)
+		else:
+			print ("Failed to connect!")
+			ser.close()
 
 
 	def set_robot_config(self):

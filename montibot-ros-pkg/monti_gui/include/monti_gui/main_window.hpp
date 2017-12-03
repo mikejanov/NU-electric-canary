@@ -55,6 +55,12 @@ public Q_SLOTS:
     *******************************************/
     void updateLoggingView(); // no idea why this can't connect automatically
 
+    /******************************************
+    ** Monti connections
+    *******************************************/
+
+    void on_pushButton_connectMonti_clicked(bool check);
+
 private:
 	Ui::MainWindowDesign ui;
 	QNode qnode;
