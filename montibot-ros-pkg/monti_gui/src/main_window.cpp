@@ -180,15 +180,96 @@ void MainWindow::closeEvent(QCloseEvent *event)
 //Monti Connection Status
 void MainWindow::on_pushButton_connectMonti_clicked(bool check){
 	qnode.update_monti_connection(true);
+
+	ui.pushButton_connectMonti->setEnabled(false);
+	ui.pushButton_disconnectMonti->setEnabled(true);
+	ui.spinBox_setDrivetrain->setEnabled(true);
+	ui.pushButton_setDrivetrain->setEnabled(true);
 }
 
 void MainWindow::on_pushButton_disconnectMonti_clicked(bool check){
 	qnode.update_monti_connection(false);
+	
+	ui.pushButton_connectMonti->setEnabled(true);
+	ui.pushButton_disconnectMonti->setEnabled(false);
+
+	ui.spinBox_setDrivetrain->setEnabled(false);
+    ui.pushButton_setDrivetrain->setEnabled(false);
+
+    ui.spinBox_setNumPods->setEnabled(false);
+    ui.pushButton_setNumPods->setEnabled(false);
+
+    ui.spinBox_pod1->setEnabled(false);
+    ui.spinBox_pod2->setEnabled(false);
+    ui.spinBox_pod3->setEnabled(false);
+    ui.spinBox_pod4->setEnabled(false);
+    ui.spinBox_pod5->setEnabled(false);
+    ui.pushButton_setIds->setEnabled(false);
 }
 
 //Set Monti configuration
-void MainWindow::on_pushButton_setDrivetrain_clicked(bool check){}
-void MainWindow::on_pushButton_setNumPods_clicked(bool check){}
+void MainWindow::on_pushButton_setDrivetrain_clicked(bool check){
+	ui.spinBox_setNumPods->setEnabled(true);
+    ui.pushButton_setNumPods->setEnabled(true);
+}
+void MainWindow::on_pushButton_setNumPods_clicked(bool check){
+	int num_pods = ui.spinBox_setNumPods->value();
+	if (num_pods == 1)
+	{
+		ui.spinBox_pod1->setEnabled(true);
+		ui.spinBox_pod2->setEnabled(false);
+    	ui.spinBox_pod3->setEnabled(false);
+    	ui.spinBox_pod4->setEnabled(false);
+    	ui.spinBox_pod5->setEnabled(false);
+		ui.pushButton_setIds->setEnabled(true);
+	}
+	else if (num_pods == 2)
+	{
+		ui.spinBox_pod1->setEnabled(true);
+		ui.spinBox_pod2->setEnabled(true);
+		ui.spinBox_pod3->setEnabled(false);
+    	ui.spinBox_pod4->setEnabled(false);
+    	ui.spinBox_pod5->setEnabled(false);
+		ui.pushButton_setIds->setEnabled(true);
+	}
+	else if (num_pods == 3)
+	{
+		ui.spinBox_pod1->setEnabled(true);
+		ui.spinBox_pod2->setEnabled(true);
+		ui.spinBox_pod3->setEnabled(true);
+    	ui.spinBox_pod4->setEnabled(false);
+    	ui.spinBox_pod5->setEnabled(false);
+		ui.pushButton_setIds->setEnabled(true);
+	}
+	else if (num_pods == 4)
+	{
+		ui.spinBox_pod1->setEnabled(true);
+		ui.spinBox_pod2->setEnabled(true);
+		ui.spinBox_pod3->setEnabled(true);
+		ui.spinBox_pod4->setEnabled(true);
+		ui.spinBox_pod5->setEnabled(false);
+		ui.pushButton_setIds->setEnabled(true);
+	}
+	else if (num_pods == 5)
+	{
+		ui.spinBox_pod1->setEnabled(true);
+		ui.spinBox_pod2->setEnabled(true);
+		ui.spinBox_pod3->setEnabled(true);
+		ui.spinBox_pod4->setEnabled(true);
+		ui.spinBox_pod5->setEnabled(true);
+		ui.pushButton_setIds->setEnabled(true);
+	}
+	else
+	{
+		ui.spinBox_pod1->setEnabled(false);
+	    ui.spinBox_pod2->setEnabled(false);
+	    ui.spinBox_pod3->setEnabled(false);
+	    ui.spinBox_pod4->setEnabled(false);
+	    ui.spinBox_pod5->setEnabled(false);
+	    ui.pushButton_setIds->setEnabled(false);
+	}
+
+}
 void MainWindow::on_pushButton_setIds_clicked(bool check){}
 
 //Motion Control
