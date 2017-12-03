@@ -4,6 +4,7 @@ from std_msgs.msg import String
 import monti_msgs.msg as msgs
 import numpy
 import serial
+from serial import SerialException
 
 class montiRobot():
 	def __init__(self, name = 'monti/'):
@@ -31,15 +32,23 @@ class montiRobot():
 			self.pub_monti_state(5)
 
 	def init_comms_cb(self, state):
-		if (state.data == "connect"):
-			print ("initialized connection woooooh!")
-			# #Initialize communication with the Monti ROV
-			# ser = serial.Serial('/dev/ttyUSB1', baudrate=9600, parity='E', bytesize=7)
-			# ser.write('MontiPython')
-			# rospy.loginfo("Successfully connected to the Monti ROV on port A")
-			# words = ser.read(11)
-		else:
-			print ("Failed to connect!")
+		if (state.data == "connect"): # Open serial comms with monti
+			serial_ports = ['/dev/ttyUSB0', '/dev/ttyUSB1', '/dev/ttyUSB2', '/dev/ttyUSB3', '/dev/ttyUSB4', '/dev/ttyUSB5' ]
+			#Initialize communication with the Monti ROV
+			for serial_port in serial_ports:
+				try:
+					self.ser = serial.Serial('/dev/ttyUSB2', baudrate=9600, parity='E', bytesize=7)
+					#self.ser.write('MontiPython')
+					rospy.loginfo("Successfully connected to the Monti ROV on serial port " + serial_port)
+					return # Once successfully connected, stop trying
+				except SerialException:
+					print ("Unable to connect to Monti on port " + serial_port)
+
+			# while (1):
+			# 	words = ser.read(11)
+			# 	print(words)
+		else (state.data == "disconnect"): # Close serial comms with monti
+			print ("Disconnecting from Monti")
 			ser.close()
 
 
