@@ -34,4 +34,6 @@ int8_t get_bme280_all_data(struct bme280_dev *dev, struct bme280_data *comp_data
 
 int8_t get_chip_id(uint8_t dev_id, uint8_t *reg_data);
 
+uint8_t return_chip_id(uint8_t dev_id);
+
 #endif /* BME280_MONTI_H_ */

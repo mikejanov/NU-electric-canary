@@ -35,7 +35,7 @@ uint8_t Read_Hall_Sensor()
 // todo: better error checking
 void ultrasonic_calculate(uint8_t *distance) {
 	// Max distance detectable is 4m, min is 2cm
-	// Max time is 20ms (23200 us), min time is 0.12 ms?
+	// Max time is 23ms (23200 us), min time is 0.12 ms?
 	uint8_t timer_1 = 0;
 	uint8_t timeout = 20; // ms necessary to check 1ft distance (2ft in calculation)
 	uint8_t timer_2 = 0;
@@ -70,7 +70,7 @@ void ultrasonic_check(uint8_t *ultrasonic_distance) {
 	// Get distances
 	ultrasonic_calculate(ultrasonic_distance);
 	// Send data back
-	if(ultrasonic_distance <= threshold_distance) {
+	if(*ultrasonic_distance <= threshold_distance) {
 		ultrasonic_distance[0] = 1;
 	} else {
 		ultrasonic_distance[0] = 0;

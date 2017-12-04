@@ -153,13 +153,12 @@ int main(void)
 	// BME280 initialization stuff, TODO: how do we know if it is attached, init checks
 	rslt = sensor_init(&dev);
 	rslt = set_normal_mode(dev.dev_id);
-	uint8_t reg_data[] = {0x09};
 	uint8_t ultrasonic_distance;
-	uint8_t kelvin_temp;
+	uint16_t kelvin_temp;
 
 	// Accelerometer initialization stuff, same TODO as above
-	AxesRaw_t *data;
-	LIS3DH_Monti_Init();
+	// AxesRaw_t *data;
+	// LIS3DH_Monti_Init();
 
   /* USER CODE END 2 */
 
@@ -184,17 +183,13 @@ int main(void)
 		{
 			assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
 			HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
-
-			////#DEBUG START
-			//HAL_UART_Transmit(&huart2, (uint8_t*)msg_loop, strlen(msg_loop), 0xFFFF);
-			//HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
-			////#DEBUG END
 		}
 
 		/**
 		 * Gather encoder values and calculate speed feedback
 		 * TODO: 1kHz is too slow. Need at least 10kHz
 		 */
+		/*
 		if(HAL_GetTick() % 1 == 0)
 		{
 			current_time = HAL_GetTick();
@@ -206,27 +201,31 @@ int main(void)
 				msg_from_vehicle.encoders[ii] = motors[ii].linear_speed;
 			}
 		}
+		*/
 
 		if(HAL_GetTick() % 250 == 0)
 		{
 			uint8_t sensor_counter = 0;
 			// Get I2C data TODO: how to know where to place sensor data in message for all sensors
 			// Temp Sensor bundle
+			msg_from_vehicle.sensors[1] = return_chip_id(dev.dev_id);
+			/*
 			get_bme280_all_data(&dev, &comp_data);
 			kelvin_temp = round((comp_data.temperature/100)+273);
-			msg_from_vehicle.sensors[sensor_counter++] = kelvin_temp;
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) kelvin_temp>>8;
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) kelvin_temp;
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.pressure;
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.humidity;
-
+			 */
 			// Accelerometer bundle
-			LIS3DH_Monti_Get_Raw_Data(data);
+			// LIS3DH_Monti_Get_Raw_Data(data);
 			// msg_from_vehicle.accelerometer[] = ;
 			// msg_from_vehicle.accelerometer[] = ;
 			// msg_from_vehicle.accelerometer[] = ;
 
 			// Non-I2C information
 			// TODO: double check arrays as pointers config
-			ultrasonic_check(&ultrasonic_distance);
+			// ultrasonic_check(&ultrasonic_distance);
 			// msg_from_vehicle.sensors[sensor_counter++] = ultrasonic_distances;
 			// msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
 			// msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();
