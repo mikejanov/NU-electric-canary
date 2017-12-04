@@ -13,7 +13,13 @@ class montiRobot():
 		self.rate = rospy.Rate(15)
 		self.ser = serial.Serial()
 		
-		self.sensors = [["BME280", 3, "Temperature", "Pressure", "Humidity"], ["LIS3DH", 3, "Accelerometer X", "Accelerometer Y", "Accelerometer Z"], ["US5881LUA", 1, "Hall Effect"], ["MiCS5524", 1, "CO, Alcohol, and VOC Gas"]]
+		#self.sensors = [["BME280", 3, "Temperature", "Pressure", "Humidity"], ["LIS3DH", 3, "Accelerometer X", "Accelerometer Y", "Accelerometer Z"], ["US5881LUA", 1, "Hall Effect"], ["MiCS5524", 1, "CO, Alcohol, and VOC Gas"]]
+		self.pods = []
+		self.pods.append({})
+		self.pods.append({'pod_id':'\x01', "part_number":"BME280", 'present_data_types':["Temperature", "Pressure", "Humidity"], 'bytes_per_data_type':[4, 4, 4]})
+		self.pods.append({'pod_id':'\x02', "part_number":"LIS3DH", 'present_data_types':["Accelerometer X", "Accelerometer Y", "Accelerometer Z"], 'bytes_per_data_type':[2, 2, 2]})
+		self.pods.append({'pod_id':'\x03', "part_number":"US5881LUA", 'present_data_types':["Hall Effect"], 'bytes_per_data_type':[1]})
+		self.pods.append({'pod_id':'\x04', "part_number":"MiCS5524", 'present_data_types':["CO, Alcohol, and VOC Gas"], 'bytes_per_data_type':[1]})
 
 		# Create the robot state publisher
 		self.state_pub = rospy.Publisher(name + 'state', msgs.Monti_Robot_State, queue_size = 10)
@@ -29,11 +35,11 @@ class montiRobot():
 		self.set_robot_config()
 
 		#Tesing the messages
-		# while not rospy.is_shutdown():
-		# 	self.pub_monti_state(5)
+		while not rospy.is_shutdown():
+			self.pub_monti_state(5)
 
 		#Poll Monti State Messages
-		self.poll_monti()
+		# self.poll_monti()
 
 	def init_comms_cb(self, state):
 		if (state.data == "connect"): # Open serial comms with monti
@@ -71,16 +77,23 @@ class montiRobot():
 	def set_robot_config(self):
 		self.present_sensors = input("Please enter the ID numbers of present modules: ")
 
+		self.msg_config = [] #Stores the starting sensor msg index of each sensor
 		self.packet_config = [] #Stores the starting packet index of each sensor
-		packet_pos = 0
+		packet_pos = 1
+		msg_pos = 0
 		for sensor_id in self.present_sensors:
 			#Save the start position for the sensor data in the state message
 			self.packet_config.append(packet_pos)
+			self.msg_config.append(msg_pos)
 
+			#Calculate where the next sensor starts in the state packet
+			for data_type in range(len(self.pods[sensor_id]['present_data_types'])):
+				packet_pos = packet_pos + self.pods[sensor_id]['bytes_per_data_type'][data_type]
+			
 			#Calculate where the next sensor starts in the state message
-			packet_pos = packet_pos + self.sensors[sensor_id][1]
+			msg_pos = msg_pos + len(self.pods[sensor_id]['present_data_types'])
 
-	def pub_monti_state(self, state):
+	def pub_monti_state(self, data):
 		# Function called when data is received from robot
 		# Publishes state data to the state topic
 		state = msgs.Monti_Robot_State()
@@ -92,12 +105,13 @@ class montiRobot():
 
 		if (len(self.present_sensors)>0):
 			p=0
-			for sensor_id in self.present_sensors:
-				sensor_start = self.packet_config[p]
-				for i in range(self.sensors[sensor_id][1]):
-					state.modular_sensors[sensor_start + i].part_number = self.sensors[sensor_id][0]
-					state.modular_sensors[sensor_start + i].type_of_data = self.sensors[sensor_id][i+2]
-					state.modular_sensors[sensor_start + i].data = i
+			for sensor_id in self.present_sensors:  #For each present pod
+				pod_msg_start = self.msg_config[p]
+				for i in range(len(self.pods[sensor_id]['present_data_types'])):  #For each type of data recorded in the given pod
+					# print(pod_msg_start+i)
+					state.modular_sensors[pod_msg_start + i].part_number = self.pods[sensor_id]['part_number']
+					state.modular_sensors[pod_msg_start + i].type_of_data = self.pods[sensor_id]['present_data_types'][i]
+					state.modular_sensors[pod_msg_start + i].data = i
 				p=p+1
 
 		self.state_pub.publish(state)
