@@ -147,9 +147,20 @@ int main(void)
 	//drive_motors_holonomic3(10, 10, 10);
 	////#DEBUG END
 
+	// Pre-defines
+	uint8_t sensor_counter;
+
+	// BME280 initialization stuff, TODO: how do we know if it is attached, init checks
 	rslt = sensor_init(&dev);
 	rslt = set_normal_mode(dev.dev_id);
 	uint8_t reg_data[] = {0x09};
+	uint8_t ultrasonic_distance;
+	uint8_t kelvin_temp;
+
+	// Accelerometer initialization stuff, same TODO as above
+	AxesRaw_t *data;
+	LIS3DH_Monti_Init();
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -198,8 +209,28 @@ int main(void)
 
 		if(HAL_GetTick() % 250 == 0)
 		{
-			msg_from_vehicle.sensors[13] = reg_data[0];
-			get_chip_id(dev.dev_id, reg_data);
+			uint8_t sensor_counter = 0;
+			// Get I2C data TODO: how to know where to place sensor data in message for all sensors
+			// Temp Sensor bundle
+			get_bme280_all_data(&dev, &comp_data);
+			kelvin_temp = round((comp_data.temperature/100)+273);
+			msg_from_vehicle.sensors[sensor_counter++] = kelvin_temp;
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.pressure;
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.humidity;
+
+			// Accelerometer bundle
+			LIS3DH_Monti_Get_Raw_Data(data);
+			// msg_from_vehicle.accelerometer[] = ;
+			// msg_from_vehicle.accelerometer[] = ;
+			// msg_from_vehicle.accelerometer[] = ;
+
+			// Non-I2C information
+			// TODO: double check arrays as pointers config
+			ultrasonic_check(&ultrasonic_distance);
+			// msg_from_vehicle.sensors[sensor_counter++] = ultrasonic_distances;
+			// msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
+			// msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();
+
 		}
 
 	}
@@ -282,23 +313,6 @@ void HAL_I2C_MasterTxCpltCallback(I2C_HandleTypeDef *hi2c)
 
 void HAL_I2C_MasterRxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
-	/*
-	uint8_t rslt = BME280_OK;
-	// uint8_t hall_data = Read_Hall_Sensor();
-	// msg_from_vehicle.sensors[0] = hall_data;
-
-	// Convert temperature to kelvin
-	// uint8_t temp = (comp_data.temperature+459.67)*(5.0/9.0);
-
-	uint8_t sensor_count = 0;
-	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) 0x02;
-	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.pressure;
-	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.humidity;
-	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature >>24;
-	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature >>16;
-	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature >>8;
-	msg_from_vehicle.sensors[sensor_count++] = (uint8_t) comp_data.temperature;
-	*/
 	msg_from_vehicle.sensors[15] = 0x1B;
 }
 

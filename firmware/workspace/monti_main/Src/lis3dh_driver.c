@@ -122,9 +122,6 @@ u8_t LIS3DH_Monti_Get_Raw_Data(AxesRaw_t *data) {
 	if( !LIS3DH_GetAccAxesRaw(data) )
 		return MEMS_ERROR;
 
-	// todo: see below
-	// Package up axis data for UART transmission?
-
 	return MEMS_SUCCESS;
 }
 

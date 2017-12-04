@@ -33,17 +33,13 @@ uint8_t Read_Hall_Sensor()
  ** Ultrasonic Sensors
  */
 // todo: better error checking
-void ultrasonic_calculate(uint8_t *distance_1, uint8_t *distance_2) {
+void ultrasonic_calculate(uint8_t *distance) {
 	// Max distance detectable is 4m, min is 2cm
 	// Max time is 20ms (23200 us), min time is 0.12 ms?
 	uint8_t timer_1 = 0;
 	uint8_t timeout = 20; // ms necessary to check 1ft distance (2ft in calculation)
-
-	uint8_t duration_1 = 0;
 	uint8_t timer_2 = 0;
-	uint8_t timer_3 = 0;
-	uint8_t duration_2 = 0;
-	uint8_t timer_4= 0;
+	uint8_t duration_1 = 0;
 
 	// -----Sensor 1 detect-----
 	// Send pulse for 10uS
@@ -63,47 +59,20 @@ void ultrasonic_calculate(uint8_t *distance_1, uint8_t *distance_2) {
 		timer_2 +=0.001;
 	}
 
-	// -----Sensor 2 Detect-----
-	HAL_GPIO_WritePin(DIN_2_GPIO_Port, DIN_2_Pin, 1);
-	HAL_Delay(0.01); // 10us
-	HAL_GPIO_WritePin(DIN_2_GPIO_Port, DIN_2_Pin, 0); // need to set pins
-
-	// Wait in increments of 1us while there is nothing detected on both sensors
-	while(HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin) != 1 && timer_3 < timeout) {
-		HAL_Delay(0.001);
-		timer_3 += 0.001;
-	}
-
-	// Record how long the sensors receive 1s
-	while(HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin) == 1) {
-		HAL_Delay(0.001);
-		timer_4 +=0.001;
-	}
-
 	duration_1 = timer_2-timer_1;
-	duration_2 = timer_4-timer_3;
 	// Todo: check these pointers
-	distance_1 = (uint8_t *) (duration_1*343/2); // D = speed of sound/2 * duration
-	distance_2 = (uint8_t *) (duration_2*343/2);
+	distance = (uint8_t *) (duration_1*343/2); // D = speed of sound/2 * duration
 }
 
-void ultrasonic_check(uint8_t *ultrasonic_distances[]) {
-	uint8_t distance_1;
-	uint8_t distance_2;
+void ultrasonic_check(uint8_t *ultrasonic_distance) {
 	uint8_t threshold_distance = 30.48; // cm
 
 	// Get distances
-	ultrasonic_calculate(&distance_1, &distance_2);
+	ultrasonic_calculate(ultrasonic_distance);
 	// Send data back
-	if(distance_1 <= threshold_distance) {
-		ultrasonic_distances[0] = (uint8_t *) 1;
+	if(ultrasonic_distance <= threshold_distance) {
+		ultrasonic_distance[0] = 1;
 	} else {
-		ultrasonic_distances[0] = (uint8_t *) 0;
-	}
-
-	if(distance_2 <= threshold_distance) {
-		ultrasonic_distances[1] = (uint8_t *) 1;
-	} else {
-		ultrasonic_distances[1] = (uint8_t *) 0;
+		ultrasonic_distance[0] = 0;
 	}
 }
