@@ -16,6 +16,9 @@
 #include "tim.h"
 #include "math.h"
 
+#include "holonomic3.h"
+#include "differential2wd.h"
+
 #define NUM_MOTORS_ENABLED	3
 
 struct motor
@@ -105,14 +108,9 @@ void throttle_motor(uint8_t _throttle, struct motor *_motor);
 
 void update_encoders(struct motor _motors[]);
 void update_speed_feedback(struct motor *_motor, uint32_t _systick, drivetrain_options_t _drivetrain_type);
-uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_ms, drivetrain_options_t _drivetrain_type);
-
-uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty);
-
-uint8_t convert_enc_to_wheel_speed(uint8_t _enc_a, uint8_t _enc_b);
-
-uint8_t convert_wheel_speed_to_rpm(uint8_t _wheel_speed);
-
-
+uint8_t calculate_wheel_linear_speed(struct motor* _motor,
+									 uint32_t _time_diff_ms,
+									 uint32_t _enc_count_diff,
+									 drivetrain_options_t _drivetrain_type);
 
 #endif /* DRIVETRAIN_H_ */

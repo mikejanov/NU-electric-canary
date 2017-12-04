@@ -171,6 +171,7 @@ void update_speed_feedback(struct motor *_motor, uint32_t _systick, drivetrain_o
 
 	_motor->linear_speed = calculate_wheel_linear_speed(_motor,
 														time_diff,
+														enc_count_diff,
 														_drivetrain_type);
 	/*
 	// Checks if anything changed
@@ -197,14 +198,18 @@ void update_speed_feedback(struct motor *_motor, uint32_t _systick, drivetrain_o
 	*/
 }
 
-uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_ms, drivetrain_options_t _drivetrain_type)
+uint8_t calculate_wheel_linear_speed(struct motor* _motor,
+									 uint32_t _time_diff_ms,
+									 uint32_t _enc_count_diff,
+									 drivetrain_options_t _drivetrain_type)
 {
 	// Note: assumes 4 encoder time diffs per revolution
 	// TODO: make more encoder-agnostic
-	uint32_t time_diffs_per_rev = 2;
-	uint32_t ms_per_rev = time_diffs_per_rev * _time_diff_ms;
+	uint32_t enc_counts_per_rev = 2;
+	uint32_t gear_ratio = 80;
+
+	uint32_t wheel_linear_speed = 0;
 	uint16_t wheel_diameter = 0;
-	uint16_t wheel_linear_speed = 0;
 
 	switch(_drivetrain_type)
 	{
@@ -217,26 +222,7 @@ uint8_t calculate_wheel_linear_speed(struct motor* _motor, uint32_t _time_diff_m
 		break;
 	}
 
-	// 1000(ms/s) * PI*diameter(mm/rev) * 1/ms_per_rev(rev/ms) = (mm/s)
-	// The 1000s cancel out
-	wheel_linear_speed = 1000 * M_PI * wheel_diameter / ms_per_rev;
+	// (mm/s) = _enc_count_diff(counts) / _time_diff_ms(ms) / enc_counts_per_rev(counts/rev) * PI*diameter(mm) * 1000(ms/s) / gear_ratio
+	wheel_linear_speed = _enc_count_diff / _time_diff_ms / enc_counts_per_rev * M_PI*wheel_diameter * 1000 / gear_ratio;
 	return (uint8_t)wheel_linear_speed;
 }
-
-uint8_t map_speed_to_duty(uint8_t _speed, uint8_t _duty)
-{
-
-}
-
-uint8_t convert_enc_to_wheel_speed(uint8_t _enc_a, uint8_t _enc_b)
-{
-
-}
-
-uint8_t convert_wheel_speed_to_rpm(uint8_t _wheel_speed)
-{
-
-}
-
-
-

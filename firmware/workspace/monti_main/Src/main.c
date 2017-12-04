@@ -46,8 +46,8 @@
 
 /* USER CODE BEGIN Includes */
 #include "drivetrain.h"
-#include "holonomic3.h"
-#include "differential2wd.h"
+//#include "holonomic3.h"
+//#include "differential2wd.h"
 
 #include "vehicle_messages.h"
 
@@ -201,7 +201,7 @@ int main(void)
 		  for(int ii = 0; ii < NUM_MOTORS_ENABLED; ii++)
 		  {
 			  update_speed_feedback(&motors[ii],
-					  	  	  	 	HAL_GetTick(),
+					  	  	  	 	current_time,
 									current_drivetrain);
 			  msg_from_vehicle.encoders[ii] = motors[ii].linear_speed;
 		  }
@@ -210,16 +210,15 @@ int main(void)
 	  /**
 	   * Stop the robot if it hasn't received a command in a while,
 	   * 	but only check every half second.
-	   * 	TODO: Make this a flag flip instead
 	   */
 	  if(HAL_GetTick() % 500 == 0)
 	  {
-		  //if((HAL_GetTick() - time_last_rx) > MAX_TIME_SINCE_RX)
-		  //{
-		//		drive_system(current_drivetrain,
-		//					 0,
-		//					 msg_to_vehicle.direction);
-		  //}
+		  if((HAL_GetTick() - time_last_rx) > MAX_TIME_SINCE_RX)
+		  {
+				drive_system(current_drivetrain,
+							 0,
+							 msg_to_vehicle.direction);
+		  }
 	  }
   }
   /* USER CODE END 3 */
@@ -308,7 +307,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		//HAL_UART_Transmit(&huart2, (uint8_t*)msg_rx, MSG_RX_BUFFER_SIZE, 0xFFFF);
 		////#DEBUG END
 
-		//time_last_rx = HAL_GetTick(); // Reset RX timer
+		time_last_rx = HAL_GetTick(); // Reset RX timer
 
 		switch(msg_rx_type)
 		{
@@ -319,10 +318,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 			drive_system(current_drivetrain,
 						 msg_to_vehicle.throttle,
 						 msg_to_vehicle.direction);
-			/*
-			drive_system_holonomic3(50, //msg_to_vehicle.throttle
-											1);//msg_to_vehicle.direction
-											*/
 			break;
 		default:
 			// Nothing
