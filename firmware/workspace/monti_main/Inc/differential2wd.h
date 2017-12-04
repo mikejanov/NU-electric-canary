@@ -21,9 +21,10 @@ void initialize_differential2wd(uint16_t _wheel_diameter,
 								struct motor *_motor_left,
 								struct motor *_motor_right);
 
+/*
 void drive_system_differential2wd(uint8_t system_speed,
 								  direction_t _direction);
-
+*/
 
 void drive_motors_differential2wd(uint16_t pwm1,
 								  uint16_t pwm2);

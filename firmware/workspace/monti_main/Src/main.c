@@ -194,7 +194,7 @@ int main(void)
 	   * Gather encoder values and calculate speed feedback
 	   * NOTE: Need at least 10kHz
 	   */
-	  if(HAL_GetTick() % 500 == 0)
+	  if(HAL_GetTick() % 100 == 0)
 	  {
 		  //update_encoders(motors);
 		  current_time = HAL_GetTick();

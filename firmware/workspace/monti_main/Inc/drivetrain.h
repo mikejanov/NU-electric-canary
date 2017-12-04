@@ -32,7 +32,7 @@ struct motor
 	uint8_t		in_neg;			// Boolean counter-clockwise motor enable pin
 
 	// Feedback Values
-	uint32_t	enc_last_rise;	// SysTick of the last (enc_a XOR enc_b)
+	uint32_t	enc_last_rise;	// SysTick of the last (rising edge)
 	uint32_t	enc_last_count;	// Counts how many total (runtime) rising edges at the last poll
 	uint32_t	enc_count;		// Counts how many rising edges there have been since runtime
 	//uint8_t		enc_a_last;		// Keeps track of change for encoder a
