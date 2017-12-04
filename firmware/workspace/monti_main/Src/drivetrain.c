@@ -229,5 +229,5 @@ uint8_t calculate_wheel_linear_speed(struct motor* _motor,
 
 	// (mm/s) = _enc_count_diff(counts) / _time_diff_ms(ms) / enc_counts_per_rev(counts/rev) * PI*diameter(mm) * 1000(ms/s) / gear_ratio
 	wheel_linear_speed = _enc_count_diff / _time_diff_ms / enc_counts_per_rev * M_PI*wheel_diameter * 1000 / gear_ratio;
-	return (uint8_t)(_enc_count_diff);//(uint8_t)wheel_linear_speed;
+	return (uint8_t) wheel_linear_speed;//(uint8_t)_enc_count_diff;
 }

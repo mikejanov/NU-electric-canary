@@ -23,10 +23,10 @@ void initialize_holonomic3(uint16_t _wheel_diameter,
 						   struct motor *_motor_right,
 						   struct motor *_motor_left);
 
-/*
+
 void drive_system_holonomic3(uint8_t system_speed,
 							 direction_t _direction);
-*/
+
 
 void drive_motors_holonomic3(uint16_t pwm1,
 							 uint16_t pwm2,

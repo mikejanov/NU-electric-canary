@@ -46,10 +46,8 @@
 
 /* USER CODE BEGIN Includes */
 #include "drivetrain.h"
-//#include "holonomic3.h"
-//#include "differential2wd.h"
-
 #include "vehicle_messages.h"
+#include "sensors.h"
 
 #include "string.h"
 /* USER CODE END Includes */
@@ -78,6 +76,9 @@ drivetrain_options_t current_drivetrain = drivetrains_holonomic3;
 
 // Dual-Purpose Pin Defines
 #define USONIC_B_TRIGGER GPIO_PIN_11
+
+// Sensors
+uint8_t my_sensor_data[4];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -219,6 +220,15 @@ int main(void)
 							 0,
 							 msg_to_vehicle.direction);
 		  }
+	  }
+
+	  /**
+	   * Prototype Sensor GetTick
+	   */
+	  if(HAL_GetTick() % 500 == 0)
+	  {
+		  update_sensors(msg_vehicle_config.pod_ids, msg_from_vehicle.sensors,
+				  	  	 POD_ID_BME280, my_sensor_data);
 	  }
   }
   /* USER CODE END 3 */

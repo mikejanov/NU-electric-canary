@@ -16,8 +16,9 @@
 #include "tim.h"
 #include "math.h"
 
-#include "holonomic3.h"
-#include "differential2wd.h"
+// TODO: Too much is dependent on this library. Consider some refactoring.
+//#include "holonomic3.h"
+//#include "differential2wd.h"
 
 #define NUM_MOTORS_ENABLED	3
 
