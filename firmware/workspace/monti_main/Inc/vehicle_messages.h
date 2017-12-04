@@ -8,18 +8,17 @@
 #ifndef VEHICLE_MESSAGES_H_
 #define VEHICLE_MESSAGES_H_
 
-#include "drivetrain.h"
 #include "string.h"
 
+#include "drivetrain.h"
+#include "sensors.h"
+
 #define NUM_TOTAL_ENCODER_VALUES	6
-#define NUM_TOTAL_ACCEL_AXIS		4
-#define NUM_TOTAL_DIGITAL_SENSORS	16
-#define NUM_MAX_PODS				8
 
 #define MSG_TX_BUFFER_SIZE sizeof(msg_from_vehicle)
 #define MSG_RX_BUFFER_SIZE sizeof(msg_vehicle_config)
 
-#define MSG_ERROR_INDEX			1
+#define MSG_ERROR_INDEX		1
 #define ERROR_MSG_SIZE		0x01
 #define	ERROR_MSG_HEADER	0x02
 
