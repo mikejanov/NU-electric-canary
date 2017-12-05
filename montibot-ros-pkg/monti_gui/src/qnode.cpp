@@ -89,7 +89,7 @@ void QNode::run() {
 		ss << "hello world " << count;
 		// msg.data = ss.str();
 		// chatter_publisher.publish(msg);
-		log(Info,std::string("I sent: ")+msg.data);
+		//log(Info,std::string("I sent: ")+msg.data);
 		ros::spinOnce();
 		loop_rate.sleep();
 		++count;
@@ -153,7 +153,7 @@ void QNode::update_monti_connection(bool connection_status){  //Connect to the m
 	else{ss << "disconnect";}
 	msg.data = ss.str();
 	monti_connection_pub.publish(msg);
-	log(Info,std::string("I sent: ")+msg.data);
+	//log(Info,std::string("I sent: ")+msg.data);
 }
 
 void QNode::move_monti(uint8_t direction, uint8_t throttle){
