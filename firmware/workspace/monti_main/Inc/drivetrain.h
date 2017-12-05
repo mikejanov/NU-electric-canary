@@ -17,6 +17,7 @@
 #include "math.h"
 
 // TODO: Too much is dependent on this library. Consider some refactoring.
+// TODO: Potential fix was to send in (void*) and recast within the child class. This existed originally but was removed at a point.
 //#include "holonomic3.h"
 //#include "differential2wd.h"
 
@@ -83,8 +84,8 @@ typedef enum direction
 
 typedef enum drivetrain_options
 {
-	drivetrains_differential2wd,
-	drivetrains_holonomic3
+	drivetrains_differential2wd = 0x01,
+	drivetrains_holonomic3 = 0x02
 }drivetrain_options_t;
 
 void initialize_drivetrain(struct motor _motors[],

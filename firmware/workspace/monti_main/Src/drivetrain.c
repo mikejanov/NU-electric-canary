@@ -21,7 +21,7 @@ void initialize_drivetrain(struct motor _motors[],
 		  break;
 	  case drivetrains_differential2wd:
 		  initialize_differential2wd(_wheel_diameter,
-		  							 &_motors[0], &_motors[1]);
+		  							 &_motors[1], &_motors[0]);
 		  break;
 	  }
 }
@@ -138,14 +138,14 @@ void set_motor_stopped(struct motor *_motor)
 
 void set_motor_negative(struct motor *_motor)
 {
-	_motor->in_pos = 1;
-	_motor->in_neg = 0;
+	_motor->in_pos = 0;
+	_motor->in_neg = 1;
 }
 
 void set_motor_positive(struct motor *_motor)
 {
-	_motor->in_pos = 0;
-	_motor->in_neg = 1;
+	_motor->in_pos = 1;
+	_motor->in_neg = 0;
 }
 
 void throttle_motor(uint8_t _throttle, struct motor *_motor)

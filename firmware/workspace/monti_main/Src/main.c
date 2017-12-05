@@ -49,6 +49,9 @@
 #include "vehicle_messages.h"
 #include "sensors.h"
 
+#include "holonomic3.h"
+#include "differential2wd.h"
+
 #include "string.h"
 /* USER CODE END Includes */
 
@@ -68,7 +71,7 @@ uint32_t time_last_rx = 0;
 
 // Motors
 struct motor motors[NUM_MOTORS_ENABLED];
-drivetrain_options_t current_drivetrain = drivetrains_holonomic3;
+drivetrain_options_t current_drivetrain = drivetrains_differential2wd;//drivetrains_holonomic3;
 
 // Drivetrain Wheel Sizes
 #define HOLONOMIC3_WHEEL_DIA_MM			22
@@ -100,13 +103,13 @@ void drive_system(drivetrain_options_t _drivetrain,
 {
 	switch (_drivetrain)
 	{
-	case drivetrains_holonomic3:
-		drive_system_holonomic3(msg_to_vehicle.throttle,
-								msg_to_vehicle.direction);
-		break;
 	case drivetrains_differential2wd:
-		drive_system_differential2wd(msg_to_vehicle.throttle,
-									 msg_to_vehicle.direction);
+		drive_system_differential2wd(system_speed,
+									 _direction);
+		break;
+	case drivetrains_holonomic3:
+		drive_system_holonomic3(system_speed,
+								_direction);
 		break;
 	}
 }
@@ -182,6 +185,9 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 1000 == 0)
 	  {
+		  msg_from_vehicle.sensors[0] = current_drivetrain;
+		  msg_from_vehicle.sensors[1] = (uint8_t) msg_to_vehicle.direction;
+		  msg_from_vehicle.sensors[2] = msg_to_vehicle.throttle;
 		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
 		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
 
@@ -214,12 +220,15 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 500 == 0)
 	  {
+		  // TODO: Change this to Actuation_Time, but only if it makes sense at this point?
+		  /*
 		  if((HAL_GetTick() - time_last_rx) > MAX_TIME_SINCE_RX)
 		  {
 				drive_system(current_drivetrain,
 							 0,
 							 msg_to_vehicle.direction);
 		  }
+		  */
 	  }
 
 	  /**
@@ -323,6 +332,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		{
 		case MSG_HEADER_CONFIG:
 			current_drivetrain = msg_vehicle_config.drive_type;
+			config_map_pods(msg_vehicle_config.pod_ids);
 			break;
 		case MSG_HEADER_COMMAND:
 			drive_system(current_drivetrain,

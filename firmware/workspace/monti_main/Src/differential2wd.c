@@ -35,7 +35,7 @@ void drive_system_differential2wd(uint8_t system_speed,
 	{
 		// Set directionality
 		set_motor_positive(differential2wd_system.motors[0]);
-		set_motor_positive(differential2wd_system.motors[1]);
+		set_motor_negative(differential2wd_system.motors[1]);
 
 		// Set speed
 		differential2wd_system.motors[0]->pwm_duty = 99;
@@ -46,7 +46,7 @@ void drive_system_differential2wd(uint8_t system_speed,
 	{
 		// Set directionality
 		set_motor_positive(differential2wd_system.motors[0]);
-		set_motor_positive(differential2wd_system.motors[1]);
+		set_motor_negative(differential2wd_system.motors[1]);
 
 		// Set speed
 		differential2wd_system.motors[0]->pwm_duty = 99;
@@ -56,8 +56,8 @@ void drive_system_differential2wd(uint8_t system_speed,
 	else if(_direction == DEG_135)
 	{
 		// Set directionality
-		set_motor_positive(differential2wd_system.motors[0]);
-		set_motor_negative(differential2wd_system.motors[1]);
+		set_motor_negative(differential2wd_system.motors[0]);
+		set_motor_positive(differential2wd_system.motors[1]);
 
 		// Set speed
 		differential2wd_system.motors[0]->pwm_duty = 99;
@@ -68,7 +68,7 @@ void drive_system_differential2wd(uint8_t system_speed,
 	{
 		// Set directionality
 		set_motor_negative(differential2wd_system.motors[0]);
-		set_motor_negative(differential2wd_system.motors[1]);
+		set_motor_positive(differential2wd_system.motors[1]);
 
 		// Set speed
 		differential2wd_system.motors[0]->pwm_duty = 99;
@@ -79,7 +79,7 @@ void drive_system_differential2wd(uint8_t system_speed,
 	{
 		// Set directionality
 		set_motor_negative(differential2wd_system.motors[0]);
-		set_motor_negative(differential2wd_system.motors[1]);
+		set_motor_positive(differential2wd_system.motors[1]);
 
 		// Set speed
 		differential2wd_system.motors[0]->pwm_duty = 50;
@@ -90,7 +90,7 @@ void drive_system_differential2wd(uint8_t system_speed,
 	{
 		// Set directionality
 		set_motor_positive(differential2wd_system.motors[0]);
-		set_motor_positive(differential2wd_system.motors[1]);
+		set_motor_negative(differential2wd_system.motors[1]);
 
 		// Set speed
 		differential2wd_system.motors[0]->pwm_duty = 50;
@@ -100,7 +100,7 @@ void drive_system_differential2wd(uint8_t system_speed,
 	else if((_direction == DEG_90) || (_direction == DEG_CW))
 	{
 		// Set directionality
-		set_motor_positive(differential2wd_system.motors[0]);
+		set_motor_negative(differential2wd_system.motors[0]);
 		set_motor_negative(differential2wd_system.motors[1]);
 
 		// Set speed
@@ -111,7 +111,7 @@ void drive_system_differential2wd(uint8_t system_speed,
 	else if((_direction == DEG_225) || (_direction == DEG_CCW))
 	{
 		// Set directionality
-		set_motor_negative(differential2wd_system.motors[0]);
+		set_motor_positive(differential2wd_system.motors[0]);
 		set_motor_positive(differential2wd_system.motors[1]);
 
 		// Set speed
@@ -124,8 +124,9 @@ void drive_system_differential2wd(uint8_t system_speed,
 	}
 
 	// Finally, drive the motors
-	for(int imotor = 0; imotor < 3; imotor ++)
+	for(int imotor = 0; imotor < 2; imotor ++)
 	{
+		throttle_motor(system_speed, differential2wd_system.motors[imotor]);
 		drive_motor_struct(differential2wd_system.motors[imotor]);
 	}
 }

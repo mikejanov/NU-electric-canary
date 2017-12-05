@@ -87,7 +87,7 @@ struct message_from_vehicle
  * 	0 to 100%. Amount of total system motor voltage applied to vehicle
  * 		motors.
  * @actuation_time
- *	Amount of time that motors will actuate per message. Prevents
+ *	Amount of time (value 0-127ms) that motors will actuate per message. Prevents
  *		endlessly-running motors in case of loss-of-signal or packet
  *		losses.
  */

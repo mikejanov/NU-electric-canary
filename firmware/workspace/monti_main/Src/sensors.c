@@ -39,7 +39,7 @@ uint8_t get_pod_size(pod_ids_t pod_id)
 	case POD_ID_ULTRASONIC:
 		return POD_SIZE_ULTRASONIC;
 	default:
-		return 0x00;
+		return 0x00; // Empty pod
 	}
 }
 
