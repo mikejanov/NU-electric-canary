@@ -76,6 +76,7 @@ struct motor motors[NUM_MOTORS_ENABLED];
 // BME280 Temperature Sensor
 struct bme280_dev dev;
 struct bme280_data comp_data = {8};
+struct bme280_uncomp_data uncomped_data = {8};
 struct bme280_calib_data calib_data = {0};
 int8_t rslt = BME280_OK;
 
@@ -208,17 +209,15 @@ int main(void)
 			uint8_t sensor_counter = 0;
 			// Get I2C data TODO: how to know where to place sensor data in message for all sensors
 			// Temp Sensor bundle
-			// msg_from_vehicle.sensors[0] = check_mode(dev.dev_id);
 
-			// get_bme280_calib_data(&dev);
-			// HAL_Delay(1000);
+			get_bme280_all_data(&dev, &comp_data);
 			// kelvin_temp = round((comp_data.temperature/100)+273);
-			/*
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>24);
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>16);
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>8);
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) uncomp_data.temperature;
-			*/
+
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.temperature>>24);
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.temperature>>16);
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.temperature>>8);
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.temperature;
+
 
 			// Accelerometer bundle
 			// LIS3DH_Monti_Get_Raw_Data(data);
@@ -228,10 +227,10 @@ int main(void)
 
 			// Non-I2C information
 			// TODO: double check arrays as pointers config
-			ultrasonic_distance = ultrasonic_check();
-			HAL_Delay(100);
-			HAL_I2C_Master_Transmit(&hi2c1, dev.dev_id, &ultrasonic_distance, 1, 100);
-			HAL_Delay(1000);
+			// ultrasonic_distance = ultrasonic_check();
+			// HAL_Delay(100);
+			// HAL_I2C_Master_Transmit(&hi2c1, dev.dev_id, &ultrasonic_distance, 1, 100);
+			// HAL_Delay(1000);
 			// msg_from_vehicle.sensors[sensor_counter++] = ultrasonic_distances;
 			// msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
 			// msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();

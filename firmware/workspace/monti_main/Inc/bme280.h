@@ -237,6 +237,15 @@ void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev
 
 void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
 
+int32_t compensate_temperature(const struct bme280_uncomp_data *uncomp_data,
+						struct bme280_calib_data *calib_data);
+
+uint32_t compensate_pressure(const struct bme280_uncomp_data *uncomp_data,
+						const struct bme280_calib_data *calib_data);
+
+
+uint32_t compensate_humidity(const struct bme280_uncomp_data *uncomp_data,
+						const struct bme280_calib_data *calib_data);
 
 #ifdef __cplusplus
 }

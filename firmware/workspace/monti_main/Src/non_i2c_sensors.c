@@ -63,9 +63,8 @@ uint8_t ultrasonic_calculate() {
 			duration_1 = timer_2-timer_1;
 			return (duration_1*343/2); // D = speed of sound/2 * duration
 		}
-	} else {
-		return 1;
 	}
+	return 1;
 }
 
 uint8_t ultrasonic_check() {

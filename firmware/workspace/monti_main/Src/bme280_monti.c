@@ -90,8 +90,17 @@ int8_t get_bme280_all_data(struct bme280_dev *dev, struct bme280_data *comp_data
 {
 	int8_t rslt;
 	struct bme280_uncomp_data uncomp_data;
+	get_bme280_calib_data(dev);
 	rslt = get_bme280_raw_data(dev, &uncomp_data);
-	rslt = bme280_compensate_data(BME280_ALL, &uncomp_data, comp_data, &dev->calib_data);
+	//rslt = bme280_compensate_data(BME280_ALL, &uncomp_data, comp_data, &dev->calib_data);
+
+	comp_data->temperature = 0;
+	comp_data->pressure = 0;
+	comp_data->humidity = 0;
+	comp_data->temperature = compensate_temperature(&uncomp_data, &dev->calib_data);
+	comp_data->pressure = compensate_pressure(&uncomp_data, &dev->calib_data);
+	comp_data->humidity = compensate_humidity(&uncomp_data, &dev->calib_data);
+
 	// dev->delay_ms(250);
 	return rslt;
 }
@@ -103,14 +112,7 @@ int8_t get_bme280_raw_data(struct bme280_dev *dev, struct bme280_uncomp_data *un
 	uint8_t reg_data[8] = {7};
 	uint8_t len = 8;
 
-	HAL_I2C_Master_Transmit_IT(&hi2c1, dev->dev_id<<1, &reg_addr, 1);
-
-    HAL_Delay(100);
-
-    // Read a number of bytes that is expected from
-    HAL_I2C_Master_Receive_IT(&hi2c1, dev->dev_id<<1, reg_data, len);
-    HAL_Delay(100);
-
+	generic_bme280_i2c_read(dev->dev_id, reg_data, reg_addr, len);
     bme280_parse_sensor_data(reg_data, uncomp_data);
 	return rslt;
 }
