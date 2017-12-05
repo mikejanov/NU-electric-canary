@@ -12,7 +12,7 @@
 
 uint8_t Read_Gas_Sensor();
 uint8_t Read_Hall_Sensor();
-void ultrasonic_detect(uint8_t *distance_1, uint8_t *distance_2);
-void ultrasonic_check(uint8_t ultrasonic_distances[]);
+uint8_t ultrasonic_calculate();
+uint8_t ultrasonic_check();
 
 #endif /* NON_I2C_SENSORS_H_ */

@@ -149,16 +149,14 @@ int main(void)
 	////#DEBUG END
 
 	// Pre-defines
-	uint8_t sensor_counter;
 
 	// BME280 initialization stuff, TODO: how do we know if it is attached, init checks
 	rslt = sensor_init(&dev);
 	rslt = set_normal_mode(dev.dev_id);
 	uint8_t ultrasonic_distance;
 	uint32_t kelvin_temp;
-	uint8_t reg_data[16] = {0};
 
-	// Accelerometer initialization stuff, same TODO as above
+	// Accelerometer initialization stuff
 	// AxesRaw_t *data;
 	// LIS3DH_Monti_Init();
 
@@ -212,20 +210,15 @@ int main(void)
 			// Temp Sensor bundle
 			// msg_from_vehicle.sensors[0] = check_mode(dev.dev_id);
 
-			get_bme280_calib_data(&dev);
-			HAL_Delay(1000);
-			//kelvin_temp = round((comp_data.temperature/100)+273);
+			// get_bme280_calib_data(&dev);
+			// HAL_Delay(1000);
+			// kelvin_temp = round((comp_data.temperature/100)+273);
 			/*
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>24);
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>16);
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>8);
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) uncomp_data.temperature;
 			*/
-			msg_from_vehicle.sensors[sensor_counter++] = reg_data[0];
-			msg_from_vehicle.sensors[sensor_counter++] = reg_data[1];
-			msg_from_vehicle.sensors[sensor_counter++] = reg_data[2];
-			msg_from_vehicle.sensors[sensor_counter++] = reg_data[3];
-
 
 			// Accelerometer bundle
 			// LIS3DH_Monti_Get_Raw_Data(data);
@@ -235,7 +228,10 @@ int main(void)
 
 			// Non-I2C information
 			// TODO: double check arrays as pointers config
-			// ultrasonic_check(&ultrasonic_distance);
+			ultrasonic_distance = ultrasonic_check();
+			HAL_Delay(100);
+			HAL_I2C_Master_Transmit(&hi2c1, dev.dev_id, &ultrasonic_distance, 1, 100);
+			HAL_Delay(1000);
 			// msg_from_vehicle.sensors[sensor_counter++] = ultrasonic_distances;
 			// msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
 			// msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();

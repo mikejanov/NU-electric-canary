@@ -33,7 +33,7 @@ uint8_t Read_Hall_Sensor()
  ** Ultrasonic Sensors
  */
 // todo: better error checking
-void ultrasonic_calculate(uint8_t *distance) {
+uint8_t ultrasonic_calculate() {
 	// Max distance detectable is 4m, min is 2cm
 	// Max time is 23ms (23200 us), min time is 0.12 ms?
 	uint8_t timer_1 = 0;
@@ -53,26 +53,32 @@ void ultrasonic_calculate(uint8_t *distance) {
 		timer_1+=0.001;
 	}
 
-	// Record how long the sensors receive 1s
-	while(HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin) == 1) {
-		HAL_Delay(0.001);
-		timer_2 +=0.001;
-	}
+	// Did the timeout test get passed?
+	if(timer_1 < timeout) {
+		// Record how long the sensors receive 1s
+		while(HAL_GPIO_ReadPin(DIN_1_GPIO_Port, DIN_1_Pin) == 1) {
+			HAL_Delay(0.001);
+			timer_2 +=0.001;
 
-	duration_1 = timer_2-timer_1;
-	// Todo: check these pointers
-	distance = (uint8_t *) (duration_1*343/2); // D = speed of sound/2 * duration
+			duration_1 = timer_2-timer_1;
+			return (duration_1*343/2); // D = speed of sound/2 * duration
+		}
+	} else {
+		return 1;
+	}
 }
 
-void ultrasonic_check(uint8_t *ultrasonic_distance) {
+uint8_t ultrasonic_check() {
 	uint8_t threshold_distance = 30.48; // cm
+	uint8_t ultrasonic_distance = 0;
 
 	// Get distances
-	ultrasonic_calculate(ultrasonic_distance);
+	ultrasonic_distance = ultrasonic_calculate();
+
 	// Send data back
-	if(*ultrasonic_distance <= threshold_distance) {
-		ultrasonic_distance[0] = 1;
+	if(ultrasonic_distance <= threshold_distance) {
+		return 1;
 	} else {
-		ultrasonic_distance[0] = 0;
+		return 0;
 	}
 }
