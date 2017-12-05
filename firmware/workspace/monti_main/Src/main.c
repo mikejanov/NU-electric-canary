@@ -52,6 +52,11 @@
 #include "holonomic3.h"
 #include "differential2wd.h"
 
+#include "bme280.h"
+#include "bme280_monti.h"
+#include "lis3dh_driver.h"
+#include "non_i2c_sensors.h"
+
 #include "string.h"
 /* USER CODE END Includes */
 
@@ -82,6 +87,13 @@ drivetrain_options_t current_drivetrain = drivetrains_differential2wd;//drivetra
 
 // Sensors
 uint8_t my_sensor_data[4];
+// BME280 Temperature Sensor
+struct bme280_dev dev;
+struct bme280_data comp_data = {8};
+struct bme280_uncomp_data uncomped_data = {8};
+struct bme280_calib_data calib_data = {0};
+int8_t rslt = BME280_OK;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -150,6 +162,9 @@ int main(void)
   __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
   HAL_NVIC_EnableIRQ(USART2_IRQn);
 
+  __HAL_I2C_ENABLE_IT(&hi2c1, I2C_IT_ERRI | I2C_IT_TCI| I2C_IT_STOPI| I2C_IT_NACKI | I2C_IT_ADDRI | I2C_IT_RXI | I2C_IT_TXI);
+  HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
+
   uint32_t current_time = 0;
 
   configure_motors(motors);
@@ -164,6 +179,12 @@ int main(void)
   //drive_system_holonomic3(0, DEG_0);
   //drive_motors_holonomic3(10, 10, 10);
   ////#DEBUG END
+
+  // Pre-defines
+  // BME280 initialization stuff, TODO: how do we know if it is attached, init checks
+  rslt = sensor_init(&dev);
+  rslt = set_normal_mode(dev.dev_id);
+  uint8_t ultrasonic_distance;
 
   /* USER CODE END 2 */
 
@@ -232,12 +253,47 @@ int main(void)
 	  }
 
 	  /**
-	   * Prototype Sensor GetTick
+	   * Sensor Time Triggers
 	   */
-	  if(HAL_GetTick() % 500 == 0)
+	  if(HAL_GetTick() % 250 == 0)
 	  {
+		  uint8_t sensor_counter = 1; // starting at 1 for now since ultrasonic still under testing
+
+		  // Ultrasonic First
+		  // ultrasonic_distance = ultrasonic_check();
+		  // msg_from_vehicle.sensors[sensor_counter++] = ultrasonic_distances;
+
+		  // Temp Sensor bundle
+		  get_bme280_all_data(&dev, &comp_data);
+
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.temperature>>24);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.temperature>>16);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.temperature>>8);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.temperature;
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.pressure>>24);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.pressure>>16);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.pressure>>8);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.pressure;
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.humidity>>24);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.humidity>>16);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.humidity>>8);
+		  msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.humidity;
+
+		  /*
+		  			// Accelerometer bundle
+		  			LIS3DH_Monti_Get_Raw_Data(data);
+		  			msg_from_vehicle.accelerometer[] = ;
+		  			msg_from_vehicle.accelerometer[] = ;
+		  			msg_from_vehicle.accelerometer[] = ;
+		   */
+
+		  // Non-I2C information
+		  msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
+		  msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();
+		  /*
 		  update_sensors(msg_vehicle_config.pod_ids, msg_from_vehicle.sensors,
 				  	  	 POD_ID_BME280, my_sensor_data);
+	  	  */
 	  }
   }
   /* USER CODE END 3 */
