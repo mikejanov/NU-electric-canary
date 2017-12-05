@@ -5,6 +5,7 @@ import monti_msgs.msg as msgs
 import numpy
 import serial
 from serial import SerialException
+from array import array
 
 class montiRobot():
 	def __init__(self, name = 'monti/'):
@@ -12,6 +13,10 @@ class montiRobot():
 		rospy.loginfo("Starting the monti_robot ROS node")
 		self.rate = rospy.Rate(15)
 		self.ser = serial.Serial()
+
+		#Message Headers
+		self.command_header = 0x02
+		self.config_header = 0x01
 		
 		#self.sensors = [["BME280", 3, "Temperature", "Pressure", "Humidity"], ["LIS3DH", 3, "Accelerometer X", "Accelerometer Y", "Accelerometer Z"], ["US5881LUA", 1, "Hall Effect"], ["MiCS5524", 1, "CO, Alcohol, and VOC Gas"]]
 		self.pods = []
@@ -121,12 +126,20 @@ class montiRobot():
 		#Send the control command to the Monti ROV
 		rospy.loginfo("Sending motion control command to Monti")
 		print ("Moving in direction " + str(command.direction) + " at throttle " + str(command.throttle) + " for " + str(command.actuation_time) + " seconds")
+		t = command.throttle*25
+		control_buff = [self.command_header, command.direction, t, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+		self.write_to_monti(control_buff) 
 		#self.ser.write()
 
 	def send_monti_config_cb(self, command):
 		#Send the control command to the Monti ROV
 		rospy.loginfo("Sending configuration to Monti")
 		#self.ser.write()
+
+	def write_to_monti(self, buffer):
+		if self.ser.isOpen():
+			packet = array('b', buffer).tostring()
+			self.ser.write(packet)
 
 def main():
 	montiRobot()
