@@ -206,9 +206,9 @@ int main(void)
 	   */
 	  if(HAL_GetTick() % 1000 == 0)
 	  {
-		  msg_from_vehicle.sensors[0] = current_drivetrain;
-		  msg_from_vehicle.sensors[1] = (uint8_t) msg_to_vehicle.direction;
-		  msg_from_vehicle.sensors[2] = msg_to_vehicle.throttle;
+		  //msg_from_vehicle.sensors[0] = current_drivetrain;
+		  //msg_from_vehicle.sensors[1] = (uint8_t) msg_to_vehicle.direction;
+		  //msg_from_vehicle.sensors[2] = msg_to_vehicle.throttle;
 		  assemble_message_from_vehicle(msg_tx, MSG_TX_BUFFER_SIZE);
 		  HAL_UART_Transmit(&huart2, (uint8_t*)msg_tx, MSG_TX_BUFFER_SIZE, 0xFFFF);
 
@@ -255,6 +255,7 @@ int main(void)
 	  /**
 	   * Sensor Time Triggers
 	   */
+	  /*
 	  if(HAL_GetTick() % 250 == 0)
 	  {
 		  uint8_t sensor_counter = 1; // starting at 1 for now since ultrasonic still under testing
@@ -288,13 +289,14 @@ int main(void)
 		   */
 
 		  // Non-I2C information
-		  msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
-		  msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();
+		  //msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
+		  //msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();
 		  /*
 		  update_sensors(msg_vehicle_config.pod_ids, msg_from_vehicle.sensors,
 				  	  	 POD_ID_BME280, my_sensor_data);
 	  	  */
-	  }
+	  //}
+
   }
   /* USER CODE END 3 */
 
