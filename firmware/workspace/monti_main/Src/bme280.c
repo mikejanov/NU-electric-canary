@@ -118,7 +118,7 @@ static int8_t get_calib_data(struct bme280_dev *dev);
  *  @param[out] dev : Structure instance of bme280_dev to store the calib data.
  *  @param[in] reg_data : Contains the calibration data to be parsed.
  */
-static void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
+void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
 
 /*!
  *  @brief This internal API is used to parse the humidity calibration data
@@ -127,7 +127,7 @@ static void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_d
  *  @param[out] dev : Structure instance of bme280_dev to store the calib data.
  *  @param[in] reg_data : Contains calibration data to be parsed.
  */
-static void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
+void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
 
 #ifdef BME280_FLOAT_ENABLE
 /*!
@@ -1189,7 +1189,7 @@ static void interleave_reg_addr(const uint8_t *reg_addr, uint8_t *temp_buff, con
  *  @brief This internal API is used to parse the temperature and
  *  pressure calibration data and store it in device structure.
  */
-static void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev)
+void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev)
 {
 	struct bme280_calib_data *calib_data = &dev->calib_data;
 
@@ -1213,7 +1213,7 @@ static void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_d
  *  @brief This internal API is used to parse the humidity calibration data
  *  and store it in device structure.
  */
-static void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev)
+void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev)
 {
 	struct bme280_calib_data *calib_data = &dev->calib_data;
 	int16_t dig_H4_lsb;

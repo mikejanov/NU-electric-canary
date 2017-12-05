@@ -75,7 +75,8 @@ struct motor motors[NUM_MOTORS_ENABLED];
 
 // BME280 Temperature Sensor
 struct bme280_dev dev;
-struct bme280_data comp_data;
+struct bme280_data comp_data = {8};
+struct bme280_calib_data calib_data = {0};
 int8_t rslt = BME280_OK;
 
 /* USER CODE END PV */
@@ -154,7 +155,8 @@ int main(void)
 	rslt = sensor_init(&dev);
 	rslt = set_normal_mode(dev.dev_id);
 	uint8_t ultrasonic_distance;
-	uint16_t kelvin_temp;
+	uint32_t kelvin_temp;
+	uint8_t reg_data[16] = {0};
 
 	// Accelerometer initialization stuff, same TODO as above
 	// AxesRaw_t *data;
@@ -208,15 +210,23 @@ int main(void)
 			uint8_t sensor_counter = 0;
 			// Get I2C data TODO: how to know where to place sensor data in message for all sensors
 			// Temp Sensor bundle
-			msg_from_vehicle.sensors[1] = return_chip_id(dev.dev_id);
+			// msg_from_vehicle.sensors[0] = check_mode(dev.dev_id);
+
+			get_bme280_calib_data(&dev);
+			HAL_Delay(1000);
+			//kelvin_temp = round((comp_data.temperature/100)+273);
 			/*
-			get_bme280_all_data(&dev, &comp_data);
-			kelvin_temp = round((comp_data.temperature/100)+273);
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) kelvin_temp>>8;
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) kelvin_temp;
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.pressure;
-			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.humidity;
-			 */
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>24);
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>16);
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (uncomp_data.temperature>>8);
+			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) uncomp_data.temperature;
+			*/
+			msg_from_vehicle.sensors[sensor_counter++] = reg_data[0];
+			msg_from_vehicle.sensors[sensor_counter++] = reg_data[1];
+			msg_from_vehicle.sensors[sensor_counter++] = reg_data[2];
+			msg_from_vehicle.sensors[sensor_counter++] = reg_data[3];
+
+
 			// Accelerometer bundle
 			// LIS3DH_Monti_Get_Raw_Data(data);
 			// msg_from_vehicle.accelerometer[] = ;

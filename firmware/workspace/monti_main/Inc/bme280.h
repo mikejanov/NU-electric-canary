@@ -233,6 +233,11 @@ void bme280_parse_sensor_data(const uint8_t *reg_data, struct bme280_uncomp_data
 int8_t bme280_compensate_data(uint8_t sensor_comp, const struct bme280_uncomp_data *uncomp_data,
 				     struct bme280_data *comp_data, struct bme280_calib_data *calib_data);
 
+void parse_temp_press_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
+
+void parse_humidity_calib_data(const uint8_t *reg_data, struct bme280_dev *dev);
+
+
 #ifdef __cplusplus
 }
 #endif /* End of CPP guard */
