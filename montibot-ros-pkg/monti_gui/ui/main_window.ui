@@ -189,6 +189,9 @@
            <property name="text">
             <string>45 deg</string>
            </property>
+           <property name="shortcut">
+            <string>Q</string>
+           </property>
           </widget>
           <widget class="QPushButton" name="pushButton_backward">
            <property name="geometry">
@@ -234,6 +237,9 @@
            <property name="text">
             <string>45 deg</string>
            </property>
+           <property name="shortcut">
+            <string>D</string>
+           </property>
           </widget>
           <widget class="QPushButton" name="pushButton_45_tr">
            <property name="geometry">
@@ -247,6 +253,9 @@
            <property name="text">
             <string>45 deg</string>
            </property>
+           <property name="shortcut">
+            <string>E</string>
+           </property>
           </widget>
           <widget class="QPushButton" name="pushButton_180_l">
            <property name="geometry">
@@ -259,6 +268,9 @@
            </property>
            <property name="text">
             <string>180 Left</string>
+           </property>
+           <property name="shortcut">
+            <string>Back</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_idle">
@@ -305,6 +317,9 @@
            <property name="text">
             <string>180 Right</string>
            </property>
+           <property name="shortcut">
+            <string>Forward</string>
+           </property>
           </widget>
           <widget class="QPushButton" name="pushButton_45_bl">
            <property name="geometry">
@@ -317,6 +332,9 @@
            </property>
            <property name="text">
             <string>45 deg</string>
+           </property>
+           <property name="shortcut">
+            <string>A</string>
            </property>
           </widget>
           <widget class="QLabel" name="label_throttle">
