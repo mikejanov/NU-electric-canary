@@ -84,6 +84,10 @@ public Q_SLOTS:
     void on_pushButton_45_tl_clicked(bool check);
     void on_pushButton_45_tr_clicked(bool check);
 
+    //Spinning Commands
+    void on_pushButton_180_r_clicked(bool check);
+    void on_pushButton_180_l_clicked(bool check);
+
 private:
 	Ui::MainWindowDesign ui;
 	QNode qnode;

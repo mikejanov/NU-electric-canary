@@ -328,7 +328,16 @@ void MainWindow::on_pushButton_45_tl_clicked(bool check){
 	qnode.move_monti(7, throttle); //DEG_315 in firmware
 }
 
+//Spinning Commands
+
+void MainWindow::on_pushButton_180_r_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(9, throttle); //DEG_315 in firmware
+}
+
+void MainWindow::on_pushButton_180_l_clicked(bool check){
+	int throttle = get_throttle();
+	qnode.move_monti(10, throttle); //DEG_315 in firmware
+}
 
 }  // namespace monti_gui
-
-
