@@ -170,7 +170,7 @@
             <string>Left</string>
            </property>
            <property name="shortcut">
-            <string>Left</string>
+            <string>J</string>
            </property>
           </widget>
           <widget class="QSlider" name="verticalSlider_throttle">
@@ -233,7 +233,7 @@
             <string>Backward</string>
            </property>
            <property name="shortcut">
-            <string>Down</string>
+            <string>K</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_forward">
@@ -249,7 +249,7 @@
             <string>Forward</string>
            </property>
            <property name="shortcut">
-            <string>Up</string>
+            <string>I</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_45_br">
@@ -297,7 +297,7 @@
             <string>Spin CCW</string>
            </property>
            <property name="shortcut">
-            <string>Back</string>
+            <string>Z</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_idle">
@@ -313,7 +313,7 @@
             <string>Idle</string>
            </property>
            <property name="shortcut">
-            <string>I</string>
+            <string>Space</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_right">
@@ -329,13 +329,13 @@
             <string>Right</string>
            </property>
            <property name="shortcut">
-            <string>Right</string>
+            <string>L</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_180_r">
            <property name="geometry">
             <rect>
-             <x>410</x>
+             <x>420</x>
              <y>30</y>
              <width>98</width>
              <height>27</height>
@@ -345,7 +345,7 @@
             <string>Spin CW</string>
            </property>
            <property name="shortcut">
-            <string>Forward</string>
+            <string>C</string>
            </property>
           </widget>
           <widget class="QPushButton" name="pushButton_45_bl">
