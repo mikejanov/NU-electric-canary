@@ -62,6 +62,8 @@ public:
 	void update_monti_connection(bool connection_status);  //Connect to the monti rov, 1=connect, 0=disconnect
 	void move_monti(uint8_t direction, uint8_t throttle);
 	void set_monti_config(uint8_t drive_type, uint8_t num_pods, uint8_t pod_ids[]);
+	const char* monti_pod_ids[5];
+	int num_pods;
 
 Q_SIGNALS:
 	void loggingUpdated();

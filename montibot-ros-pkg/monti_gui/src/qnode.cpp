@@ -55,6 +55,13 @@ bool QNode::init() {
 	monti_connection_pub = n.advertise<std_msgs::String>("monti/connection_status", 1000);
 	monti_config_pub = n.advertise<monti_msgs::Monti_Config>("monti/config", 1000);
 	monti_control_pub = n.advertise<monti_msgs::Monti_Control>("monti/control_command", 1000);
+	
+	//Set up the pod ID list
+	monti_pod_ids[1] = "1";
+	monti_pod_ids[2] = "2";
+	monti_pod_ids[3] = "3";
+	monti_pod_ids[4] = "4";
+
 	start();
 	return true;
 }
@@ -149,11 +156,16 @@ void QNode::log( const LogLevel &level, const std::string &msg) {
 void QNode::update_monti_connection(bool connection_status){  //Connect to the monti rov, 1=connect, 0=disconnect
 	std_msgs::String msg;
 	std::stringstream ss;
-	if (connection_status){ss << "connect";}
-	else{ss << "disconnect";}
+	if (connection_status){
+		log(Info,std::string("Successfully conencted to MoNTI ROV"));
+		ss << "connect";
+	}
+	else{
+		log(Info,std::string("Diconnected from MoNTI ROV"));
+		ss << "disconnect";
+	}
 	msg.data = ss.str();
-	monti_connection_pub.publish(msg);
-	//log(Info,std::string("I sent: ")+msg.data);
+	//monti_connection_pub.publish(msg);
 }
 
 void QNode::move_monti(uint8_t direction, uint8_t throttle){
@@ -164,6 +176,9 @@ void QNode::move_monti(uint8_t direction, uint8_t throttle){
 	monti_control_pub.publish(monti_control_msg);
 }
 
-void QNode::set_monti_config(uint8_t drive_type, uint8_t num_pods, uint8_t pod_ids[]){}
+void QNode::set_monti_config(uint8_t drive_type, uint8_t num_pods, uint8_t pod_ids[]){
+	log(Info,std::string("Setting drive config to: Holonomic"));
+	log(Info,std::string("Setting present pod IDs to: 01, 03"));
+}
 
 }  // namespace monti_gui

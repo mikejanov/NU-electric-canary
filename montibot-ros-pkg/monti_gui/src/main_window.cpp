@@ -181,12 +181,18 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 //Monti Connection Status
 void MainWindow::on_pushButton_connectMonti_clicked(bool check){
-	//qnode.update_monti_connection(true);
+	qnode.update_monti_connection(true);
 
 	ui.pushButton_connectMonti->setEnabled(false);
 	ui.pushButton_disconnectMonti->setEnabled(true);
 	ui.spinBox_setDrivetrain->setEnabled(true);
 	ui.pushButton_setDrivetrain->setEnabled(true);
+
+	//Set up the pod ID list
+	qnode.monti_pod_ids[1] = "01";
+	qnode.monti_pod_ids[2] = "02";
+	qnode.monti_pod_ids[3] = "03";
+	qnode.monti_pod_ids[4] = "04";
 }
 
 void MainWindow::on_pushButton_disconnectMonti_clicked(bool check){
@@ -215,7 +221,9 @@ void MainWindow::on_pushButton_setDrivetrain_clicked(bool check){
     ui.pushButton_setNumPods->setEnabled(true);
 }
 void MainWindow::on_pushButton_setNumPods_clicked(bool check){
-	int num_pods = ui.spinBox_setNumPods->value();
+	qnode.num_pods = ui.spinBox_setNumPods->value();
+	int num_pods = qnode.num_pods;
+
 	if (num_pods == 1)
 	{
 		ui.spinBox_pod1->setEnabled(true);
@@ -271,6 +279,8 @@ void MainWindow::on_pushButton_setNumPods_clicked(bool check){
 	    ui.pushButton_setIds->setEnabled(false);
 	}
 
+
+	//Set up table for data streaming
 	ui.tableWidget_sensors->setColumnCount(2);
 	ui.tableWidget_sensors->setRowCount(5);
 	ui.tableWidget_sensors->verticalHeader()->setVisible(false);
@@ -278,19 +288,40 @@ void MainWindow::on_pushButton_setNumPods_clicked(bool check){
 	tableWidget_sensors_header<<"Pod ID"<<"Data";
 	ui.tableWidget_sensors->setHorizontalHeaderLabels(tableWidget_sensors_header);
 	ui.tableWidget_sensors->horizontalHeader()->setStretchLastSection(true);
-	ui.tableWidget_sensors->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	
-	QTableWidgetItem *wordSet = new QTableWidgetItem;
-
-	char* words [2];
-	words[0] = char("2");
-	words[1] = char("3");
-	char word[] = "2";
-	wordSet->setText(words[1]);
-	ui.tableWidget_sensors->setItem(1,2,wordSet);
 }
 
-void MainWindow::on_pushButton_setIds_clicked(bool check){}
+void MainWindow::on_pushButton_setIds_clicked(bool check){
+	uint8_t present_pods[5];
+	present_pods[0] = ui.spinBox_pod1->value();
+	present_pods[1] = ui.spinBox_pod2->value();
+	present_pods[2] = ui.spinBox_pod3->value();
+	present_pods[3] = ui.spinBox_pod4->value();
+	present_pods[4] = ui.spinBox_pod5->value();
+
+	for (int i=0; i<qnode.num_pods; i++){
+		QTableWidgetItem *wordSet = new QTableWidgetItem;
+		wordSet->setText(qnode.monti_pod_ids[present_pods[i]]);
+		ui.tableWidget_sensors->setItem(i,0,wordSet);
+	}
+
+	QTableWidgetItem *wordSet1 = new QTableWidgetItem;
+	wordSet1->setText("Temperature= 23.12, Pressure=108150.4, Humidity= 7.52");
+	ui.tableWidget_sensors->setItem(0,1,wordSet1);
+	
+	// QTableWidgetItem *wordSet2 = new QTableWidgetItem;
+	// wordSet2->setText("Accelerometer X= , Accelerometer Y=, Accelerometer Z= ");
+	// ui.tableWidget_sensors->setItem(1,1,wordSet2);
+
+	QTableWidgetItem *wordSet3 = new QTableWidgetItem;
+	wordSet3->setText("Hall Effect=0");
+	ui.tableWidget_sensors->setItem(1,1,wordSet3);
+
+	// QTableWidgetItem *wordSet4 = new QTableWidgetItem;
+	// wordSet4->setText("CO, Alcohol, VOC Gas level=");
+	// ui.tableWidget_sensors->setItem(2,1,wordSet4);
+	uint8_t drive_type = ui.spinBox_setDrivetrain->value();
+	qnode.set_monti_config(drive_type, qnode.num_pods, present_pods);
+}
 
 //Motion Control
 uint8_t MainWindow::get_throttle(){
