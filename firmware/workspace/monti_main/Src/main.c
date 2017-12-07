@@ -207,9 +207,10 @@ int main(void)
 			uint8_t sensor_counter = 1; // starting at 1 for now since ultrasonic still under testing
 
 			// Ultrasonic First
-			// ultrasonic_distance = ultrasonic_check();
-			// msg_from_vehicle.sensors[sensor_counter++] = ultrasonic_distances;
+			ultrasonic_distance = ultrasonic_check();
+			msg_from_vehicle.sensors[sensor_counter++] = ultrasonic_distance;
 
+			/*
 			// Temp Sensor bundle
 			get_bme280_all_data(&dev, &comp_data);
 
@@ -225,7 +226,7 @@ int main(void)
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.humidity>>16);
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) (comp_data.humidity>>8);
 			msg_from_vehicle.sensors[sensor_counter++] = (uint8_t) comp_data.humidity;
-
+			*/
 			/*
 			// Accelerometer bundle
 			LIS3DH_Monti_Get_Raw_Data(data);
@@ -235,8 +236,8 @@ int main(void)
 			 */
 
 			// Non-I2C information
-			msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
-			msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();
+			// msg_from_vehicle.sensors[sensor_counter++] = Read_Hall_Sensor();
+			// msg_from_vehicle.sensors[sensor_counter++] = Read_Gas_Sensor();
 
 		}
 
