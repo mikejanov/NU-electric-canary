@@ -269,7 +269,17 @@ void MainWindow::on_pushButton_setNumPods_clicked(bool check){
 	    ui.pushButton_setIds->setEnabled(false);
 	}
 
+	ui.tableWidget_sensors->setColumnCount(2);
+	ui.tableWidget_sensors->setRowCount(5);
+	ui.tableWidget_sensors->verticalHeader()->setVisible(false);
+	QStringList tableWidget_sensors_header;
+	tableWidget_sensors_header<<"Pod ID"<<"Data";
+	ui.tableWidget_sensors->setHorizontalHeaderLabels(tableWidget_sensors_header);
+	ui.tableWidget_sensors->horizontalHeader()->setStretchLastSection(true);
+	ui.tableWidget_sensors->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
 }
+
 void MainWindow::on_pushButton_setIds_clicked(bool check){}
 
 //Motion Control
