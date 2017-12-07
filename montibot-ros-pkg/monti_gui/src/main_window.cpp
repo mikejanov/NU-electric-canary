@@ -181,7 +181,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 //Monti Connection Status
 void MainWindow::on_pushButton_connectMonti_clicked(bool check){
-	qnode.update_monti_connection(true);
+	//qnode.update_monti_connection(true);
 
 	ui.pushButton_connectMonti->setEnabled(false);
 	ui.pushButton_disconnectMonti->setEnabled(true);
@@ -279,7 +279,15 @@ void MainWindow::on_pushButton_setNumPods_clicked(bool check){
 	ui.tableWidget_sensors->setHorizontalHeaderLabels(tableWidget_sensors_header);
 	ui.tableWidget_sensors->horizontalHeader()->setStretchLastSection(true);
 	ui.tableWidget_sensors->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	
+	QTableWidgetItem *wordSet = new QTableWidgetItem;
 
+	char* words [2];
+	words[0] = char("2");
+	words[1] = char("3");
+	char word[] = "2";
+	wordSet->setText(words[1]);
+	ui.tableWidget_sensors->setItem(1,2,wordSet);
 }
 
 void MainWindow::on_pushButton_setIds_clicked(bool check){}
