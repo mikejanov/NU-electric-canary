@@ -10,6 +10,12 @@
     <height>726</height>
    </rect>
   </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>MoNTI App</string>
   </property>
@@ -78,7 +84,7 @@
             <rect>
              <x>20</x>
              <y>20</y>
-             <width>621</width>
+             <width>631</width>
              <height>181</height>
             </rect>
            </property>
@@ -115,7 +121,7 @@
         <item>
          <widget class="QGroupBox" name="groupBox_12">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -124,15 +130,15 @@
            <string>Logging</string>
           </property>
           <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QListView" name="view_logging"/>
+           </item>
            <item row="1" column="0">
             <widget class="QPushButton" name="publishpushButton">
              <property name="text">
               <string>Save log to file</string>
              </property>
             </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QListView" name="view_logging"/>
            </item>
           </layout>
          </widget>
@@ -160,7 +166,7 @@
           <widget class="QPushButton" name="pushButton_left">
            <property name="geometry">
             <rect>
-             <x>277</x>
+             <x>187</x>
              <y>90</y>
              <width>71</width>
              <height>27</height>
@@ -176,7 +182,7 @@
           <widget class="QSlider" name="verticalSlider_throttle">
            <property name="geometry">
             <rect>
-             <x>580</x>
+             <x>490</x>
              <y>60</y>
              <width>29</width>
              <height>61</height>
@@ -207,7 +213,7 @@
           <widget class="QPushButton" name="pushButton_45_tl">
            <property name="geometry">
             <rect>
-             <x>277</x>
+             <x>187</x>
              <y>60</y>
              <width>71</width>
              <height>27</height>
@@ -223,7 +229,7 @@
           <widget class="QPushButton" name="pushButton_backward">
            <property name="geometry">
             <rect>
-             <x>360</x>
+             <x>270</x>
              <y>120</y>
              <width>98</width>
              <height>27</height>
@@ -239,7 +245,7 @@
           <widget class="QPushButton" name="pushButton_forward">
            <property name="geometry">
             <rect>
-             <x>360</x>
+             <x>270</x>
              <y>60</y>
              <width>98</width>
              <height>27</height>
@@ -255,7 +261,7 @@
           <widget class="QPushButton" name="pushButton_45_br">
            <property name="geometry">
             <rect>
-             <x>470</x>
+             <x>380</x>
              <y>120</y>
              <width>71</width>
              <height>27</height>
@@ -271,7 +277,7 @@
           <widget class="QPushButton" name="pushButton_45_tr">
            <property name="geometry">
             <rect>
-             <x>470</x>
+             <x>380</x>
              <y>60</y>
              <width>71</width>
              <height>27</height>
@@ -287,7 +293,7 @@
           <widget class="QPushButton" name="pushButton_180_l">
            <property name="geometry">
             <rect>
-             <x>300</x>
+             <x>210</x>
              <y>30</y>
              <width>98</width>
              <height>27</height>
@@ -303,7 +309,7 @@
           <widget class="QPushButton" name="pushButton_idle">
            <property name="geometry">
             <rect>
-             <x>380</x>
+             <x>290</x>
              <y>90</y>
              <width>61</width>
              <height>27</height>
@@ -319,7 +325,7 @@
           <widget class="QPushButton" name="pushButton_right">
            <property name="geometry">
             <rect>
-             <x>470</x>
+             <x>380</x>
              <y>90</y>
              <width>71</width>
              <height>27</height>
@@ -335,7 +341,7 @@
           <widget class="QPushButton" name="pushButton_180_r">
            <property name="geometry">
             <rect>
-             <x>420</x>
+             <x>330</x>
              <y>30</y>
              <width>98</width>
              <height>27</height>
@@ -351,7 +357,7 @@
           <widget class="QPushButton" name="pushButton_45_bl">
            <property name="geometry">
             <rect>
-             <x>277</x>
+             <x>187</x>
              <y>120</y>
              <width>71</width>
              <height>27</height>
@@ -367,7 +373,7 @@
           <widget class="QLabel" name="label_throttle">
            <property name="geometry">
             <rect>
-             <x>570</x>
+             <x>480</x>
              <y>40</y>
              <width>66</width>
              <height>17</height>

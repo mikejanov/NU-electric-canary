@@ -162,6 +162,7 @@ void QNode::update_monti_connection(bool connection_status){  //Connect to the m
 	}
 	else{
 		log(Info,std::string("Diconnected from MoNTI ROV"));
+		log(Info,std::string("Saving log file"));
 		ss << "disconnect";
 	}
 	msg.data = ss.str();
@@ -174,6 +175,7 @@ void QNode::move_monti(uint8_t direction, uint8_t throttle){
 	monti_control_msg.actuation_time = 5;
 
 	monti_control_pub.publish(monti_control_msg);
+	log(Warn,std::string("Ultrasonic sensor detects an object in the way, check camera"));
 }
 
 void QNode::set_monti_config(uint8_t drive_type, uint8_t num_pods, uint8_t pod_ids[]){
