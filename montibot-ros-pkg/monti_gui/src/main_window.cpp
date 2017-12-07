@@ -169,6 +169,7 @@ void MainWindow::WriteSettings() {
 
 void MainWindow::closeEvent(QCloseEvent *event)
 {
+	qnode.move_monti(0, 0); //Don't move!
 	WriteSettings();
 	qnode.move_monti(0, 0); //Stop moving if GUI closes
 	QMainWindow::closeEvent(event);
