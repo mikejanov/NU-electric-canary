@@ -219,6 +219,9 @@ void MainWindow::on_pushButton_disconnectMonti_clicked(bool check){
 void MainWindow::on_pushButton_setDrivetrain_clicked(bool check){
 	ui.spinBox_setNumPods->setEnabled(true);
     ui.pushButton_setNumPods->setEnabled(true);
+
+    uint8_t drive_type = ui.spinBox_setDrivetrain->value();
+    qnode.set_monti_drive_config(drive_type);
 }
 void MainWindow::on_pushButton_setNumPods_clicked(bool check){
 	qnode.num_pods = ui.spinBox_setNumPods->value();
@@ -345,6 +348,7 @@ void MainWindow::on_pushButton_forward_clicked(bool check){
 
 void MainWindow::on_pushButton_backward_clicked(bool check){
 	int throttle = get_throttle();
+
 	qnode.move_monti(4, throttle); //DEG_180 in firmware
 }
 void MainWindow::on_pushButton_left_clicked(bool check){

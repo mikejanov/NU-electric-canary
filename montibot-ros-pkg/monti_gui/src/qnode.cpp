@@ -166,7 +166,7 @@ void QNode::update_monti_connection(bool connection_status){  //Connect to the m
 		ss << "disconnect";
 	}
 	msg.data = ss.str();
-	//monti_connection_pub.publish(msg);
+	monti_connection_pub.publish(msg);
 }
 
 void QNode::move_monti(uint8_t direction, uint8_t throttle){
@@ -175,12 +175,35 @@ void QNode::move_monti(uint8_t direction, uint8_t throttle){
 	monti_control_msg.actuation_time = 5;
 
 	monti_control_pub.publish(monti_control_msg);
-	log(Warn,std::string("Ultrasonic sensor detects an object in the way, check camera"));
+	//log(Warn,std::string("Ultrasonic sensor detects an object in the way, check camera"));
 }
 
 void QNode::set_monti_config(uint8_t drive_type, uint8_t num_pods, uint8_t pod_ids[]){
-	log(Info,std::string("Setting drive config to: Holonomic"));
 	log(Info,std::string("Setting present pod IDs to: 01, 03"));
+
+	if (drive_type==1){
+		log(Info,std::string("Setting drive config to: Differential Drive"));
+	}
+	else{
+		log(Info,std::string("Setting drive config to: Holonomic"));
+	}
+	
+	monti_config_msg.num_modules = num_pods;
+	monti_config_msg.drive_type = drive_type;
+	monti_config_pub.publish(monti_config_msg);
+}
+
+void QNode::set_monti_drive_config(uint8_t drive_type){
+	if (drive_type==1){
+		log(Info,std::string("Setting drive config to: Differential Drive"));
+		monti_config_msg.drive_type = 1;
+	}
+	else{
+		log(Info,std::string("Setting drive config to: Holonomic"));
+		monti_config_msg.drive_type = 2;
+	}
+
+	monti_config_pub.publish(monti_config_msg);
 }
 
 }  // namespace monti_gui

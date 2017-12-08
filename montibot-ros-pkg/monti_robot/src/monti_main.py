@@ -34,8 +34,6 @@ class montiRobot():
 		rospy.Subscriber(name + 'control_command', msgs.Monti_Control, self.send_monti_control_cb)
 		rospy.Subscriber(name + 'config', msgs.Monti_Config, self.send_monti_config_cb)
 
-		#self.init_comms()
-
 		#set an initital configuration state containing only the drivetrain
 		self.set_robot_config()
 
@@ -80,7 +78,7 @@ class montiRobot():
 					self.pub_monti_state(raw_data)
 
 	def set_robot_config(self):
-		self.present_sensors = input("Please enter the ID numbers of present modules: ")
+		self.present_sensors = [1,3]#input("Please enter the ID numbers of present modules: ")
 
 		self.msg_config = [] #Stores the starting sensor msg index of each sensor
 		self.packet_config = [] #Stores the starting packet index of each sensor
@@ -134,7 +132,8 @@ class montiRobot():
 	def send_monti_config_cb(self, command):
 		#Send the control command to the Monti ROV
 		rospy.loginfo("Sending configuration to Monti")
-		#self.ser.write()
+		config_buff = [self.config_header, 0x00, command.drive_type, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+		self.write_to_monti(config_buff)
 
 	def write_to_monti(self, buffer):
 		if self.ser.isOpen():
